@@ -1,0 +1,6 @@
+In release 0.1, the program should be able to display Samsø from an .osm-file (It should be able to take an arbitrary .osm-file, but we will focus on Samsø).
+It only has to draw lines.
+
+If there is time, look at the following features:
+    - Let the user pan and zoom
+    - Make shapes and fill them with colors (buildings, seas, forests, etc.)
