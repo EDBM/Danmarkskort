@@ -18,7 +18,9 @@ public class OSMNode {
         return lon;
     }
 
-    public String toString() {
+    public long getId(){return id;}
+
+    /*public String toString() {
         return "id = " + id + " lattitude = " + lat + " longtitude = " + lon;
-    }
+    }*/
 }
