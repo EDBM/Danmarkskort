@@ -1,5 +1,7 @@
 package BFST20Project;
 
+import org.checkerframework.checker.units.qual.A;
+
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -7,22 +9,16 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
-public class OSMParser extends Parser {
+public class OSMParser extends Parser implements Iterable<Drawable>{
+    private List<Drawable> drawables = new ArrayList<>();
     Map<Long, OSMNode> idToNode = new TreeMap<>();
     Map<Long, OSMWay> idToWay = new HashMap<>();
     private XMLStreamReader reader;
+    float minlat, minlon, maxlat, maxlon;
 
-
-    public static void main(String[] args) throws FileNotFoundException, XMLStreamException {
-        OSMParser parser = new OSMParser();
-        parser.read(new File("C:\\Users\\johan\\repositories\\BFST20Project\\src\\main\\java\\BFST20Project\\map.osm"));
-    }
-
-    public void read(File file) throws FileNotFoundException, XMLStreamException {
+    public OSMParser(File file) throws FileNotFoundException, XMLStreamException {
         reader = XMLInputFactory.newFactory().createXMLStreamReader(new FileReader(file));
 
         while(reader.hasNext()){
@@ -40,9 +36,9 @@ public class OSMParser extends Parser {
             }
         }
 
-        for(long id : idToWay.keySet()){
+       /* for(long id : idToWay.keySet()){
             idToWay.get(id).printWay();
-        }
+        }*/
     }
 
     public void parseNode() throws XMLStreamException {
@@ -61,12 +57,18 @@ public class OSMParser extends Parser {
 
     public void parseWay() throws XMLStreamException {
         long id = Long.parseLong(reader.getAttributeValue(null, "id"));
-        OSMWay osmWay = new OSMWay(id);
+        OSMWay osmWay = new OSMWay();
 
         readLoop: while(reader.hasNext()) {
             switch (reader.getEventType()){
                 case XMLStreamConstants.START_ELEMENT:
                     switch (reader.getLocalName()) {
+                        case "bounds":
+                            minlat = -Float.parseFloat(reader.getAttributeValue(null, "maxlat"));
+                            maxlon = 0.56f * Float.parseFloat(reader.getAttributeValue(null, "maxlon"));
+                            maxlat = -Float.parseFloat(reader.getAttributeValue(null, "minlat"));
+                            minlon = 0.56f * Float.parseFloat(reader.getAttributeValue(null, "minlon"));
+                            break;
                         case "nd":
                             osmWay.addNode(idToNode.get(Long.parseLong(reader.getAttributeValue(null, "ref"))));
                             break;
@@ -85,5 +87,8 @@ public class OSMParser extends Parser {
         }
 
         idToWay.put(id, osmWay);
+    }
+    public Iterator<Drawable> iterator() {
+        return drawables.iterator();
     }
 }
