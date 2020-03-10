@@ -20,9 +20,8 @@ public class View {
     BorderPane pane = new BorderPane(canvas);
     Scene scene = new Scene(pane);
     Affine trans = new Affine();
-    OSMParser osmParser;
 
-    public View(Model model, Stage primaryStage) throws FileNotFoundException, XMLStreamException {
+    public View(Model model, Stage primaryStage){
         this.model=model;
         this.stage=primaryStage;
         model.addObserver(this::repaint);
@@ -31,17 +30,13 @@ public class View {
         resetView();
         canvas.widthProperty().bind(scene.widthProperty());
         canvas.heightProperty().bind(scene.heightProperty());
-        canvas.widthProperty().addListener((a,b,c) -> {
-            repaint();
-        });
-        canvas.heightProperty().addListener((a,b,c) -> {
-            repaint();
-        });
+        canvas.widthProperty().addListener((a,b,c) -> repaint());
+        canvas.heightProperty().addListener((a,b,c) -> repaint());
     }
 
     public void resetView() {
-        pan(-osmParser.minlon, -osmParser.minlat);
-        zoom(canvas.getWidth() / (osmParser.maxlat - osmParser.minlat), 0, 0);
+        pan(-model.minLon, -model.minLat);
+        zoom(canvas.getWidth() / (model.maxLat - model.minLat), 0, 0);
         repaint();
     }
 
@@ -51,7 +46,12 @@ public class View {
         gc.fillRect(0,0,canvas.getWidth(),canvas.getHeight());
         gc.setTransform(trans);
         gc.setFill(Color.LIGHTGREEN);
-        for (Drawable drawable : osmParser){
+        gc.setStroke(Color.BLACK);
+
+        double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
+        gc.setLineWidth(pixelWidth);
+
+        for (Drawable drawable : model.getDrawables()){
             drawable.stroke(gc);
         }
     }

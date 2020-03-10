@@ -3,20 +3,20 @@ package BFST20Project;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OSMWay extends ArrayList<OSMNode>{
+public class OSMWay{
     private long id;
     private List<OSMNode> nodes = new ArrayList<>();
 
-    public OSMWay(/*long id*/) {
-        //this.id = id;
+    public OSMWay(long id) {
+        this.id = id;
     }
 
     public OSMNode first() {
-        return get(0);
+        return nodes.get(0);
     }
 
     public OSMNode last() {
-        return get(size()-1);
+        return nodes.get(size()-1);
     }
 
     public void addNode(OSMNode node) {

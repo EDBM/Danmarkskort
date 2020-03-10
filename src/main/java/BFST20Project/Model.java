@@ -9,12 +9,16 @@ import java.util.List;
 public class Model {
     public float minLat,minLon, maxLat, maxLon;
     List<Runnable> observers = new ArrayList<>();
-    File file = new File("C:\\Users\\Andreas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\Data\\Samsoe.osm");
-    OSMParser osmParser = new OSMParser(file);
-    private List<Drawable> drawables = new ArrayList<>();
+    File file = new File("C:\\Users\\johan\\repositories\\BFST20Project\\src\\main\\java\\BFST20Project\\map.osm");
+    private List<Drawable> drawables;
 
     public Model() throws FileNotFoundException, XMLStreamException {
-        observers = new ArrayList<>();
+        OSMParser osmParser = new OSMParser(file);
+        drawables = osmParser.getDrawables();
+        minLat = osmParser.getMinLat();
+        minLon = osmParser.getMinLon();
+        maxLat = osmParser.getMaxLat();
+        maxLon = osmParser.getMaxLon();
     }
 
     public void addObserver(Runnable observer) {
@@ -25,5 +29,9 @@ public class Model {
         for (var observer : observers) {
             observer.run();
         }
+    }
+
+    public Iterable<Drawable> getDrawables() {
+        return drawables;
     }
 }

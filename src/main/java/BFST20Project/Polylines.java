@@ -6,13 +6,16 @@ import java.io.Serializable;
 
 
 public class Polylines implements Drawable, Serializable {
-    OSMWay way;
-    private float xCoords, yCoords;
+    private float[][] coordinates;
 
     public Polylines(OSMWay way){
-        this.way=way;
-        xCoords = way.get(0).getLon();
-        yCoords = way.get(0).getLat();
+        coordinates = new float[way.size()][2];
+        for(int i = 0; i < way.size(); i++){
+            float[] coordinate = new float[2];
+            coordinate[0] = 0.56f * way.get(i).getLon();
+            coordinate[1] = -way.get(i).getLat();
+            coordinates[i] = coordinate;
+        }
     }
 
     public void stroke(GraphicsContext gc){
@@ -21,9 +24,10 @@ public class Polylines implements Drawable, Serializable {
         gc.stroke();
     }
     public void trace(GraphicsContext gc){
-        gc.moveTo(way.get(0).getLon(), way.get(0).getLat());
-        for (int i = 2; i<way.size() ; i=+2){
-            gc.lineTo(way.get(i).getLon(), way.get(i).getLat());
+        float[] startCoord = coordinates[0];
+        gc.moveTo(startCoord[0], startCoord[1]);
+        for (int i = 1; i<coordinates.length ; i++){
+            gc.lineTo(coordinates[i][0], coordinates[i][1]);
         }
     }
 
