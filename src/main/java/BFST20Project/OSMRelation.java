@@ -1,10 +1,11 @@
 package BFST20Project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OSMRelation {
     long id;
-    List<OSMWay> ways;
+    List<OSMWay> ways = new ArrayList<>();
 
     public OSMRelation(long id) {
         this.id = id;

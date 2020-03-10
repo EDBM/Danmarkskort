@@ -9,10 +9,14 @@ import java.util.List;
 public class Model {
     public float minLat,minLon, maxLat, maxLon;
     List<Runnable> observers = new ArrayList<>();
-    File file = new File("C:\\Users\\johan\\repositories\\BFST20Project\\src\\main\\java\\BFST20Project\\map.osm");
+    File file;
     private List<Drawable> drawables;
 
     public Model() throws FileNotFoundException, XMLStreamException {
+        file = new File(getClass().getClassLoader().getResource("anholt.osm").getFile());
+
+        System.out.println(file);
+
         OSMParser osmParser = new OSMParser(file);
         drawables = osmParser.getDrawables();
         minLat = osmParser.getMinLat();
