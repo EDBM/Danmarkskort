@@ -102,7 +102,7 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
 
     private void parseRelation() throws XMLStreamException {
         long id = Long.parseLong(reader.getAttributeValue(null, "id"));
-        OSMRelation osmRelation = new OSMRelation(id);
+        //OSMRelation osmRelation = new OSMRelation(id);
 
         readLoop: while(reader.hasNext()){
             switch (reader.getEventType()){
@@ -111,7 +111,7 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
                         case "member":
                             if(reader.getAttributeValue(null, "type").equals("way")){
                                 OSMWay referencedWay = idToWay.get(Long.parseLong(reader.getAttributeValue(null, "ref")));
-                                osmRelation.addWay(referencedWay);
+                                //osmRelation.addWay(referencedWay);
                             }
                             break;
                     }
@@ -123,7 +123,6 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
             }
             reader.next();
         }
-        idToRelation.put(id, osmRelation);
     }
 
     private void createDrawables(){

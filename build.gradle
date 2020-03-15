@@ -3,40 +3,54 @@
  *
  * This generated file contains a sample Java project to get you started.
  * For more details take a look at the Java Quickstart chapter in the Gradle
- * User Manual available at https://docs.gradle.org/6.1.1/userguide/tutorial_java_projects.html
+ * user guide available at https://docs.gradle.org/4.10.2/userguide/tutorial_java_projects.html
  */
 
 plugins {
     // Apply the java plugin to add support for Java
     id 'java'
 
-    // Apply the application plugin to add support for building a CLI application.
+    // Apply the application plugin to add support for building an application
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
+javafx {
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+// Define the main class for the application
+mainClassName = 'BFST20Project.Launcher'
+
+dependencies {
+    // This dependency is found on compile classpath of this component and consumers.
+    compile 'com.google.guava:guava:23.0'
+
+    compile 'com.sun.xml.bind:jaxb-xjc:2.1.7'
+    // Use JUnit test framework
+    testCompile 'junit:junit:4.12'
+
+
+}
+
+// In this section you declare where to find the dependencies of your project
 repositories {
-    // Use jcenter for resolving dependencies.
+    // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
 
-dependencies {
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:28.1-jre'
-
-    // Use JUnit Jupiter API for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
-
-    // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+jar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
 }
 
-application {
-    // Define the main class for the application.
-    mainClassName = 'BFST20Project.Controller'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
-test {
-    // Use junit platform for unit tests
-    useJUnitPlatform()
+application{
+    applicationDefaultJvmArgs = ['-Xmx4g']
 }
+
