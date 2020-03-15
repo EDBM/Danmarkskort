@@ -68,7 +68,7 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
                 break;
             reader.next();
         }
-        var osmNode = new OSMNode(id, lat, lon);
+        OSMNode osmNode = new OSMNode(id, lat, lon);
         idToNode.put(id, osmNode);
     }
 
@@ -84,8 +84,8 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
                             osmWay.addNode(idToNode.get(Long.parseLong(reader.getAttributeValue(null, "ref"))));
                             break;
                         case "tag":
-                            var key = reader.getAttributeValue(null, "k");
-                            var value = reader.getAttributeValue(null, "v");
+                            String key = reader.getAttributeValue(null, "k");
+                            String value = reader.getAttributeValue(null, "v");
                             break;
                     }
                     break;

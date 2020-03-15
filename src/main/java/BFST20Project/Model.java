@@ -30,7 +30,7 @@ public class Model {
     }
 
     public void notifyObservers() {
-        for (var observer : observers) {
+        for (Runnable observer : observers) {
             observer.run();
         }
     }

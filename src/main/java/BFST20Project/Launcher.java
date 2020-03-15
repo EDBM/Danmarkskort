@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 public class Launcher extends Application {
     public void start(Stage primaryStage) throws FileNotFoundException, XMLStreamException {
         Model model = new Model();
-        View view = new View(model,primaryStage);
+        View view = new View(model, primaryStage);
         new Controller(model, view);
     }
 
