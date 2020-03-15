@@ -3,14 +3,13 @@ package BFST20Project;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Model {
     public float minLat,minLon, maxLat, maxLon;
     List<Runnable> observers = new ArrayList<>();
     File file;
-    private List<Drawable> drawables;
+    Map<WayType,List<Drawable>> ways = new EnumMap<>(WayType.class);
 
     public Model() throws FileNotFoundException, XMLStreamException {
         file = new File(getClass().getClassLoader().getResource("anholt.osm").getFile());
@@ -18,7 +17,6 @@ public class Model {
         System.out.println(file);
 
         OSMParser osmParser = new OSMParser(file);
-        drawables = osmParser.getDrawables();
         minLat = osmParser.getMinLat();
         minLon = osmParser.getMinLon();
         maxLat = osmParser.getMaxLat();
@@ -35,7 +33,7 @@ public class Model {
         }
     }
 
-    public Iterable<Drawable> getDrawables() {
-        return drawables;
+    public Iterable<Drawable> getWaysOfType(WayType type) {
+        return ways.get(type);
     }
 }
