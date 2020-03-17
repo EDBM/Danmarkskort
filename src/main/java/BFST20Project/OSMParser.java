@@ -102,6 +102,7 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
 
     private void parseRelation() throws XMLStreamException {
         long id = Long.parseLong(reader.getAttributeValue(null, "id"));
+        ArrayList<OSMWay> OSMWays = new ArrayList<>();
         //OSMRelation osmRelation = new OSMRelation(id);
 
         readLoop: while(reader.hasNext()){
@@ -111,9 +112,16 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
                         case "member":
                             if(reader.getAttributeValue(null, "type").equals("way")){
                                 OSMWay referencedWay = idToWay.get(Long.parseLong(reader.getAttributeValue(null, "ref")));
+                                OSMWays.add(referencedWay);
                                 //osmRelation.addWay(referencedWay);
                             }
                             break;
+                        case "tag":
+                            if(reader.getAttributeValue(null, "v").equals("multipolygon")){
+                                MultiPolygon multiPolygon = new MultiPolygon(id);
+                                multiPolygon.addAllWays(OSMWays);
+                                idToRelation.put(id, multiPolygon);
+                            }
                     }
                     break;
                 case XMLStreamConstants.END_ELEMENT:

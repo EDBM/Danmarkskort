@@ -12,6 +12,7 @@ plugins {
 
     // Apply the application plugin to add support for building an application
     id 'application'
+
     id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
@@ -20,15 +21,19 @@ javafx {
 }
 
 // Define the main class for the application
-mainClassName = 'BFST20Project.Launcher'
+mainClassName = 'BFST20Project.Main'
 
 dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     compile 'com.google.guava:guava:23.0'
 
     compile 'com.sun.xml.bind:jaxb-xjc:2.1.7'
-    // Use JUnit test framework
-    testCompile 'junit:junit:4.12'
+
+    // Use JUnit Jupiter API for testing.
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+
+    // Use JUnit Jupiter Engine for testing.
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
 
 
 }
@@ -54,3 +59,16 @@ application{
     applicationDefaultJvmArgs = ['-Xmx4g']
 }
 
+test {
+    // Use junit platform for unit tests
+    useJUnitPlatform()
+}
+
+sourceSets {
+    src {
+        java {
+            srcDirs = ['java']
+        }
+
+    }
+}

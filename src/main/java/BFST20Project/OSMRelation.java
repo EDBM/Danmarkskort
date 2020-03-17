@@ -14,4 +14,6 @@ public class OSMRelation {
     public void addWay(OSMWay way){
         ways.add(way);
     }
+
+    public void addAllWays(ArrayList<OSMWay> osmWays) { ways.addAll(osmWays); }
 }

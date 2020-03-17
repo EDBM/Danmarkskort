@@ -7,10 +7,11 @@ import java.util.ArrayList;
 
 public class PolylinesRelation extends ArrayList<Polylines> implements Drawable, Serializable {
 
-    public PolylinesRelation(OSMWaysRelations rel) {
+    /*public PolylinesRelation(OSMWaysRelations rel) {
         for (OSMWay way : rel)
             add(new Polylines(way));
-    }
+    }*/
+
     @Override
     public void stroke(GraphicsContext gc) {
         gc.beginPath();

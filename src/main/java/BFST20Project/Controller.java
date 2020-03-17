@@ -5,7 +5,7 @@ public class Controller {
     double xCoords, yCoords;
     private View view;
     Polylines polylines;
-    private MapCanvas canvas;
+    //private MapCanvas canvas;
 
     public Controller(Model model, View view) {
         this.model = model;

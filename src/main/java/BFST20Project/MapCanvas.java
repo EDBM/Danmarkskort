@@ -9,6 +9,8 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.NonInvertibleTransformException;
 import java.util.ArrayList;
 
+/*
+
 public class MapCanvas extends Canvas {
     private GraphicsContext gc = getGraphicsContext2D();
     Affine transform = new Affine();
@@ -96,3 +98,5 @@ public class MapCanvas extends Canvas {
         gc.setLineCap(StrokeLineCap.ROUND);
     }
 }
+
+ */
