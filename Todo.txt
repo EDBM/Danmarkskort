@@ -1,6 +1,9 @@
 Ting der skal laves
 
 Andreas: Trie
+Charlotte + Johannes: OSMParser og Farvelægning
+Lucas: Unittests og multipolygoner
+Ester: 
 
 AdressParser
     - definere hvad den skal returnere
