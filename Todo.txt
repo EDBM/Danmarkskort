@@ -1,0 +1,12 @@
+Ting der skal laves
+
+AdressParser
+    - definere hvad den skal returnere
+
+Unittests
+
+OSMParser
+
+Farvelægning
+
+PathFinding (måske først senere?)
