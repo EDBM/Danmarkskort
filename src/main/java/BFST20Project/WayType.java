@@ -2,7 +2,7 @@ package BFST20Project;
 
 import java.util.Map;
 
-public enum WayType {
+public enum WayType{
   UNKNOWN,
   AMENITY,
   ASPHALT,

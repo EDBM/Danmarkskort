@@ -9,8 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 
-public class OSMParser extends Parser implements Iterable<Drawable>{
-    private List<Drawable> drawables = new ArrayList<>();
+public class OSMParser extends Parser{
+    private EnumMap<WayType, List<Drawable>> drawables = new EnumMap<>(WayType.class);
     Map<Long, OSMNode> idToNode = new TreeMap<>();
     Map<Long, OSMWay> idToWay = new HashMap<>();
     Map<Long, OSMRelation> idToRelation = new HashMap<>();
@@ -135,16 +135,14 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
     private void createDrawables(){
         for(OSMWay way : idToWay.values()){
             Polylines line = new Polylines(way);
-            drawables.add(line);
+            if(!drawables.containsKey(way.getType()))
+                drawables.put(way.getType(), new ArrayList<>());
+            drawables.get(way.getType()).add(line);
         }
     }
 
-    public List<Drawable> getDrawables() {
+    public EnumMap<WayType, List<Drawable>> getDrawables() {
         return drawables;
-    }
-
-    public Iterator<Drawable> iterator() {
-        return drawables.iterator();
     }
 
     public float getMinLat() {

@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 import java.nio.file.Watchable;
+import java.util.EnumMap;
+import java.util.List;
 
 public class View {
     Model model;
@@ -53,14 +55,19 @@ public class View {
         double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
         gc.setLineWidth(pixelWidth);
 
-        for (Drawable drawable : model.getDrawables()){
-            WayType type = drawable.getWayType();
+        EnumMap<WayType, List<Drawable>> drawables = model.getDrawables();
+        for (WayType type : drawables.keySet()){
             gc.setStroke(colorScheme.getStroke(type));
-            drawable.stroke(gc);
-            if(colorScheme.shouldFill(type)){
+            boolean shouldFill = colorScheme.shouldFill(type);
+            if(shouldFill){
                 gc.setFill(colorScheme.getFill(type));
-                drawable.fill(gc);
             }
+            for(Drawable drawable : drawables.get(type)){
+                drawable.stroke(gc);
+                if(shouldFill)
+                    drawable.fill(gc);
+            }
+
         }
     }
 
