@@ -10,3 +10,7 @@ OSMParser
 Farvelægning
 
 PathFinding (måske først senere?)
+
+UI
+    - pan
+    - knapper (skift farver, load nyt kort, osv.)
