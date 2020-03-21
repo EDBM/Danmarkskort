@@ -1,9 +1,11 @@
 package BFST20Project;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class OSMRelation {
+public class OSMRelation implements Drawable {
     long id;
     List<OSMWay> ways = new ArrayList<>();
 
@@ -16,4 +18,14 @@ public class OSMRelation {
     }
 
     public void addAllWays(ArrayList<OSMWay> osmWays) { ways.addAll(osmWays); }
+
+    @Override
+    public void stroke(GraphicsContext gc) {
+
+    }
+
+    @Override
+    public void fill(GraphicsContext gc) {
+
+    }
 }

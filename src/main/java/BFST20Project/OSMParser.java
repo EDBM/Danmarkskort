@@ -1,5 +1,6 @@
 package BFST20Project;
 
+import javax.management.relation.Relation;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -49,6 +50,25 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
                 }
             }
         }
+        calculateBounds();
+    }
+
+    //Obviously slow but makes debugging way easier as the view actually zooms correctly for OSM files without defined bounds
+    private void calculateBounds() {
+        float minLat = Float.MAX_VALUE, minLon = Float.MAX_VALUE;
+        float maxLat = Float.MIN_VALUE, maxLon = Float.MIN_VALUE;
+        for (OSMNode node: idToNode.values()) {
+            if(node.getLat() > maxLat) maxLat = node.getLat();
+            if(node.getLon() > maxLon) maxLon = node.getLon();
+
+            if(node.getLat() < minLat) minLat = node.getLat();
+            if(node.getLon() < minLon) minLon = node.getLon();
+        }
+
+        this.minLat = -minLat;
+        this.minLon = 0.56f * minLon;
+        this.maxLat = -maxLat;
+        this.maxLon = 0.56f * maxLon;
     }
 
     private void parseBounds(){
@@ -120,14 +140,18 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
                             if(reader.getAttributeValue(null, "v").equals("multipolygon")){
                                 MultiPolygon multiPolygon = new MultiPolygon(id);
                                 multiPolygon.addAllWays(OSMWays);
+                                multiPolygon.RingAssignment();
                                 idToRelation.put(id, multiPolygon);
                             }
+                            break;
                     }
                     break;
                 case XMLStreamConstants.END_ELEMENT:
-                    if(reader.getLocalName().equals("relation"))
+                    if(reader.getLocalName().equals("relation")) {
                         break readLoop;
-                    break;
+                    } else {
+                        break;
+                    }
             }
             reader.next();
         }
@@ -137,6 +161,9 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
         for(OSMWay way : idToWay.values()){
             Polylines line = new Polylines(way);
             drawables.add(line);
+        }
+        for(OSMRelation relation : idToRelation.values()){
+            drawables.add(relation);
         }
     }
 

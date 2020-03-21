@@ -23,18 +23,21 @@ public class OSMWay{
         nodes.add(node);
     }
 
-    public OSMNode get(int index){return nodes.get(index);}
+    public OSMNode get(int index){ return nodes.get(index); }
 
-    public int size(){return nodes.size();}
+    public int size(){ return nodes.size(); }
+
+    public List<OSMNode> getAll(){ return nodes; }
+
+    public long getId(){ return id; }
 
 
-
-
-    /* public void printWay(){
+    public void printWay(){
         System.out.println(" id = " + id + " has " + nodes.size() + " nodes:");
         for(OSMNode node : nodes){
-            System.out.print("    " + node.toString());
+            System.out.print("    " + node.getId());
         }
-    }*/
+        System.out.println(" ");
+    }
 
 }
