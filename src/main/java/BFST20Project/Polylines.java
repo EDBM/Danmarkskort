@@ -7,9 +7,11 @@ import java.io.Serializable;
 
 public class Polylines implements Drawable, Serializable {
     private float[][] coordinates;
+    private WayType wayType;
 
     public Polylines(OSMWay way){
         coordinates = new float[way.size()][2];
+        wayType = way.getType();
         for(int i = 0; i < way.size(); i++){
             float[] coordinate = new float[2];
             coordinate[0] = 0.56f * way.get(i).getLon();
@@ -35,5 +37,9 @@ public class Polylines implements Drawable, Serializable {
         gc.beginPath();
         trace(gc);
         gc.fill();
+    }
+
+    public WayType getWayType() {
+        return wayType;
     }
 }

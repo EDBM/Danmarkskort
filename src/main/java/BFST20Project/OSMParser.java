@@ -76,16 +76,20 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
         long id = Long.parseLong(reader.getAttributeValue(null, "id"));
         OSMWay osmWay = new OSMWay(id);
 
+        Map<String, String> tags = new HashMap<>();
+
         readLoop: while(reader.hasNext()) {
             switch (reader.getEventType()){
                 case XMLStreamConstants.START_ELEMENT:
                     switch (reader.getLocalName()) {
                         case "nd":
-                            osmWay.addNode(idToNode.get(Long.parseLong(reader.getAttributeValue(null, "ref"))));
+                            long nodeId = Long.parseLong(reader.getAttributeValue(null, "ref"));
+                            osmWay.addNode(idToNode.get(nodeId));
                             break;
                         case "tag":
                             var key = reader.getAttributeValue(null, "k");
                             var value = reader.getAttributeValue(null, "v");
+                            tags.put(key, value);
                             break;
                     }
                     break;
@@ -96,6 +100,8 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
             }
             reader.next();
         }
+
+        osmWay.setType(WayType.typeFromTags(tags));
 
         idToWay.put(id, osmWay);
     }

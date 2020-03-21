@@ -1,5 +1,7 @@
 package BFST20Project;
 
+import java.util.Map;
+
 public enum WayType {
   UNKNOWN,
   AMENITY,
@@ -31,4 +33,20 @@ public enum WayType {
   SURFACE,
   WATER,
   WATERWAY
-  ;}
+  ;
+
+    public static WayType typeFromTags(Map<String, String> tags) {
+      if(tags.containsKey("highway"))
+        return HIGHWAY;
+      else if(tags.containsKey("building"))
+        return BUILDING;
+      else if(tags.containsKey("natural")){
+        if(tags.get("natural").equals("water"))
+          return WATER;
+        if(tags.get("natural").equals("forest") || tags.get("natural").equals("scrub"))
+          return FOREST;
+      }
+      return UNKNOWN;
+    }
+
+}

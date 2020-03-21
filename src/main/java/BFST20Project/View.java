@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
+import java.nio.file.Watchable;
 
 public class View {
     Model model;
@@ -20,6 +21,7 @@ public class View {
     BorderPane pane = new BorderPane(canvas);
     Scene scene = new Scene(pane);
     Affine trans = new Affine();
+    ColorScheme colorScheme = new DefaultColorScheme();
 
     public View(Model model, Stage primaryStage){
         this.model=model;
@@ -52,7 +54,13 @@ public class View {
         gc.setLineWidth(pixelWidth);
 
         for (Drawable drawable : model.getDrawables()){
+            WayType type = drawable.getWayType();
+            gc.setStroke(colorScheme.getStroke(type));
             drawable.stroke(gc);
+            if(colorScheme.shouldFill(type)){
+                gc.setFill(colorScheme.getFill(type));
+                drawable.fill(gc);
+            }
         }
     }
 
