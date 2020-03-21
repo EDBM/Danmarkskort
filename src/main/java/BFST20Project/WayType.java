@@ -4,22 +4,23 @@ import java.util.Map;
 
 public enum WayType{
   UNKNOWN,
+  WATER,
+  FOREST,
+  BUILDING,
+  HIGHWAY,
   AMENITY,
   ASPHALT,
   BEACH,
   BICYCLE,
   BRIDGE,
-  BUILDING,
   BUSWAY,
   COASTLINE,
   CROSSING,
   CYCLEWAY,
   DIRT,
   DIRTROAD,
-  FOREST,
   GRASS,
   HARBOUR,
-  HIGHWAY,
   LANDUSE,
   LEISURE,
   MINIWAY,
@@ -31,7 +32,6 @@ public enum WayType{
   SIDEWALK,
   SUBWAY,
   SURFACE,
-  WATER,
   WATERWAY
   ;
 
