@@ -10,8 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 
-public class OSMParser extends Parser implements Iterable<Drawable>{
-    private List<Drawable> drawables = new ArrayList<>();
+public class OSMParser extends Parser{
+    private EnumMap<WayType, List<Drawable>> drawables = new EnumMap<>(WayType.class);
     Map<Long, OSMNode> idToNode = new TreeMap<>();
     Map<Long, OSMWay> idToWay = new HashMap<>();
     Map<Long, OSMRelation> idToRelation = new HashMap<>();
@@ -96,16 +96,20 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
         long id = Long.parseLong(reader.getAttributeValue(null, "id"));
         OSMWay osmWay = new OSMWay(id);
 
+        Map<String, String> tags = new HashMap<>();
+
         readLoop: while(reader.hasNext()) {
             switch (reader.getEventType()){
                 case XMLStreamConstants.START_ELEMENT:
                     switch (reader.getLocalName()) {
                         case "nd":
-                            osmWay.addNode(idToNode.get(Long.parseLong(reader.getAttributeValue(null, "ref"))));
+                            long nodeId = Long.parseLong(reader.getAttributeValue(null, "ref"));
+                            osmWay.addNode(idToNode.get(nodeId));
                             break;
                         case "tag":
                             String key = reader.getAttributeValue(null, "k");
                             String value = reader.getAttributeValue(null, "v");
+                            tags.put(key, value);
                             break;
                     }
                     break;
@@ -116,6 +120,8 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
             }
             reader.next();
         }
+
+        osmWay.setType(WayType.typeFromTags(tags));
 
         idToWay.put(id, osmWay);
     }
@@ -160,19 +166,17 @@ public class OSMParser extends Parser implements Iterable<Drawable>{
     private void createDrawables(){
         for(OSMWay way : idToWay.values()){
             Polylines line = new Polylines(way);
-            drawables.add(line);
+            if(!drawables.containsKey(way.getType()))
+                drawables.put(way.getType(), new ArrayList<>());
+            drawables.get(way.getType()).add(line);
         }
         for(OSMRelation relation : idToRelation.values()){
             drawables.add(relation);
         }
     }
 
-    public List<Drawable> getDrawables() {
+    public EnumMap<WayType, List<Drawable>> getDrawables() {
         return drawables;
-    }
-
-    public Iterator<Drawable> iterator() {
-        return drawables.iterator();
     }
 
     public float getMinLat() {

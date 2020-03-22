@@ -1,102 +1,68 @@
 package BFST20Project;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ListView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.FillRule;
 import javafx.scene.transform.Affine;
-import javafx.scene.transform.NonInvertibleTransformException;
-import java.util.ArrayList;
 
-/*
+import java.util.EnumMap;
+import java.util.List;
 
 public class MapCanvas extends Canvas {
-    private GraphicsContext gc = getGraphicsContext2D();
-    Affine transform = new Affine();
-    private Model model;
+    Model model;
+    GraphicsContext gc = getGraphicsContext2D();
+    ColorScheme colorScheme = new DefaultColorScheme();
+    Affine trans = new Affine();
 
-    private ArrayList<Drawable> buildingList = new ArrayList<>();
-    private ArrayList<Drawable> naturalList = new ArrayList<>();
-    private ArrayList<Drawable> waterList = new ArrayList<>();
-    private ArrayList<Drawable> highwayList = new ArrayList<>();
-    private ArrayList<Drawable> coastlineList = new ArrayList<>();
-    private ArrayList<Drawable> beachList = new ArrayList<>();
-    private ArrayList<Drawable> waterwayList = new ArrayList<>();
-    private ArrayList<Drawable> amenityList = new ArrayList<>();
-    private ArrayList<Drawable> motorwayList = new ArrayList<>();
-    private ArrayList<Drawable> miniwayList = new ArrayList<>();
-    private ArrayList<Drawable> dirtroadList = new ArrayList<>();
-    private ArrayList<Drawable> buswayList = new ArrayList<>();
-    private ArrayList<Drawable> parkingList = new ArrayList<>();
-    private ArrayList<Drawable> serviceList = new ArrayList<>();
-    private ArrayList<Drawable> harbourList = new ArrayList<>();
-    private ArrayList<Drawable> forestList = new ArrayList<>();
-    private ArrayList<Drawable> sidewalkList = new ArrayList<>();
-    private ArrayList<Drawable> leisureList = new ArrayList<>();
-    private ArrayList<Drawable> subwayList = new ArrayList<>();
-    private ArrayList<Drawable> bridgeList = new ArrayList<>();
+    public MapCanvas(int width, int height) {
+        super(width, height);
+    }
 
-
-    public void init(Model model) {
+    public void init(Model model){
         this.model = model;
-
         model.addObserver(this::repaint);
+        resetView();
+    }
 
+    public void resetView() {
+        pan(-model.minLon, -model.minLat);
+        zoom(getWidth() / (model.maxLat - model.minLat), 0, 0);
         repaint();
-
     }
 
-    public void initList() {
-        for (Drawable way : model.getWaysOfType(WayType.HIGHWAY)) highwayList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.MOTORWAY)) motorwayList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.BUILDING)) buildingList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.NATURAL)) naturalList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.COASTLINE)) coastlineList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.BEACH)) beachList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.WATERWAY)) waterwayList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.AMENITY)) amenityList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.MINIWAY)) miniwayList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.DIRTROAD)) dirtroadList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.BUSWAY)) buswayList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.PARKING)) parkingList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.SERVICE)) serviceList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.HARBOUR)) harbourList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.FOREST)) forestList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.SIDEWALK)) sidewalkList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.LEISURE)) leisureList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.BRIDGE)) bridgeList.add(way);
-        for (Drawable way : model.getWaysOfType(WayType.SUBWAY)) subwayList.add(way);
-
-    }
-
-    public void repaint() {
-        gc.save();
+    public void repaint(){
         gc.setTransform(new Affine());
+        gc.setFill(Color.LIGHTBLUE);
+        gc.fillRect(0,0,getWidth(),getHeight());
+        gc.setTransform(trans);
+        gc.setFill(Color.LIGHTGREEN);
+        gc.setStroke(Color.BLACK);
 
+        double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
+        gc.setLineWidth(pixelWidth);
 
-        if (model.getWaysOfType(WayType.COASTLINE).iterator().hasNext()) {
-            gc.setFill(Color.web("#AADAFF"));
-            gc.setStroke(Color.web("#AADAFF"));
+        EnumMap<WayType, List<Drawable>> drawables = model.getDrawables();
+        for (WayType type : drawables.keySet()){
+            gc.setStroke(colorScheme.getStroke(type));
+            boolean shouldFill = colorScheme.shouldFill(type);
+            if(shouldFill){
+                gc.setFill(colorScheme.getFill(type));
+            }
+            for(Drawable drawable : drawables.get(type)){
+                drawable.stroke(gc);
+                if(shouldFill)
+                    drawable.fill(gc);
+            }
 
         }
+    }
 
-        gc.fillRect(0, 0, getWidth(), getHeight());
-        gc.setTransform(transform);
-        gc.setLineWidth(1 / Math.sqrt(Math.abs(transform.determinant())));
-        gc.setLineDashes(5);
-        gc.setLineDashOffset(2.0);
-
-
-        gc.setFillRule(FillRule.EVEN_ODD);
-        for (Drawable way : model.getWaysOfType(WayType.COASTLINE)) {
-            way.fill(gc);
-            way.stroke(gc);
-        }
-
-        gc.setLineWidth(1 / Math.sqrt(Math.abs(transform.determinant())));
-        gc.setLineCap(StrokeLineCap.ROUND);
+    public void pan(double dx, double dy) {
+        trans.prependTranslation(dx, dy);
+        repaint();
+    }
+    public void zoom(double factor, double x, double y) {
+        trans.prependScale(factor, factor, x, y);
+        repaint();
     }
 }
-
- */

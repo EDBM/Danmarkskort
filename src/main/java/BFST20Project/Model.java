@@ -4,13 +4,14 @@ import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 
 public class Model {
     public float minLat,minLon, maxLat, maxLon;
     List<Runnable> observers = new ArrayList<>();
     File file;
-    private List<Drawable> drawables;
+    private EnumMap<WayType, List<Drawable>> drawables;
 
     public Model() throws FileNotFoundException, XMLStreamException {
         file = new File(getClass().getClassLoader().getResource("multipolygon.osm").getFile());
@@ -35,7 +36,7 @@ public class Model {
         }
     }
 
-    public Iterable<Drawable> getDrawables() {
+    public EnumMap<WayType, List<Drawable>> getDrawables() {
         return drawables;
     }
 }

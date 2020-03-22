@@ -6,4 +6,6 @@ public interface Drawable {
 
     void stroke(GraphicsContext gc);
     void fill(GraphicsContext gc);
+
+    WayType getWayType();
 }
