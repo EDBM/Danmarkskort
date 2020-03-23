@@ -106,11 +106,11 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
             if (!unassigned.isEmpty()) {
                 OSMWay osmWay = unassigned.remove(0);
                 assigned.add(osmWay);
-                numberOfNodes += osmWay.size();
                 if(osmWay == null){
                     System.out.println("Ring Assignment failed " + this.id);
                     return false;
                 }
+                numberOfNodes += osmWay.size();
 
 
                 //RA-3
