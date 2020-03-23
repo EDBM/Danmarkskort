@@ -50,7 +50,7 @@ public class OSMParser extends Parser{
                 }
             }
         }
-        calculateBounds();
+        //calculateBounds();
     }
 
     //Obviously slow but makes debugging way easier as the view actually zooms correctly for OSM files without defined bounds
@@ -131,6 +131,8 @@ public class OSMParser extends Parser{
         ArrayList<OSMWay> OSMWays = new ArrayList<>();
         //OSMRelation osmRelation = new OSMRelation(id);
 
+        Map<String, String> tags = new HashMap<>();
+
         readLoop: while(reader.hasNext()){
             switch (reader.getEventType()){
                 case XMLStreamConstants.START_ELEMENT:
@@ -143,12 +145,15 @@ public class OSMParser extends Parser{
                             }
                             break;
                         case "tag":
-                            if(reader.getAttributeValue(null, "v").equals("multipolygon")){
+                            String key = reader.getAttributeValue(null, "k");
+                            String value = reader.getAttributeValue(null, "v");
+                            if(value.equals("multipolygon")){
                                 MultiPolygon multiPolygon = new MultiPolygon(id);
                                 multiPolygon.addAllWays(OSMWays);
                                 multiPolygon.RingAssignment();
                                 idToRelation.put(id, multiPolygon);
                             }
+                            tags.put(key, value);
                             break;
                     }
                     break;
@@ -170,9 +175,13 @@ public class OSMParser extends Parser{
                 drawables.put(way.getType(), new ArrayList<>());
             drawables.get(way.getType()).add(line);
         }
+
         for(OSMRelation relation : idToRelation.values()){
-            drawables.add(relation);
+            if(!drawables.containsKey(relation.getWayType()))
+                drawables.put(relation.getWayType(), new ArrayList<>());
+            drawables.get(relation.getWayType()).add(relation);
         }
+
     }
 
     public EnumMap<WayType, List<Drawable>> getDrawables() {

@@ -28,4 +28,9 @@ public class OSMRelation implements Drawable {
     public void fill(GraphicsContext gc) {
 
     }
+
+    @Override
+    public WayType getWayType() {
+        return WayType.BUILDING;
+    }
 }

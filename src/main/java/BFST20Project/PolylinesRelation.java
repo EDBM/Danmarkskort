@@ -30,4 +30,9 @@ public class PolylinesRelation extends ArrayList<Polylines> implements Drawable,
         gc.fill();
     }
 
+    @Override
+    public WayType getWayType() {
+        return null;
+    }
+
 }
