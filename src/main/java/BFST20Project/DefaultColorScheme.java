@@ -13,19 +13,19 @@ public class DefaultColorScheme extends ColorScheme {
 
     protected Map<WayType, Paint> createStroke() {
         EnumMap<WayType, Paint> resultMap = new EnumMap<>(WayType.class);
-        resultMap.put(WayType.HIGHWAY, Color.BLACK);
-        resultMap.put(WayType.BUILDING, Color.BEIGE);
-        resultMap.put(WayType.WATER, Color.BLUE);
-        resultMap.put(WayType.FOREST, Color.GREEN);
+        resultMap.put(WayType.HIGHWAY, Color.web("#FFFFFF"));
+        resultMap.put(WayType.BUILDING, Color.web("#EDEDED"));
+        resultMap.put(WayType.WATER, Color.web("#AADAFE"));
+        resultMap.put(WayType.FOREST, Color.web("#C9EFBB"));
 
         return resultMap;
     }
 
     protected Map<WayType, Paint> createFill() {
         EnumMap<WayType, Paint> resultMap = new EnumMap<>(WayType.class);
-        resultMap.put(WayType.BUILDING, Color.BEIGE);
-        resultMap.put(WayType.WATER, Color.BLUE);
-        resultMap.put(WayType.FOREST, Color.GREEN);
+        resultMap.put(WayType.BUILDING, Color.web("#EDEDED"));
+        resultMap.put(WayType.WATER, Color.web("#AADAFE"));
+        resultMap.put(WayType.FOREST, Color.web("#C9EFBB"));
 
         return resultMap;
     }
