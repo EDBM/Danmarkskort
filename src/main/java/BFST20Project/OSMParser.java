@@ -121,7 +121,7 @@ public class OSMParser extends Parser{
             reader.next();
         }
 
-        osmWay.setType(WayType.typeFromTags(tags));
+        osmWay.setType(WayTypeSetter.typeFromTags(tags));
 
         idToWay.put(id, osmWay);
     }
