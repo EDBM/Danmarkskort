@@ -1,16 +1,18 @@
 package BFST20Project;
 
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
+import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.Stage;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.FileNotFoundException;
+import java.awt.*;
 
 public class View {
     Model model;
@@ -33,6 +35,15 @@ public class View {
         canvas.widthProperty().addListener((a,b,c) -> repaint());
         canvas.heightProperty().addListener((a,b,c) -> repaint());
     }
+
+    /*public void searchBar(){
+        ChoiceBox<String> searchBox = new ChoiceBox<>();
+        searchBox.getItems().addAll();
+
+        TextField searchbar = new TextField();
+        searchbar.setText("Searchbar");
+        searchbar.setOnKeyReleased(keyEven)
+    }*/
 
     public void resetView() {
         pan(-model.minLon, -model.minLat);
@@ -63,5 +74,13 @@ public class View {
     public void zoom(double factor, double x, double y) {
         trans.prependScale(factor, factor, x, y);
         repaint();
+    }
+    public Point2D pointCoordinates(double x, double y){
+        try{
+            return trans.inverseTransform(x,y);
+        } catch (NonInvertibleTransformException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
