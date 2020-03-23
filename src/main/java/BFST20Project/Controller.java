@@ -26,10 +26,11 @@ public class Controller {
 
         view.canvas.setOnScroll(e -> {
             double factor = Math.pow(1.001, e.getDeltaY());
-            view.zoom(factor, e.getX(), e.getY());
+            view.canvas.zoom(factor, e.getX(), e.getY());
         });
 
     }
+
 }
 
 
