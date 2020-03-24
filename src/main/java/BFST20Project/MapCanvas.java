@@ -63,10 +63,6 @@ public class MapCanvas extends Canvas {
     }
 
     public ZoomLevel curZoomLevel(){
-        System.out.println(ZoomLevel.LEVEL_2.compareTo(ZoomLevel.LEVEL_1));
-        System.out.println(ZoomLevel.LEVEL_2.compareTo(ZoomLevel.LEVEL_2));
-        System.out.println(ZoomLevel.LEVEL_2.compareTo(ZoomLevel.LEVEL_3));
-        System.out.println(trans.getMxx());
         double scale = trans.getMxx(); // scaling of the x-axis. Should be the same as the y-axis
         if(scale > 20000)
             return ZoomLevel.LEVEL_3;
