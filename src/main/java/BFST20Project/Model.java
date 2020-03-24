@@ -3,9 +3,8 @@ package BFST20Project;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
+import java.util.*;
+
 
 public class Model {
     public float minLat,minLon, maxLat, maxLon;
@@ -39,4 +38,5 @@ public class Model {
     public EnumMap<WayType, List<Drawable>> getDrawables() {
         return drawables;
     }
+
 }
