@@ -47,4 +47,15 @@ public abstract class ColorScheme {
                 return false;
         }
     }
+    public double getWidth(WayType wayType){
+        switch (wayType){
+            case MOTORWAY:
+            case WATERWAY:
+                return 2;
+            case SECONDARY:
+                return 1.5;
+            default:
+                return 1;
+        }
+    }
 }

@@ -61,7 +61,6 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
             gc.moveTo(0.56f * list.get(0).get(0).getLon(), -list.get(0).get(0).getLat());
             for (OSMWay way : list) {
                 for(int i = 0; i < way.size(); i++){
-                    //System.out.print(way.get(i).getId() + " -> ");
                     coordinates[0][count] = 0.56f * way.get(i).getLon();
                     coordinates[1][count] = -way.get(i).getLat();
 

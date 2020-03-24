@@ -4,174 +4,156 @@ import java.util.Map;
 
 public class WayTypeSetter {
     public static WayType typeFromTags(Map<String, String> tags) {
-        for(String k : tags.keySet()) {
-            switch (k) {
-                case "building":
-                    switch (tags.get(k)) {
-                        case "yes":
-                            return WayType.BUILDING;
-                    }
-                    break;
-
-                case "place":
-                    switch (tags.get(k)) {
-                        case "island":
-                            return WayType.ISLAND;
-                    }
+            switch (tags.getOrDefault("building", "")) {
+                case "yes":
+                    return WayType.BUILDING;
+            }
+            
+            switch (tags.getOrDefault("place", "")) {
+                case "island":
+                    return WayType.ISLAND;
+            }
 
 
-                case "highway":
-                    switch (tags.get(k)) {
-                        case "trunk":
-                        case "motorway":
-                        case "motorway_link":
-                        case "trunk_link":
-                        case "motorway_junction":
-                        case "primary":
-                        case "primary_link":
-                            return WayType.MOTORWAY;
+            switch (tags.getOrDefault("highway", "")) {
+                case "trunk":
+                case "motorway":
+                case "motorway_link":
+                case "trunk_link":
+                case "motorway_junction":
+                case "primary":
+                case "primary_link":
+                    return WayType.MOTORWAY;
 
-                        case "secondary":
-                        case "tertiary":
-                        case "unclassified":
-                        case "service":
-                        case "residential":
-                        case "secondary_link":
-                        case "tertiary_link":
-                        case "mini_roundabout":
-                        case "crossing":
-                        case "turning_circle":
-                        case "passing_place":
-                        case "rest_area":
-                        case "cycleway":
-                            return WayType.HIGHWAY;
-
-                        case "pedestrian":
-                        case "living_street":
-                        case "footway":
-                            return WayType.MINIWAY;
-
-                        case "track":
-                        case "path":
-                            return WayType.DIRTROAD;
-
-                        case "bus_guideway":
-                            return WayType.BUSWAY;
-                    }
-                    break;
-
-                case "natural":
-                    switch (tags.get(k)) {
-                        case "scrub":
-                            return WayType.SCRUB;
-                        case "water":
-                            return WayType.WATER;
-                        case "coastline":
-                            return WayType.COASTLINE;
-                        case "beach":
-                            return WayType.BEACH;
-                        case "heath":
-                            return WayType.HEATH;
-                        case "wetland":
-                            return WayType.WETLAND;
-                    }
-                    break;
+                case "secondary":
+                    return WayType.SECONDARY;
+                case "tertiary":
+                case "unclassified":
+                case "service":
+                case "residential":
+                case "secondary_link":
+                case "tertiary_link":
+                case "mini_roundabout":
+                case "crossing":
+                case "turning_circle":
+                case "passing_place":
+                case "rest_area":
                 case "cycleway":
                     return WayType.HIGHWAY;
 
+                case "pedestrian":
+                case "living_street":
+                case "footway":
+                    return WayType.MINIWAY;
 
-                case "parking":
-                    return WayType.PARKING;
+                case "track":
+                case "path":
+                    return WayType.DIRTROAD;
 
-
-
-                case "service":
-                    return WayType.SERVICE;
-
-                case "surface":
-                    switch (tags.get(k)) {
-                        case "asphalt":
-                            return WayType.ASPHALT;
-                        case "grass":
-                            return WayType.NATURAL;
-
-                        case "concrete":
-                            return WayType.ASPHALT;
-
-                        case "paved":
-                            return WayType.ASPHALT;
-
-                        case "sand":
-                            return WayType.BEACH;
-                    }
-                    break;
-
-                case "landuse":
-                    switch (tags.get(k)) {
-                        case "grass":
-                        case "farmland":
-                            return WayType.NATURAL;
-
-                        case "harbour":
-                            return WayType.HARBOUR;
-
-                        case "forest":
-                            return WayType.FOREST;
-
-                        case "meadow":
-                            return WayType.MEADOW;
-
-                        case "residential":
-                            return WayType.RESIDENTIAL;
-                    }
-                    break;
-
-
-                case "leisure":
-                    return WayType.LEISURE;
-
-                case "tourism":
-                    return WayType.TOURISM;
-
-                case "sidewalk":
-                    return WayType.SIDEWALK;
-
-
-                case "shop":
-                    return WayType.BUILDING;
-
-
-                case "bridge":
-                    return WayType.BRIDGE;
-
-                case "network":
-                    return WayType.SUBWAY;
-
-                case "water":
-                    switch (tags.get(k)) {
-                        case "lake":
-                            return WayType.WATER;
-                    }
-                    break;
-
-                case "waterway":
-                    return WayType.WATERWAY;
-
-
-                case "man_made":
-                    switch (tags.get(k)) {
-                        case "breakwater":
-                            return WayType.BREAKWATER;
-                        case "pier":
-                            return WayType.PIER;
-                    }
-                    break;
-
-                case "amenity":
-                    return WayType.AMENITY;
+                case "bus_guideway":
+                    return WayType.BUSWAY;
             }
 
-        }
+            switch (tags.getOrDefault("natural", "")) {
+                case "scrub":
+                    return WayType.SCRUB;
+                case "water":
+                    return WayType.WATER;
+                case "coastline":
+                    return WayType.COASTLINE;
+                case "beach":
+                    return WayType.BEACH;
+                case "heath":
+                    return WayType.HEATH;
+                case "wetland":
+                    return WayType.WETLAND;
+            }
+
+            if(tags.containsKey("cycleway"))
+                return WayType.HIGHWAY;
+
+
+            if(tags.containsKey("parking"))
+                return WayType.PARKING;
+
+
+
+            if(tags.containsKey("service"))
+                return WayType.SERVICE;
+
+            switch (tags.getOrDefault("surface", "")) {
+                case "asphalt":
+                    return WayType.ASPHALT;
+                case "grass":
+                    return WayType.NATURAL;
+
+                case "concrete":
+                    return WayType.ASPHALT;
+
+                case "paved":
+                    return WayType.ASPHALT;
+
+                case "sand":
+                    return WayType.BEACH;
+            }
+
+            switch (tags.getOrDefault("landuse", "")) {
+                case "grass":
+                case "farmland":
+                    return WayType.NATURAL;
+
+                case "harbour":
+                    return WayType.HARBOUR;
+
+                case "forest":
+                    return WayType.FOREST;
+
+                case "meadow":
+                    return WayType.MEADOW;
+
+                case "residential":
+                    return WayType.RESIDENTIAL;
+            }
+
+            if(tags.containsKey("leisure"))
+                return WayType.LEISURE;
+
+            if(tags.containsKey("tourism"))
+                return WayType.TOURISM;
+
+            if(tags.containsKey("sidewalk"))
+                return WayType.SIDEWALK;
+
+
+            if(tags.containsKey("shop"))
+                return WayType.BUILDING;
+
+
+            if(tags.containsKey("bridge"))
+                return WayType.BRIDGE;
+
+            if(tags.containsKey("network"))
+                return WayType.SUBWAY;
+
+            switch (tags.getOrDefault("water", "")) {
+                case "lake":
+                    return WayType.WATER;
+            }
+
+            if(tags.containsKey("waterway"))
+                return WayType.WATERWAY;
+
+
+            switch (tags.getOrDefault("man_made", "")) {
+                case "breakwater":
+                    return WayType.BREAKWATER;
+                case "pier":
+                    return WayType.PIER;
+            }
+
+            if(tags.containsKey("amenity"))
+                return WayType.AMENITY;
+
 
         return WayType.UNKNOWN;
     }

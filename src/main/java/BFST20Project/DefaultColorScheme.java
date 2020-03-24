@@ -14,19 +14,19 @@ public class DefaultColorScheme extends ColorScheme {
 
     protected Map<WayType, Paint> createStroke() {
         EnumMap<WayType, Paint> resultMap = new EnumMap<>(WayType.class);
-        resultMap.put(WayType.HIGHWAY, Color.web("#FFFFFF"));
+        resultMap.put(WayType.HIGHWAY, Color.web("#000000"));
         resultMap.put(WayType.BUILDING, Color.web("#EDEDED"));
         resultMap.put(WayType.WATER, Color.web("#AADAFE"));
         resultMap.put(WayType.FOREST, Color.web("#C9EFBB"));
-        resultMap.put(WayType.MINIWAY, Color.web("#FFFFFF"));
-        resultMap.put(WayType.DIRTROAD, Color.web("#FFFFFF"));
-        resultMap.put(WayType.BUSWAY, Color.web("#FFFFFF"));
-        resultMap.put(WayType.PARKING, Color.web("#FFFFFF"));
-        resultMap.put(WayType.SERVICE, Color.web("#FFFFFF"));
-        resultMap.put(WayType.SURFACE, Color.web("#FFFFFF"));
-        resultMap.put(WayType.ASPHALT, Color.web("#FFFFFF"));
+        resultMap.put(WayType.MINIWAY, Color.web("#000000"));
+        resultMap.put(WayType.DIRTROAD, Color.web("#000000"));
+        resultMap.put(WayType.BUSWAY, Color.web("#000000"));
+        resultMap.put(WayType.PARKING, Color.web("#000000"));
+        resultMap.put(WayType.SERVICE, Color.web("#000000"));
+        resultMap.put(WayType.SURFACE, Color.web("#000000"));
+        resultMap.put(WayType.ASPHALT, Color.web("#000000"));
         resultMap.put(WayType.BEACH, Color.web("#FFFFFF"));
-        resultMap.put(WayType.WATERWAY, Color.web("#EDEDED"));
+        resultMap.put(WayType.WATERWAY, Color.web("#AADAFE"));
         resultMap.put(WayType.AMENITY, Color.web("#EDEDED"));
         resultMap.put(WayType.BRIDGE, Color.web("#FFFFFF"));
         resultMap.put(WayType.ISLAND, Color.web("#FFFFFF"));
@@ -39,6 +39,8 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.BREAKWATER, Color.web("#AAAAAA"));
         resultMap.put(WayType.PIER, Color.web("#F3EFE9"));
         resultMap.put(WayType.TOURISM, Color.web("#DEF6C0"));
+        resultMap.put(WayType.MOTORWAY, Color.ORANGE);
+        resultMap.put(WayType.SECONDARY, Color.web("#EFCC00"));
 
 
         return resultMap;

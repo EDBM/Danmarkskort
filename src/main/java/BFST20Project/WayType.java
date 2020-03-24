@@ -41,6 +41,7 @@ public enum WayType{
   SUBWAY,
   SURFACE,
   HIGHWAY,
+  SECONDARY,
   DIRTROAD,
   BUILDING
   ;

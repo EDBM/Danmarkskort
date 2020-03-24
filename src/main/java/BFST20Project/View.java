@@ -28,9 +28,9 @@ public class View {
         stage.setScene(scene);
         stage.show();
         canvas.init(model);
-        /*canvas.widthProperty().bind(scene.widthProperty());
+        canvas.widthProperty().bind(scene.widthProperty());
         canvas.heightProperty().bind(scene.heightProperty());
-        canvas.widthProperty().addListener((a,b,c) -> repaint());
+        /*canvas.widthProperty().addListener((a,b,c) -> repaint());
         canvas.heightProperty().addListener((a,b,c) -> repaint());*/
     }
 

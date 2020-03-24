@@ -43,12 +43,4 @@ public class OSMWay{
     public long getId(){ return id; }
 
 
-    public void printWay(){
-        System.out.println(" id = " + id + " has " + nodes.size() + " nodes:");
-        for(OSMNode node : nodes){
-            System.out.print("    " + node.getId());
-        }
-        System.out.println(" ");
-    }
-
 }

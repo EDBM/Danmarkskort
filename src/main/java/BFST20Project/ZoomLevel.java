@@ -10,24 +10,26 @@ public enum ZoomLevel {
         switch (wayType){
             case BREAKWATER:
             case COASTLINE:
+            case FOREST:
             case HARBOUR:
             case ISLAND:
+            case MOTORWAY:
             case WATER:
+            case WATERWAY:
                 return LEVEL_1;
 
             case BEACH:
             case BRIDGE:
             case DIRT:
-            case FOREST:
             case GRASS:
             case HEATH:
             case MEADOW:
-            case MOTORWAY:
             case NATURAL:
             case PIER:
             case RAILWAY:
             case RESIDENTIAL:
             case SCRUB:
+            case SECONDARY:
             case WETLAND:
                 return LEVEL_2;
 
@@ -51,7 +53,6 @@ public enum ZoomLevel {
             case SURFACE:
             case TOURISM:
             case UNKNOWN:
-            case WATERWAY:
                 return LEVEL_3;
         }
         return LEVEL_3;
