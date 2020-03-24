@@ -1,15 +1,14 @@
 package BFST20Project;
 
+import com.sun.javafx.geom.Path2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.FillRule;
 
-import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.Random;
 
 
 //TODO Do ring grouping to determine which rings are nested inside other  (maybe not needed?)
@@ -19,6 +18,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
 
     private ArrayList<ArrayList<OSMWay>> rings = new ArrayList<>();
     private int numberOfNodes = 0;
+    private WayType type;
 
     public MultiPolygon(long id){
         super(id);
@@ -30,17 +30,21 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
 
         for (ArrayList<OSMWay> list : rings) {
             for (OSMWay way: list) {
+                double red = Math.random();
+                double green = Math.random();
+                double blue = Math.random();
 
 
-
-                new Polylines(way).stroke(gc);
+                Color color = new Color(red, green, blue, 1);
+                //gc.setStroke(color);
+                //new Polylines(way).stroke(gc);
             }
         }
     }
 
 
     public void fill(GraphicsContext gc){
-        System.out.println(this.getWayType());
+        //System.out.println(this.getWayType());
         fill(gc, rings);
     }
 
@@ -49,21 +53,33 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
         gc.setFillRule(FillRule.EVEN_ODD);
         double[][] coordinates = new double[2][numberOfNodes];
         int count = 0;
+        //final java.awt.geom.Path2D.Float path = new java.awt.geom.Path2D.Float(Path2D.WIND_EVEN_ODD);
+
+        //System.out.println(this.getWayType());
+        gc.beginPath();
         for (ArrayList<OSMWay> list : rings) {
+            gc.moveTo(0.56f * list.get(0).get(0).getLon(), -list.get(0).get(0).getLat());
             for (OSMWay way : list) {
                 for(int i = 0; i < way.size(); i++){
+                    //System.out.print(way.get(i).getId() + " -> ");
                     coordinates[0][count] = 0.56f * way.get(i).getLon();
                     coordinates[1][count] = -way.get(i).getLat();
+
+                    gc.lineTo(coordinates[0][count], coordinates[1][count]);
+
                     count++;
                 }
             }
         }
+        gc.closePath();
+        gc.stroke();
+        gc.fill();
 
-        gc.fillPolygon(coordinates[0], coordinates[1], coordinates[0].length);
+        //gc.fillPolygon(coordinates[0], coordinates[1], numberOfNodes);
     }
 
-    public double[][] getCoordinates(OSMWay way){
-        double[][] coordinates = coordinates = new double[2][way.size()];
+    public float[][] getCoordinates(OSMWay way){
+        float[][] coordinates = coordinates = new float[2][way.size()];
         for(int i = 0; i < way.size(); i++){
             coordinates[0][i] = 0.56f * way.get(i).getLon();
             coordinates[1][i] = -way.get(i).getLat();
@@ -72,8 +88,8 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     }
 
 
-    public void trace(GraphicsContext gc, double[][] coordinates){
-        double[] startCoord = coordinates[0];
+    public void trace(GraphicsContext gc, float[][] coordinates){
+        float[] startCoord = coordinates[0];
         gc.moveTo(startCoord[0], startCoord[1]);
         for (int i = 1; i<coordinates.length ; i++){
             gc.lineTo(coordinates[i][0], coordinates[i][1]);
@@ -153,6 +169,8 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
                                 unassigned.remove(way);
                                 continue RA3;
                             } else if(ringEndNode.getId() == way.last().getId()){
+
+                                way.removeNode(way.size()-1);
                                 //System.out.println("add reversed way to ring");
                                 unassigned.remove(way);
                                 Collections.reverse(way.getAll());
@@ -173,10 +191,17 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     public void ringGrouping(){
         Boolean[][] nested = new Boolean[rings.size()][rings.size()];
         int polygonCounter = 0;
+    }
 
 
+    @Override
+    public WayType getWayType() {
+        return type;
+    }
 
-
+    @Override
+    public void setWayType(WayType type) {
+        this.type = type;
     }
 
 
