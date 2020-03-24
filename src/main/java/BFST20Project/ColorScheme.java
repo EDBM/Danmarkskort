@@ -32,6 +32,15 @@ public abstract class ColorScheme {
             case BUILDING:
             case WATER:
             case FOREST:
+            case HEATH:
+            case BEACH:
+            case SCRUB:
+            case MEADOW:
+            case RESIDENTIAL:
+            case WETLAND:
+            case PIER:
+            case BREAKWATER:
+            case TOURISM:
                 return true;
             default:
                 return false;

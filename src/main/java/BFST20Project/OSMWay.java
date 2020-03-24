@@ -24,6 +24,8 @@ public class OSMWay{
         nodes.add(node);
     }
 
+    public void removeNode(int index) { nodes.remove(index); }
+
     public OSMNode get(int index){ return nodes.get(index); }
 
     public int size(){return nodes.size();}
@@ -32,7 +34,7 @@ public class OSMWay{
         this.type = type;
     }
 
-    public WayType getType() {
+    public WayType getWayType() {
         return type;
     }
 
@@ -48,7 +50,5 @@ public class OSMWay{
         }
         System.out.println(" ");
     }
-
-}
 
 }

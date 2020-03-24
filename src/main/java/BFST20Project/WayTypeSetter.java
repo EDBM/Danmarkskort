@@ -13,6 +13,13 @@ public class WayTypeSetter {
                     }
                     break;
 
+                case "place":
+                    switch (tags.get(k)) {
+                        case "island":
+                            return WayType.ISLAND;
+                    }
+
+
                 case "highway":
                     switch (tags.get(k)) {
                         case "trunk":
@@ -56,13 +63,17 @@ public class WayTypeSetter {
                 case "natural":
                     switch (tags.get(k)) {
                         case "scrub":
-                            return WayType.NATURAL;
+                            return WayType.SCRUB;
                         case "water":
                             return WayType.WATER;
                         case "coastline":
                             return WayType.COASTLINE;
                         case "beach":
                             return WayType.BEACH;
+                        case "heath":
+                            return WayType.HEATH;
+                        case "wetland":
+                            return WayType.WETLAND;
                     }
                     break;
                 case "cycleway":
@@ -98,16 +109,20 @@ public class WayTypeSetter {
                 case "landuse":
                     switch (tags.get(k)) {
                         case "grass":
+                        case "farmland":
                             return WayType.NATURAL;
 
                         case "harbour":
                             return WayType.HARBOUR;
 
-                        case "farmland":
-                            return WayType.NATURAL;
-
                         case "forest":
                             return WayType.FOREST;
+
+                        case "meadow":
+                            return WayType.MEADOW;
+
+                        case "residential":
+                            return WayType.RESIDENTIAL;
                     }
                     break;
 
@@ -115,6 +130,8 @@ public class WayTypeSetter {
                 case "leisure":
                     return WayType.LEISURE;
 
+                case "tourism":
+                    return WayType.TOURISM;
 
                 case "sidewalk":
                     return WayType.SIDEWALK;
@@ -140,6 +157,15 @@ public class WayTypeSetter {
                 case "waterway":
                     return WayType.WATERWAY;
 
+
+                case "man_made":
+                    switch (tags.get(k)) {
+                        case "breakwater":
+                            return WayType.BREAKWATER;
+                        case "pier":
+                            return WayType.PIER;
+                    }
+                    break;
 
                 case "amenity":
                     return WayType.AMENITY;

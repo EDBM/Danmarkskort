@@ -11,7 +11,7 @@ public class Polylines implements Drawable, Serializable {
 
     public Polylines(OSMWay way){
         coordinates = new float[way.size()][2];
-        wayType = way.getType();
+        setWayType(way.getWayType());
         for(int i = 0; i < way.size(); i++){
             float[] coordinate = new float[2];
             coordinate[0] = 0.56f * way.get(i).getLon();
@@ -25,6 +25,7 @@ public class Polylines implements Drawable, Serializable {
         trace(gc);
         gc.stroke();
     }
+
     public void trace(GraphicsContext gc){
         float[] startCoord = coordinates[0];
         gc.moveTo(startCoord[0], startCoord[1]);
@@ -41,5 +42,10 @@ public class Polylines implements Drawable, Serializable {
 
     public WayType getWayType() {
         return wayType;
+    }
+
+    @Override
+    public void setWayType(WayType type) {
+        this.wayType = wayType;
     }
 }

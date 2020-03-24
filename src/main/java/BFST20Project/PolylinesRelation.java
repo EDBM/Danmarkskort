@@ -3,6 +3,7 @@ package BFST20Project;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
+import java.nio.channels.NotYetBoundException;
 import java.util.ArrayList;
 
 public class PolylinesRelation extends ArrayList<Polylines> implements Drawable, Serializable {
@@ -34,5 +35,8 @@ public class PolylinesRelation extends ArrayList<Polylines> implements Drawable,
     public WayType getWayType() {
         return null;
     }
+
+    @Override
+    public void setWayType(WayType type) { throw new NotYetBoundException(); }
 
 }

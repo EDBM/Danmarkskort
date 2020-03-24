@@ -1,6 +1,5 @@
 package BFST20Project;
 
-import javax.management.relation.Relation;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -19,6 +18,7 @@ public class OSMParser extends Parser{
     private float minLat, minLon, maxLat, maxLon;
 
     public OSMParser(File file) throws FileNotFoundException, XMLStreamException {
+        System.out.println("load parser");
         readOSMFile(file);
         createDrawables();
 
@@ -154,9 +154,6 @@ public class OSMParser extends Parser{
                                 idToRelation.put(id, osmRelation);
                             }
                             tags.put(key, value);
-
-
-
                             break;
                     }
                     break;
@@ -171,22 +168,31 @@ public class OSMParser extends Parser{
             reader.next();
         }
 
-        System.out.println("type from tags: " + WayTypeSetter.typeFromTags(tags));
 
-        osmRelation.setType(WayTypeSetter.typeFromTags(tags));
+        //System.out.println("type from tags: " + WayTypeSetter.typeFromTags(tags) + " id: " + id);
+
+        osmRelation.setWayType(WayTypeSetter.typeFromTags(tags));
     }
 
     private void createDrawables(){
-        /*for(OSMWay way : idToWay.values()){
+
+
+        for(OSMWay way : idToWay.values()){
             Polylines line = new Polylines(way);
-            if(!drawables.containsKey(way.getType()))
-                drawables.put(way.getType(), new ArrayList<>());
-            drawables.get(way.getType()).add(line);
-        }*/
+            if(!drawables.containsKey(way.getWayType()))
+                drawables.put(way.getWayType(), new ArrayList<>());
+            if(way.getWayType() != WayType.BEACH) {
+                drawables.get(way.getWayType()).add(line);
+            }
+        }
 
         for(OSMRelation relation : idToRelation.values()){
-            if(!drawables.containsKey(relation.getWayType()))
+
+            //System.out.println("this relation has the waytype: " + relation.getWayType());
+            //System.out.println(relation.id);
+            if(!drawables.containsKey(relation.getWayType())) {
                 drawables.put(relation.getWayType(), new ArrayList<>());
+            }
             drawables.get(relation.getWayType()).add(relation);
         }
 
