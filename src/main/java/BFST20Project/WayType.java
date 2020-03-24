@@ -4,9 +4,9 @@ import java.util.Map;
 
 public enum WayType{
   UNKNOWN,
+  ISLAND,
   TOURISM,
   HEATH,
-  ISLAND,
   SCRUB,
   MEADOW,
   WATER,

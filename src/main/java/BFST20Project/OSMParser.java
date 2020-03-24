@@ -21,10 +21,6 @@ public class OSMParser extends Parser{
         System.out.println("load parser");
         readOSMFile(file);
         createDrawables();
-
-       /* for(long id : idToWay.keySet()){
-            idToWay.get(id).printWay();
-        }*/
     }
 
     private void readOSMFile(File file) throws XMLStreamException, FileNotFoundException {

@@ -31,6 +31,8 @@ public class MapCanvas extends Canvas {
     }
 
     public void repaint(){
+        ZoomLevel zoomLevel = curZoomLevel();
+
         gc.setTransform(new Affine());
         gc.setFill(Color.LIGHTBLUE);
         gc.fillRect(0,0,getWidth(),getHeight());
@@ -43,19 +45,33 @@ public class MapCanvas extends Canvas {
 
         EnumMap<WayType, List<Drawable>> drawables = model.getDrawables();
         for (WayType type : drawables.keySet()){
-            gc.setStroke(colorScheme.getStroke(type));
-            boolean shouldFill = colorScheme.shouldFill(type);
-            if(shouldFill){
-                gc.setFill(colorScheme.getFill(type));
-            }
-            for(Drawable drawable : drawables.get(type)){
-                drawable.stroke(gc);
-                if(shouldFill) {
-                    drawable.fill(gc);
+            if(zoomLevel.compareTo(ZoomLevel.levelForWayType(type)) >= 0){
+                gc.setStroke(colorScheme.getStroke(type));
+                boolean shouldFill = colorScheme.shouldFill(type);
+                if(shouldFill){
+                    gc.setFill(colorScheme.getFill(type));
+                }
+                for(Drawable drawable : drawables.get(type)){
+                    drawable.stroke(gc);
+                    if(shouldFill) {
+                        drawable.fill(gc);
+                    }
                 }
             }
-
         }
+    }
+
+    public ZoomLevel curZoomLevel(){
+        System.out.println(ZoomLevel.LEVEL_2.compareTo(ZoomLevel.LEVEL_1));
+        System.out.println(ZoomLevel.LEVEL_2.compareTo(ZoomLevel.LEVEL_2));
+        System.out.println(ZoomLevel.LEVEL_2.compareTo(ZoomLevel.LEVEL_3));
+        System.out.println(trans.getMxx());
+        double scale = trans.getMxx(); // scaling of the x-axis. Should be the same as the y-axis
+        if(scale > 20000)
+            return ZoomLevel.LEVEL_3;
+        if(scale > 10000)
+            return ZoomLevel.LEVEL_2;
+        return ZoomLevel.LEVEL_1;
     }
 
     public void pan(double dx, double dy) {

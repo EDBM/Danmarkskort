@@ -29,6 +29,7 @@ public abstract class ColorScheme {
 
     public boolean shouldFill(WayType wayType) {
         switch (wayType){
+            case ISLAND:
             case BUILDING:
             case WATER:
             case FOREST:
