@@ -8,6 +8,7 @@ import java.util.List;
 public class OSMRelation implements Drawable {
     long id;
     List<OSMWay> ways = new ArrayList<>();
+    private WayType type;
 
     public OSMRelation(long id) {
         this.id = id;
@@ -32,5 +33,10 @@ public class OSMRelation implements Drawable {
     @Override
     public WayType getWayType() {
         return WayType.BUILDING;
+    }
+
+
+    public void setType(WayType type) {
+        this.type = type;
     }
 }

@@ -129,7 +129,7 @@ public class OSMParser extends Parser{
     private void parseRelation() throws XMLStreamException {
         long id = Long.parseLong(reader.getAttributeValue(null, "id"));
         ArrayList<OSMWay> OSMWays = new ArrayList<>();
-        //OSMRelation osmRelation = new OSMRelation(id);
+        OSMRelation osmRelation = new OSMRelation(id);
 
         Map<String, String> tags = new HashMap<>();
 
@@ -148,12 +148,15 @@ public class OSMParser extends Parser{
                             String key = reader.getAttributeValue(null, "k");
                             String value = reader.getAttributeValue(null, "v");
                             if(value.equals("multipolygon")){
-                                MultiPolygon multiPolygon = new MultiPolygon(id);
-                                multiPolygon.addAllWays(OSMWays);
-                                multiPolygon.RingAssignment();
-                                idToRelation.put(id, multiPolygon);
+                                osmRelation = new MultiPolygon(id);
+                                osmRelation.addAllWays(OSMWays);
+                                ((MultiPolygon) osmRelation).RingAssignment();
+                                idToRelation.put(id, osmRelation);
                             }
                             tags.put(key, value);
+
+
+
                             break;
                     }
                     break;
@@ -164,17 +167,22 @@ public class OSMParser extends Parser{
                         break;
                     }
             }
+
             reader.next();
         }
+
+        System.out.println("type from tags: " + WayTypeSetter.typeFromTags(tags));
+
+        osmRelation.setType(WayTypeSetter.typeFromTags(tags));
     }
 
     private void createDrawables(){
-        for(OSMWay way : idToWay.values()){
+        /*for(OSMWay way : idToWay.values()){
             Polylines line = new Polylines(way);
             if(!drawables.containsKey(way.getType()))
                 drawables.put(way.getType(), new ArrayList<>());
             drawables.get(way.getType()).add(line);
-        }
+        }*/
 
         for(OSMRelation relation : idToRelation.values()){
             if(!drawables.containsKey(relation.getWayType()))

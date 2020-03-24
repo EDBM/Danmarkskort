@@ -15,8 +15,8 @@ public class Model {
 
     public Model() throws FileNotFoundException, XMLStreamException {
         file = new File(getClass().getClassLoader().getResource("multipolygon.osm").getFile());
+        //file = new File("C:\\Users\\Lucas\\Downloads\\map.osm");
 
-        System.out.println(file);
 
         OSMParser osmParser = new OSMParser(file);
         drawables = osmParser.getDrawables();

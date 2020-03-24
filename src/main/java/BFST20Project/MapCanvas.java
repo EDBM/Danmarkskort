@@ -50,8 +50,9 @@ public class MapCanvas extends Canvas {
             }
             for(Drawable drawable : drawables.get(type)){
                 drawable.stroke(gc);
-                if(shouldFill)
+                if(shouldFill) {
                     drawable.fill(gc);
+                }
             }
 
         }

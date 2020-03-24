@@ -28,20 +28,19 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     @Override
     public void stroke(GraphicsContext gc) {
 
-        System.out.println("Number of rings: " + rings.size());
         for (ArrayList<OSMWay> list : rings) {
-            System.out.println("Number of ways in list: " + list.size());
             for (OSMWay way: list) {
-                //way.printWay();
-                //gc.beginPath();
-                //trace(gc, getCoordinates(way));
-                //gc.stroke();
+
 
 
                 new Polylines(way).stroke(gc);
-                System.out.println(way.getId());
             }
         }
+    }
+
+
+    public void fill(GraphicsContext gc){
+        System.out.println(this.getWayType());
         fill(gc, rings);
     }
 
@@ -60,10 +59,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
             }
         }
 
-        gc.setFill(Color.DARKRED);
         gc.fillPolygon(coordinates[0], coordinates[1], coordinates[0].length);
-
-
     }
 
     public double[][] getCoordinates(OSMWay way){
@@ -97,7 +93,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
 
 
         unassigned.addAll(ways);
-        System.out.println("number of ways in relation: " + unassigned.size());
+        //System.out.println("number of ways in relation: " + unassigned.size());
 
         ringAssignment:
         while (true) {
@@ -122,11 +118,11 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
                     //Check if current ring is closed
                     if (assigned.get(0).first().getId() == assigned.get(assigned.size() - 1).last().getId()) {
                         if (unassigned.isEmpty()) {
-                            System.out.println("id of way added: " + assigned.get(0).getId() + " with a size: " + assigned.size());
+                            //System.out.println("id of way added: " + assigned.get(0).getId() + " with a size: " + assigned.size());
                             rings.add(assigned);
                             ringCount++;
-                            System.out.println("number of ways in assigned: " + assigned.size());
-                            System.out.println("Ring Assignment succeeded 1");
+                            //System.out.println("number of ways in assigned: " + assigned.size());
+                            //System.out.println("Ring Assignment succeeded 1");
                             return true;
                         }
                         //if the current ring is a valid geometry TODO make it actually check if it is valid
@@ -134,13 +130,13 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
                             if (!unassigned.isEmpty()) {
                                 rings.add(assigned);
                                 ringCount++;
-                                System.out.println("id of way added: " + assigned.get(0).getId());
+                                //System.out.println("id of way added: " + assigned.get(0).getId());
                                 assigned = new ArrayList<>();
-                                System.out.println("Ring " + ringCount + " done, moving on to the next");
+                                //System.out.println("Ring " + ringCount + " done, moving on to the next");
                                 continue ringAssignment;
                             } else {
-                                System.out.println("number of ways in unassigned: " + unassigned.size());
-                                System.out.println("Ring Assignment succeeded 2");
+                                //System.out.println("number of ways in unassigned: " + unassigned.size());
+                                //System.out.println("Ring Assignment succeeded 2");
                                 return true;
                             }
                         }
@@ -151,13 +147,13 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
 
 
                             if (ringEndNode.getId() == way.first().getId()) {
-                                System.out.println("add way to ring");
+                                //System.out.println("add way to ring");
                                 assigned.add(way);
                                 numberOfNodes += way.size();
                                 unassigned.remove(way);
                                 continue RA3;
                             } else if(ringEndNode.getId() == way.last().getId()){
-                                System.out.println("add reversed way to ring");
+                                //System.out.println("add reversed way to ring");
                                 unassigned.remove(way);
                                 Collections.reverse(way.getAll());
                                 assigned.add(way);
