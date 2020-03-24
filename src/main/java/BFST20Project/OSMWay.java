@@ -24,13 +24,7 @@ public class OSMWay{
         nodes.add(node);
     }
 
-   /* public void printWay(){
-        System.out.println(" id = " + id + " has " + nodes.size() + " nodes:");
-        for(OSMNode node : nodes){
-            System.out.print("    " + node.toString());
-        }
-    }*/
-    public OSMNode get(int index){return nodes.get(index);}
+    public OSMNode get(int index){ return nodes.get(index); }
 
     public int size(){return nodes.size();}
 
@@ -41,4 +35,18 @@ public class OSMWay{
     public WayType getType() {
         return type;
     }
+
+    public List<OSMNode> getAll(){ return nodes; }
+
+    public long getId(){ return id; }
+
+
+    public void printWay(){
+        System.out.println(" id = " + id + " has " + nodes.size() + " nodes:");
+        for(OSMNode node : nodes){
+            System.out.print("    " + node.getId());
+        }
+        System.out.println(" ");
+    }
+
 }
