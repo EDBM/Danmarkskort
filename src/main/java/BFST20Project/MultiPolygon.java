@@ -65,7 +65,6 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
                     coordinates[1][count] = -way.get(i).getLat();
 
                     gc.lineTo(coordinates[0][count], coordinates[1][count]);
-
                     count++;
                 }
             }
@@ -105,6 +104,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
         ArrayList<OSMWay> unassigned = new ArrayList<>();
         ArrayList<OSMWay> assigned = new ArrayList<>();
         int ringCount = 0;
+        int retry = ways.size();
 
 
         unassigned.addAll(ways);
@@ -116,9 +116,10 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
             //RA-2 Take one unassigned way and mark it assigned to the current ring
             if (!unassigned.isEmpty()) {
                 OSMWay osmWay = unassigned.remove(0);
+                //if(this.id == 6534934) System.out.println("first way: " + osmWay.getId());
                 assigned.add(osmWay);
                 if(osmWay == null){
-                    System.out.println("Ring Assignment failed " + this.id);
+                    System.out.println("Ring Assignment failed, way = null " + this.id);
                     return false;
                 }
                 numberOfNodes += osmWay.size();
@@ -158,27 +159,34 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
                     } else {
                         for (OSMWay way : unassigned) {
                             OSMNode ringEndNode = assigned.get(assigned.size() - 1).last();
+                            //if(this.id == 6534934) System.out.println("test: " + assigned.get(assigned.size() - 1).getId());
                             OSMNode ringStartNode = assigned.get(0).first();
 
 
+                            //if(this.id == 6534934) System.out.println("ring start node: " + ringStartNode.getId());
+                            //if(this.id == 6534934) System.out.println("ring end node: " + ringEndNode.getId());
+                            //if(this.id == 6534934) System.out.println("first: " + way.first().getId());
+                            //if(this.id == 6534934) System.out.println("last: " + way.last().getId());
+
+
                             if (ringEndNode.getId() == way.first().getId()) {
-                                //System.out.println("add way to ring");
+                                //if(this.id == 6534934) System.out.println("add way to ring: " + way.getId());
                                 assigned.add(way);
                                 numberOfNodes += way.size();
                                 unassigned.remove(way);
                                 continue RA3;
                             } else if(ringEndNode.getId() == way.last().getId()){
 
-                                way.removeNode(way.size()-1);
-                                //System.out.println("add reversed way to ring");
+                                //if(this.id == 6534934) System.out.println("add reversed way to ring: " + way.getId());
                                 unassigned.remove(way);
                                 Collections.reverse(way.getAll());
+                                //way.removeNode(way.size()-1);
                                 assigned.add(way);
                                 numberOfNodes += way.size();
                                 continue RA3;
                             }
                         }
-                        System.out.println("Ring Assignment failed " + this.id);
+                        System.out.println("Ring Assignment failed, no ways match " + this.id);
                         return false;
                     }
                 }
