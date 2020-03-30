@@ -42,6 +42,13 @@ public abstract class ColorScheme {
             case PIER:
             case BREAKWATER:
             case TOURISM:
+            case SAND:
+            //case AMENITY:
+            case PITCH:
+            case GRASS:
+            case LANDUSE:
+            case NATURAL:
+            case FARMLAND:
                 return true;
             default:
                 return false;
@@ -50,8 +57,8 @@ public abstract class ColorScheme {
     public double getWidth(WayType wayType){
         switch (wayType){
             case MOTORWAY:
-            case WATERWAY:
                 return 2;
+            case WATERWAY:
             case SECONDARY:
                 return 1.5;
             default:
