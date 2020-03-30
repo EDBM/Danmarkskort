@@ -56,7 +56,7 @@ tasks.withType(JavaCompile) {
 }
 
 application{
-    applicationDefaultJvmArgs = ['-Xmx4g']
+    applicationDefaultJvmArgs = ['-Xmx8g']
 }
 
 test {
