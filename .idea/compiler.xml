@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="BFST20Project.main" target="11" />
+      <module name="BFST20Project.test" target="11" />
+    </bytecodeTargetLevel>
+  </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="BFST20Project.main" options="--add-exports=jdk.internal.le/jdk.internal.jline.internal=ALL-UNNAMED" />

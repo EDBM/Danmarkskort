@@ -45,7 +45,7 @@ public class MapCanvas extends Canvas {
 
         EnumMap<WayType, List<Drawable>> drawables = model.getDrawables();
         for (WayType type : drawables.keySet()){
-            gc.setLineWidth(colorScheme.getWidth(type) * pixelWidth * Math.pow(trans.getMxx()/20000, 0.6));
+            gc.setLineWidth(colorScheme.getWidth(type) * pixelWidth * zoomDependantModifier());
             if(zoomLevel.compareTo(ZoomLevel.levelForWayType(type)) >= 0){
                 gc.setStroke(colorScheme.getStroke(type));
                 boolean shouldFill = colorScheme.shouldFill(type);
@@ -60,6 +60,13 @@ public class MapCanvas extends Canvas {
                 }
             }
         }
+    }
+
+    private double zoomDependantModifier() {
+        double modifier = Math.pow(trans.getMxx()/20000, 0.6);
+        if(modifier < 1)
+            return 1;
+        return modifier;
     }
 
     public ZoomLevel curZoomLevel(){

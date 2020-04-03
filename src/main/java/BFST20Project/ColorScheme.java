@@ -24,7 +24,7 @@ public abstract class ColorScheme {
     }
 
     public Paint getFill(WayType wayType){
-        return typeToFill.getOrDefault(wayType, defaultColor());
+        return typeToFill.getOrDefault(wayType, getStroke(wayType));
     }
 
     public boolean shouldFill(WayType wayType) {
@@ -42,6 +42,8 @@ public abstract class ColorScheme {
             case PIER:
             case BREAKWATER:
             case TOURISM:
+            case LEISURE:
+            case PARKING:
                 return true;
             default:
                 return false;
@@ -54,6 +56,9 @@ public abstract class ColorScheme {
                 return 2;
             case SECONDARY:
                 return 1.5;
+            case MINIWAY:
+            case DIRTROAD:
+                return 0.75;
             default:
                 return 1;
         }

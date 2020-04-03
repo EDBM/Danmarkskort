@@ -33,7 +33,6 @@ public enum WayType{
   LANDUSE,
   LEISURE,
   MINIWAY,
-  MOTORWAY,
   PARKING,
   RAILWAY,
   SERVICE,
@@ -42,6 +41,7 @@ public enum WayType{
   SURFACE,
   HIGHWAY,
   SECONDARY,
+  MOTORWAY,
   DIRTROAD,
   BUILDING
   ;

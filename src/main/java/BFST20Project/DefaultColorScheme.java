@@ -18,17 +18,17 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.BUILDING, Color.web("#EDEDED"));
         resultMap.put(WayType.WATER, Color.web("#AADAFE"));
         resultMap.put(WayType.FOREST, Color.web("#C9EFBB"));
-        resultMap.put(WayType.MINIWAY, Color.web("#000000"));
-        resultMap.put(WayType.DIRTROAD, Color.web("#000000"));
+        resultMap.put(WayType.MINIWAY, Color.web("#222222"));
+        resultMap.put(WayType.DIRTROAD, Color.web("#8B4513"));
         resultMap.put(WayType.BUSWAY, Color.web("#000000"));
-        resultMap.put(WayType.PARKING, Color.web("#000000"));
+        resultMap.put(WayType.PARKING, Color.web("#D0D8FF"));
         resultMap.put(WayType.SERVICE, Color.web("#000000"));
         resultMap.put(WayType.SURFACE, Color.web("#000000"));
-        resultMap.put(WayType.ASPHALT, Color.web("#000000"));
-        resultMap.put(WayType.BEACH, Color.web("#FFFFFF"));
+        resultMap.put(WayType.ASPHALT, Color.web("#708090"));
+        resultMap.put(WayType.BEACH, Color.web("#FFFFE0"));
         resultMap.put(WayType.WATERWAY, Color.web("#AADAFE"));
         resultMap.put(WayType.AMENITY, Color.web("#EDEDED"));
-        resultMap.put(WayType.BRIDGE, Color.web("#FFFFFF"));
+        resultMap.put(WayType.BRIDGE, Color.web("#DDFFFF"));
         resultMap.put(WayType.ISLAND, Color.web("#FFFFFF"));
         resultMap.put(WayType.HEATH, Color.web("#D6D99F"));
         resultMap.put(WayType.SCRUB, Color.web("#C8D7AB"));
@@ -48,7 +48,7 @@ public class DefaultColorScheme extends ColorScheme {
 
     protected Map<WayType, Paint> createFill() {
         EnumMap<WayType, Paint> resultMap = new EnumMap<>(WayType.class);
-        resultMap.put(WayType.BUILDING, Color.web("#EDEDED"));
+        /*resultMap.put(WayType.BUILDING, Color.web("#EDEDED"));
         resultMap.put(WayType.WATER, Color.web("#AADAFE"));
         resultMap.put(WayType.FOREST, Color.web("#C9EFBB"));
         resultMap.put(WayType.MINIWAY, Color.BLACK);
@@ -71,7 +71,7 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.LEISURE, Color.web("#AAE0CB"));
         resultMap.put(WayType.BREAKWATER, Color.web("#AAAAAA"));
         resultMap.put(WayType.PIER, Color.web("#F3EFE9"));
-        resultMap.put(WayType.TOURISM, Color.web("#DEF6C0"));
+        resultMap.put(WayType.TOURISM, Color.web("#DEF6C0"));*/
 
         return resultMap;
     }
