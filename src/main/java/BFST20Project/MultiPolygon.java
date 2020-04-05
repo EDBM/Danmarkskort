@@ -1,6 +1,5 @@
 package BFST20Project;
 
-import com.sun.javafx.geom.Path2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.FillRule;
