@@ -26,6 +26,8 @@ public class OSMParser extends Parser{
     private void readOSMFile(File file) throws XMLStreamException, FileNotFoundException {
         reader = XMLInputFactory.newFactory().createXMLStreamReader(new FileReader(file));
 
+        int count = 0;
+
         while(reader.hasNext()){
             reader.next();
 
@@ -36,6 +38,7 @@ public class OSMParser extends Parser{
                         break;
                     case "node":
                         parseNode();
+                        count++;
                         break;
                     case "way":
                         parseWay();
@@ -46,6 +49,8 @@ public class OSMParser extends Parser{
                 }
             }
         }
+
+        System.out.println("number of nodes on map: " + count);
         //calculateBounds();
     }
 
@@ -147,6 +152,7 @@ public class OSMParser extends Parser{
                                 osmRelation = new MultiPolygon(id);
                                 osmRelation.addAllWays(OSMWays);
                                 ((MultiPolygon) osmRelation).RingAssignment();
+                                ((MultiPolygon) osmRelation).calculateBoundingBox();
                                 idToRelation.put(id, osmRelation);
                             }
                             tags.put(key, value);
@@ -173,14 +179,17 @@ public class OSMParser extends Parser{
     private void createDrawables(){
 
 
+        int numberOfNodes = 0;
         for(OSMWay way : idToWay.values()){
             Polylines line = new Polylines(way);
             if(!drawables.containsKey(way.getWayType()))
                 drawables.put(way.getWayType(), new ArrayList<>());
             if(way.getWayType() != WayType.BEACH) {
+                numberOfNodes += way.size();
                 drawables.get(way.getWayType()).add(line);
             }
         }
+        System.out.println("Number of nodes in all polylines: " + numberOfNodes);
 
         for(OSMRelation relation : idToRelation.values()){
 

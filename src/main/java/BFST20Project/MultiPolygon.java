@@ -1,6 +1,5 @@
 package BFST20Project;
 
-import com.sun.javafx.geom.Path2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.FillRule;
@@ -8,7 +7,7 @@ import javafx.scene.shape.FillRule;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
+import java.util.List;
 
 
 //TODO Do ring grouping to determine which rings are nested inside other  (maybe not needed?)
@@ -19,6 +18,8 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     private ArrayList<ArrayList<OSMWay>> rings = new ArrayList<>();
     private int numberOfNodes = 0;
     private WayType type;
+    private BoundingBox boundingBox = new BoundingBox();
+    private float[][] coordinates;
 
     public MultiPolygon(long id){
         super(id);
@@ -51,7 +52,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     //@Override
     public void fill(GraphicsContext gc, ArrayList<ArrayList<OSMWay>> rings) {
         gc.setFillRule(FillRule.EVEN_ODD);
-        double[][] coordinates = new double[2][numberOfNodes];
+        float[][] coordinates = new float[2][numberOfNodes];
         int count = 0;
         //final java.awt.geom.Path2D.Float path = new java.awt.geom.Path2D.Float(Path2D.WIND_EVEN_ODD);
 
@@ -77,7 +78,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     }
 
     public float[][] getCoordinates(OSMWay way){
-        float[][] coordinates = coordinates = new float[2][way.size()];
+        float[][] coordinates = new float[2][way.size()];
         for(int i = 0; i < way.size(); i++){
             coordinates[0][i] = 0.56f * way.get(i).getLon();
             coordinates[1][i] = -way.get(i).getLat();
@@ -210,6 +211,54 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     public void setWayType(WayType type) {
         this.type = type;
     }
+
+    @Override
+    public BoundingBox getBoundingBox() {
+        return this.boundingBox;
+    }
+
+    public void setBoundingBox(BoundingBox BB){
+        this.boundingBox = BB;
+    }
+
+    public float[][] calculateCoordinates(){
+        int count = 0;
+        float[][] coordinates = new float[numberOfNodes][2];
+        for (ArrayList<OSMWay> list : rings) {
+            for (OSMWay way : list) {
+                for (int i = 0; i < way.size(); i++) {
+                    coordinates[count][0] = 0.56f * way.get(i).getLon();
+                    coordinates[count][1] = -way.get(i).getLat();
+                    //System.out.println(coordinates[count][0]);
+                    //System.out.println(coordinates[count][1]);
+                    count++;
+                }
+                count = 0;
+            }
+        }
+        //System.out.println(coordinates.length);
+        return coordinates;
+    }
+
+
+
+    public List<Point> getCoordinates() {
+
+        ArrayList<Point> points = new ArrayList<>();
+
+
+        for (ArrayList<OSMWay> list : rings) {
+            for (OSMWay way : list) {
+                for (OSMNode node: way.getAll()) {
+                    points.add(new Point(0.56f * node.getLon(), -node.getLat()));
+                }
+            }
+        }
+
+        return points;
+
+    }
+
 
 
 

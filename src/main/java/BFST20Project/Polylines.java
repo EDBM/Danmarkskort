@@ -3,9 +3,13 @@ package BFST20Project;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Polylines implements Drawable, Serializable {
+
+    private BoundingBox boundingBox = new BoundingBox();
     private float[][] coordinates;
     private WayType wayType;
 
@@ -18,6 +22,9 @@ public class Polylines implements Drawable, Serializable {
             coordinate[1] = -way.get(i).getLat();
             coordinates[i] = coordinate;
         }
+
+        //System.out.println(way.getId());
+        setBoundingBox(boundingBox.calculateBoundingBox(coordinates));
     }
 
     public void stroke(GraphicsContext gc){
@@ -48,4 +55,18 @@ public class Polylines implements Drawable, Serializable {
     public void setWayType(WayType type) {
         this.wayType = wayType;
     }
+
+
+    public List<Point> getCoordinates() {
+
+        ArrayList<Point> points = new ArrayList<>();
+
+        for (int i = 0; i < coordinates.length; i++) {
+            points.add(new Point(coordinates[i][0], coordinates[i][1]));
+        }
+
+        return points;
+
+    }
+
 }

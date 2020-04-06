@@ -1,6 +1,8 @@
 package BFST20Project;
 
 import javafx.scene.canvas.GraphicsContext;
+import java.util.List;
+
 
 public interface Drawable {
 
@@ -9,5 +11,7 @@ public interface Drawable {
 
     WayType getWayType();
     void setWayType(WayType type);
+
+    List<Point> getCoordinates();
 
 }

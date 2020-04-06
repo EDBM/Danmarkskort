@@ -13,8 +13,8 @@ public class Model {
     private EnumMap<WayType, List<Drawable>> drawables;
 
     public Model() throws FileNotFoundException, XMLStreamException {
-        file = new File(getClass().getClassLoader().getResource("anholt.osm").getFile());
-        //file = new File("C:\\Users\\Lucas\\Downloads\\map.osm");
+        file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
+        //file = new File("C:\\Users\\Lucas\\Downloads\\denmark-latest.osm");
 
 
         OSMParser osmParser = new OSMParser(file);

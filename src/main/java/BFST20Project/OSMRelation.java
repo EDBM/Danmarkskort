@@ -39,4 +39,9 @@ public class OSMRelation implements Drawable {
     public void setWayType(WayType type) {
         this.type = type;
     }
+
+    @Override
+    public BoundingBox getBoundingBox() {
+        return null;
+    }
 }

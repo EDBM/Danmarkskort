@@ -39,4 +39,9 @@ public class PolylinesRelation extends ArrayList<Polylines> implements Drawable,
     @Override
     public void setWayType(WayType type) { throw new NotYetBoundException(); }
 
+    @Override
+    public BoundingBox getBoundingBox() {
+        return null;
+    }
+
 }
