@@ -32,7 +32,7 @@ public class OSMRelation implements Drawable {
 
     @Override
     public WayType getWayType() {
-        return null;
+        return type;
     }
 
 
@@ -41,7 +41,8 @@ public class OSMRelation implements Drawable {
     }
 
     @Override
-    public BoundingBox getBoundingBox() {
-        return null;
+    public List<Point> getCoordinates() {
+
+        return new ArrayList<>();
     }
 }

@@ -1,12 +1,16 @@
 package BFST20Project;
 
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
+import javafx.scene.transform.NonInvertibleTransformException;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapCanvas extends Canvas {
     Model model;
@@ -40,15 +44,25 @@ public class MapCanvas extends Canvas {
         gc.setFill(Color.LIGHTGREEN);
         gc.setStroke(Color.BLACK);
 
+        Point2D topLeft, bottomRight;
+
+        try {
+            topLeft = trans.inverseTransform(0, 0);
+            bottomRight = trans.inverseTransform(getWidth(), getHeight());
+        } catch (NonInvertibleTransformException e) {
+            topLeft = new Point2D(model.minLat, model.minLon);
+            bottomRight = new Point2D(model.maxLon, model.maxLat);
+            System.out.println("oops");
+        }
+
         double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
         // gc.setLineWidth(pixelWidth);
 
-        EnumMap<WayType, List<Drawable>> drawables = model.getDrawables();
-
+        Map<WayType, List<Drawable>> drawables = model.getDrawablesInBox((float) topLeft.getX(), (float) topLeft.getY(), (float) bottomRight.getX(), (float) bottomRight.getY());
 
         for (WayType type : drawables.keySet()){
-            gc.setLineWidth(colorScheme.getWidth(type) * pixelWidth);
             if(zoomLevel.compareTo(ZoomLevel.levelForWayType(type)) >= 0){
+                gc.setLineWidth(colorScheme.getWidth(type) * pixelWidth);
                 gc.setStroke(colorScheme.getStroke(type));
                 boolean shouldFill = colorScheme.shouldFill(type);
                 if(shouldFill){
@@ -62,6 +76,18 @@ public class MapCanvas extends Canvas {
                 }
             }
         }
+        //drawRectangle(topLeft, bottomRight, pixelWidth * 3);
+    }
+
+    private void drawRectangle(Point2D p1, Point2D p2, double width){
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(width);
+
+        gc.moveTo(p1.getX(), p1.getY());
+        gc.lineTo(p1.getX(), p2.getY());
+        gc.lineTo(p2.getX(), p2.getY());
+        gc.lineTo(p2.getX(), p1.getY());
+        gc.lineTo(p1.getX(), p1.getY());
     }
 
     public ZoomLevel curZoomLevel(){

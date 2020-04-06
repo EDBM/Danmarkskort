@@ -212,11 +212,6 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
         this.type = type;
     }
 
-    @Override
-    public BoundingBox getBoundingBox() {
-        return this.boundingBox;
-    }
-
     public void setBoundingBox(BoundingBox BB){
         this.boundingBox = BB;
     }

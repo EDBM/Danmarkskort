@@ -152,7 +152,7 @@ public class OSMParser extends Parser{
                                 osmRelation = new MultiPolygon(id);
                                 osmRelation.addAllWays(OSMWays);
                                 ((MultiPolygon) osmRelation).RingAssignment();
-                                ((MultiPolygon) osmRelation).calculateBoundingBox();
+//                                ((MultiPolygon) osmRelation).calculateBoundingBox();
                                 idToRelation.put(id, osmRelation);
                             }
                             tags.put(key, value);
@@ -201,6 +201,15 @@ public class OSMParser extends Parser{
             drawables.get(relation.getWayType()).add(relation);
         }
 
+    }
+
+    public List<Drawable> getDrawablesAsList(){
+        List<Drawable> drawablesAsList = new ArrayList<>();
+        for(List<Drawable> drawablesOfType: drawables.values()){
+            drawablesAsList.addAll(drawablesOfType);
+        }
+
+        return drawablesAsList;
     }
 
     public EnumMap<WayType, List<Drawable>> getDrawables() {

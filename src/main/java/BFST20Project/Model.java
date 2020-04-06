@@ -11,9 +11,10 @@ public class Model {
     List<Runnable> observers = new ArrayList<>();
     File file;
     private EnumMap<WayType, List<Drawable>> drawables;
+    private KDTree kdTree;
 
     public Model() throws FileNotFoundException, XMLStreamException {
-        file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
+        file = new File(getClass().getClassLoader().getResource("denmark.osm").getFile());
         //file = new File("C:\\Users\\Lucas\\Downloads\\denmark-latest.osm");
 
 
@@ -23,6 +24,7 @@ public class Model {
         minLon = osmParser.getMinLon();
         maxLat = osmParser.getMaxLat();
         maxLon = osmParser.getMaxLon();
+        kdTree = new KDTree(osmParser.getDrawablesAsList());
     }
 
     public void addObserver(Runnable observer) {
@@ -39,4 +41,7 @@ public class Model {
         return drawables;
     }
 
+    public Map<WayType, List<Drawable>> getDrawablesInBox(float minX, float minY, float maxX, float maxY) {
+        return kdTree.query(minX, minY, maxX, maxY);
+    }
 }

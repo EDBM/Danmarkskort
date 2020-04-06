@@ -14,6 +14,7 @@ public class Polylines implements Drawable, Serializable {
     private WayType wayType;
 
     public Polylines(OSMWay way){
+        wayType = way.getWayType();
         coordinates = new float[way.size()][2];
         setWayType(way.getWayType());
         for(int i = 0; i < way.size(); i++){
@@ -24,7 +25,7 @@ public class Polylines implements Drawable, Serializable {
         }
 
         //System.out.println(way.getId());
-        setBoundingBox(boundingBox.calculateBoundingBox(coordinates));
+        //setBoundingBox(boundingBox.calculateBoundingBox(coordinates));
     }
 
     public void stroke(GraphicsContext gc){
