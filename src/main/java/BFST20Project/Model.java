@@ -14,7 +14,7 @@ public class Model {
     private KDTree kdTree;
 
     public Model() throws FileNotFoundException, XMLStreamException {
-        file = new File(getClass().getClassLoader().getResource("denmark.osm").getFile());
+        file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
         //file = new File("C:\\Users\\Lucas\\Downloads\\denmark-latest.osm");
 
 
