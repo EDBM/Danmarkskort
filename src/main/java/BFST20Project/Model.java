@@ -10,21 +10,21 @@ public class Model {
     public float minLat,minLon, maxLat, maxLon;
     List<Runnable> observers = new ArrayList<>();
     File file;
-    private EnumMap<WayType, List<Drawable>> drawables;
-    private KDTree kdTree;
+    private List<Drawable> islands;
+    private EnumMap<ZoomLevel, KDTree> drawables;
 
     public Model() throws FileNotFoundException, XMLStreamException {
-        file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
+        file = new File(getClass().getClassLoader().getResource("denmark.osm").getFile());
         //file = new File("C:\\Users\\Lucas\\Downloads\\denmark-latest.osm");
 
 
         OSMParser osmParser = new OSMParser(file);
         drawables = osmParser.getDrawables();
+        islands = osmParser.getIslands();
         minLat = osmParser.getMinLat();
         minLon = osmParser.getMinLon();
         maxLat = osmParser.getMaxLat();
         maxLon = osmParser.getMaxLon();
-        kdTree = new KDTree(osmParser.getDrawablesAsList());
     }
 
     public void addObserver(Runnable observer) {
@@ -37,11 +37,14 @@ public class Model {
         }
     }
 
-    public EnumMap<WayType, List<Drawable>> getDrawables() {
-        return drawables;
-    }
-
-    public Map<WayType, List<Drawable>> getDrawablesInBox(float minX, float minY, float maxX, float maxY) {
-        return kdTree.query(minX, minY, maxX, maxY);
+    public EnumMap<WayType, List<Drawable>> getDrawables(ZoomLevel desiredZoomLevel, Point min, Point max) {
+        EnumMap<WayType, List<Drawable>> toDraw = new EnumMap<>(WayType.class);
+        toDraw.put(WayType.ISLAND, islands);
+        for(ZoomLevel zoomLevel : ZoomLevel.values()){
+            if(desiredZoomLevel.compareTo(zoomLevel) >= 0){
+                toDraw.putAll(drawables.get(zoomLevel).query(min.getX(), min.getY(), max.getX(), max.getY()));
+            }
+        }
+        return toDraw;
     }
 }

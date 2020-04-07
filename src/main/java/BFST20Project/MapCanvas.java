@@ -35,8 +35,6 @@ public class MapCanvas extends Canvas {
     }
 
     public void repaint(){
-        ZoomLevel zoomLevel = curZoomLevel();
-
         gc.setTransform(new Affine());
         gc.setFill(Color.LIGHTBLUE);
         gc.fillRect(0,0,getWidth(),getHeight());
@@ -44,35 +42,33 @@ public class MapCanvas extends Canvas {
         gc.setFill(Color.LIGHTGREEN);
         gc.setStroke(Color.BLACK);
 
-        Point2D topLeft, bottomRight;
+        Point topLeft, bottomRight;
 
         try {
-            topLeft = trans.inverseTransform(0, 0);
-            bottomRight = trans.inverseTransform(getWidth(), getHeight());
+            topLeft = new Point(trans.inverseTransform(0, 0));
+            bottomRight = new Point(trans.inverseTransform(getWidth(), getHeight()));
         } catch (NonInvertibleTransformException e) {
-            topLeft = new Point2D(model.minLat, model.minLon);
-            bottomRight = new Point2D(model.maxLon, model.maxLat);
+            topLeft = new Point(model.minLat, model.minLon);
+            bottomRight = new Point(model.maxLon, model.maxLat);
             System.out.println("oops");
         }
 
         double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
         // gc.setLineWidth(pixelWidth);
 
-        Map<WayType, List<Drawable>> drawables = model.getDrawablesInBox((float) topLeft.getX(), (float) topLeft.getY(), (float) bottomRight.getX(), (float) bottomRight.getY());
+        Map<WayType, List<Drawable>> drawables = model.getDrawables(curZoomLevel(), topLeft, bottomRight);
 
         for (WayType type : drawables.keySet()){
-            if(zoomLevel.compareTo(ZoomLevel.levelForWayType(type)) >= 0){
-                gc.setLineWidth(colorScheme.getWidth(type) * pixelWidth);
-                gc.setStroke(colorScheme.getStroke(type));
-                boolean shouldFill = colorScheme.shouldFill(type);
-                if(shouldFill){
-                    gc.setFill(colorScheme.getFill(type));
-                }
-                for(Drawable drawable : drawables.get(type)){
-                    drawable.stroke(gc);
-                    if(shouldFill) {
-                        drawable.fill(gc);
-                    }
+            gc.setLineWidth(colorScheme.getWidth(type) * pixelWidth);
+            gc.setStroke(colorScheme.getStroke(type));
+            boolean shouldFill = colorScheme.shouldFill(type);
+            if(shouldFill){
+                gc.setFill(colorScheme.getFill(type));
+            }
+            for(Drawable drawable : drawables.get(type)){
+                drawable.stroke(gc);
+                if(shouldFill) {
+                    drawable.fill(gc);
                 }
             }
         }

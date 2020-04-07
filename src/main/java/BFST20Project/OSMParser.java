@@ -10,12 +10,14 @@ import java.io.FileReader;
 import java.util.*;
 
 public class OSMParser extends Parser{
-    private EnumMap<WayType, List<Drawable>> drawables = new EnumMap<>(WayType.class);
     Map<Long, OSMNode> idToNode = new TreeMap<>();
     Map<Long, OSMWay> idToWay = new HashMap<>();
     Map<Long, OSMRelation> idToRelation = new HashMap<>();
     private XMLStreamReader reader;
+
     private float minLat, minLon, maxLat, maxLon;
+    private EnumMap<ZoomLevel, KDTree> drawables = new EnumMap<>(ZoomLevel.class);
+    private List<Drawable> islands = new ArrayList<>();
 
     public OSMParser(File file) throws FileNotFoundException, XMLStreamException {
         System.out.println("load parser");
@@ -177,42 +179,32 @@ public class OSMParser extends Parser{
     }
 
     private void createDrawables(){
+        for(ZoomLevel zoomLevel : ZoomLevel.values())
+            drawables.put(zoomLevel, new KDTree());
 
-
-        int numberOfNodes = 0;
         for(OSMWay way : idToWay.values()){
             Polylines line = new Polylines(way);
-            if(!drawables.containsKey(way.getWayType()))
-                drawables.put(way.getWayType(), new ArrayList<>());
-            if(way.getWayType() != WayType.BEACH) {
-                numberOfNodes += way.size();
-                drawables.get(way.getWayType()).add(line);
-            }
+            rememberDrawable(line);
         }
-        System.out.println("Number of nodes in all polylines: " + numberOfNodes);
 
         for(OSMRelation relation : idToRelation.values()){
-
-            //System.out.println("this relation has the waytype: " + relation.getWayType());
-            //System.out.println(relation.id);
-            if(!drawables.containsKey(relation.getWayType())) {
-                drawables.put(relation.getWayType(), new ArrayList<>());
-            }
-            drawables.get(relation.getWayType()).add(relation);
+            rememberDrawable(relation);
         }
 
     }
 
-    public List<Drawable> getDrawablesAsList(){
-        List<Drawable> drawablesAsList = new ArrayList<>();
-        for(List<Drawable> drawablesOfType: drawables.values()){
-            drawablesAsList.addAll(drawablesOfType);
+    private void rememberDrawable(Drawable drawable) {
+        if(drawable.getWayType() == WayType.ISLAND){
+            islands.add(drawable);
         }
-
-        return drawablesAsList;
+        else if(drawable.getWayType() != WayType.BEACH) {
+            ZoomLevel zoomLevel = ZoomLevel.levelForWayType(drawable.getWayType());
+            drawables.get(zoomLevel).insertDrawable(drawable);
+        }
     }
 
-    public EnumMap<WayType, List<Drawable>> getDrawables() {
+
+    public EnumMap<ZoomLevel, KDTree> getDrawables() {
         return drawables;
     }
 
@@ -230,5 +222,9 @@ public class OSMParser extends Parser{
 
     public float getMaxLon() {
         return maxLon;
+    }
+
+    public List<Drawable> getIslands() {
+        return islands;
     }
 }
