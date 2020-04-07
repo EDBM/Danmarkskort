@@ -22,39 +22,39 @@ public class KDTree {
 
     public void insertDrawable(Drawable drawable){
         for (Point point: drawable.getCoordinates()) {
-            insertNode(rootNode, point.getX(), point.getY(), drawable);
+            insertNode(rootNode, point, drawable);
         }
     }
 
-    private void insertNode(Node kNode, float x, float y, Drawable parentWay){
+    private void insertNode(Node kNode, Point coordinates, Drawable parentWay){
         if(rootNode == null){
-            rootNode = new Node(x, y, 0, parentWay);
+            rootNode = new Node(coordinates, 0, parentWay);
             return;
         }
 
-        if(considerLeftNode(kNode, x, y)){
+        if(considerLeftNode(kNode, coordinates)){
             if(kNode.leftChild == null) {
-                kNode.leftChild = new Node(x, y, kNode.height + 1, parentWay);
+                kNode.leftChild = new Node(coordinates, kNode.height + 1, parentWay);
                 size++;
             }
             else
-                insertNode(kNode.leftChild, x, y, parentWay);
+                insertNode(kNode.leftChild, coordinates, parentWay);
         }
         else{
             if(kNode.rightChild == null) {
-                kNode.rightChild = new Node(x, y, kNode.height + 1, parentWay);
+                kNode.rightChild = new Node(coordinates, kNode.height + 1, parentWay);
                 size++;
             }
             else
-                insertNode(kNode.rightChild, x, y, parentWay);
+                insertNode(kNode.rightChild, coordinates, parentWay);
         }
     }
 
-    private boolean considerLeftNode(Node kNode, float x, float y) {
+    private boolean considerLeftNode(Node kNode, Point coordinates) {
         if(kNode.height % 2 == 0)
-            return kNode.x > x;
+            return kNode.getX() > coordinates.getX();
         else
-            return kNode.y > y;
+            return kNode.getY() > coordinates.getY();
     }
 
 
@@ -77,15 +77,15 @@ public class KDTree {
             return;
 
         if(kNode.height % 2 == 0){
-            if(kNode.x <= maxX)
+            if(kNode.getX() <= maxX)
                 query(kNode.rightChild, minX, minY, maxX, maxY, queriedDrawables);
-            if(kNode.x >= minX)
+            if(kNode.getX() >= minX)
                 query(kNode.leftChild, minX, minY, maxX, maxY, queriedDrawables);
         }
         else{
-            if(kNode.y <= maxY)
+            if(kNode.getY() <= maxY)
                 query(kNode.rightChild, minX, minY, maxX, maxY, queriedDrawables);
-            if(kNode.y >= minY)
+            if(kNode.getY() >= minY)
                 query(kNode.leftChild, minX, minY, maxX, maxY, queriedDrawables);
         }
 
@@ -98,22 +98,31 @@ public class KDTree {
     }
 
     private boolean nodeInBox(Node node, float minX, float minY, float maxX, float maxY) {
-        return node.x >= minX && node.x <= maxX && node.y >= minY && node.y <= maxY;
+        return node.getX() >= minX &&
+                node.getX() <= maxX &&
+                node.getY() >= minY &&
+                node.getY() <= maxY;
     }
 
 
     private class Node{
-
         Drawable parentWay;
-        float x, y;
+        Point coordinates;
         public Node leftChild, rightChild;
         public int height;
 
-        public Node(float x, float y, int height, Drawable parentWay) {
-            this.x = x;
-            this.y = y;
+        public Node(Point coordinates, int height, Drawable parentWay) {
+            this.coordinates = coordinates;
             this.height = height;
             this.parentWay = parentWay;
+        }
+
+        public float getX(){
+            return coordinates.getX();
+        }
+
+        public float getY(){
+            return coordinates.getY();
         }
     }
 }

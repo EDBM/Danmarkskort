@@ -48,6 +48,7 @@ public class MapCanvas extends Canvas {
             topLeft = new Point(trans.inverseTransform(0, 0));
             bottomRight = new Point(trans.inverseTransform(getWidth(), getHeight()));
         } catch (NonInvertibleTransformException e) {
+            // This cannot happen
             topLeft = new Point(model.minLat, model.minLon);
             bottomRight = new Point(model.maxLon, model.maxLat);
             System.out.println("oops");

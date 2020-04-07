@@ -18,7 +18,6 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     private ArrayList<ArrayList<OSMWay>> rings = new ArrayList<>();
     private int numberOfNodes = 0;
     private WayType type;
-    private BoundingBox boundingBox = new BoundingBox();
     private float[][] coordinates;
 
     public MultiPolygon(long id){
@@ -210,10 +209,6 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     @Override
     public void setWayType(WayType type) {
         this.type = type;
-    }
-
-    public void setBoundingBox(BoundingBox BB){
-        this.boundingBox = BB;
     }
 
     public float[][] calculateCoordinates(){
