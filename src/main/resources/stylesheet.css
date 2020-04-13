@@ -1,0 +1,20 @@
+Button{
+
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+
+}
+
+Label{
+    -fx-padding: 20 0 0 0 ;
+}
+
+
+.addresssearch{
+    -fx-padding: 15px;
+    -fx-font-size: 15px;
+}
+
+

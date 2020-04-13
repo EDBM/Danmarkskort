@@ -203,7 +203,4 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
         this.type = type;
     }
 
-
-
-
 }

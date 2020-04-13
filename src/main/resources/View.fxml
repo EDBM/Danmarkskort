@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.Scene?>
+<?import BFST20Project.MapCanvas?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.Scene?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<Scene
+        xmlns="http://javafx.com/javafx"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="BFST20Project.Controller"
+        fx:id="scene"
+        onKeyPressed="#onKeyPressed">
+
+    <root>
+        <StackPane minWidth="1500"
+                   minHeight="1000"
+                   prefWidth="${scene.width}"
+                   prefHeight="${scene.height}">
+            <MapCanvas fx:id="mapCanvas"
+                       width="${scene.width}"
+                       height="${scene.height}"
+                       onScroll="#onScroll"
+
+                       onMousePressed="#onMousePressed"
+                       onMouseDragged="#onMouseDragged"
+            />
+            <BorderPane pickOnBounds="false">
+                <top>
+                    <HBox styleClass="headline" layoutX="100"
+                          minWidth="300"
+                          minHeight="50"
+                          style="-fx-background-color: rgba(0,0,0,0.3);
+                                         -fx-padding: 10px;
+                                  ">
+                        <Label style= "
+                                      -fx-font-weight: bold;
+                                      -fx-font-size: 4em;
+
+                                      -fx-text-fill: White;"
+
+                               text="DanmarksKort"/>
+                    </HBox>
+
+                </top>
+
+
+                <left>
+                    <Pane fx:id="upperbox"
+                          minWidth="100"
+                          minHeight="400"
+                          style="-fx-background-color: #fff;
+                                 -fx-border: solid 2px black;">
+
+                        <VBox minWidth="100"
+                              minHeight="300">
+
+                            <BorderPane>
+
+                                <top>
+                                    <VBox styleClass="addresssearch" style="-fx-padding: 50px"
+                                          BorderPane.alignment="TOP_CENTER"
+                                          minWidth="200"
+                                          prefHeight="400">
+
+                                        <Label text="Indtast start sted"
+                                               style="-fx-text-align: center;
+                                                      -fx-font-weight: bold;"/>
+                                        <TextField fx:id="start"
+                                                   style="-fx-border-color: none;
+                                                          -fx-border-style: solid;
+                                                          -fx-background-color: rgba(1,1,1,0.1)"/>
+
+                                        <Label text="Indtast slut sted"
+                                               style="-fx-text-align: center;
+                                                      -fx-font-weight: bold;"/>
+                                        <TextField  fx:id="slut"
+                                                    style="-fx-border-color: none;
+                                                          -fx-border-style: solid;
+                                                          -fx-background-color: rgba(1,1,1,0.1)"/>
+
+
+
+                                        <HBox minWidth="100"
+                                              minHeight="20">
+
+                                        </HBox>
+                                    </VBox>
+
+
+                                </top>
+
+                            </BorderPane>
+
+                        </VBox>
+                    </Pane>
+                </left>
+            </BorderPane>
+            <AnchorPane pickOnBounds="false">
+                <VBox AnchorPane.rightAnchor="0.0"
+                      AnchorPane.bottomAnchor="10.0"
+                      StackPane.alignment="BOTTOM_RIGHT"
+                      minHeight="50"
+                      minWidth="50"
+                      style="-fx-background-color: rgba(1,1,1,0.0)">
+                    <Label
+                           style="-fx-text-fill: black;
+                                  -fx-text-alignment: center;"/>
+                    <Button fx:id="zoomIn"
+                            text="+"
+                            textAlignment="CENTER"
+                            style="
+                            -fx-border-color: rgba(1,1,1,0.5);"
+                            onMouseClicked="#zoomIn"
+
+                    >
+
+                    </Button>
+                    <Button fx:id="zoomOut"
+                            text="-"
+                            textAlignment="CENTER"
+                            style="
+                                   -fx-border-color: rgba(1,1,1,0.5);"
+                            onMouseClicked="#zoomOut">
+
+                    </Button>
+                </VBox>
+            </AnchorPane>
+        </StackPane>
+    </root>
+</Scene>

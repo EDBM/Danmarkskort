@@ -1,35 +1,103 @@
 package BFST20Project;
 import javafx.geometry.Point2D;
+import com.sun.javafx.scene.control.inputmap.InputMap;
+import javafx.fxml.FXML;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.*;
+import javafx.scene.control.ScrollToEvent;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class Controller {
+
     private Model model;
     double xCoords, yCoords;
     private View view;
-    Polylines polylines;
-    Point2D lastmouse;
-    Polylines dragged;
+    double x, y;
 
-    public Controller(Model model, View view) {
+    @FXML
+    private MapCanvas mapCanvas;
+    @FXML
+    private TextField start, slut;
+
+
+
+
+    public void init(Model model) throws Exception {
         this.model = model;
-        this.view = view;
-       /* view.canvas.setOnMousePressed(e -> {
-                Point2D mc = view.pointCoordinates(e.getX(), e.getY());
-         });
-        view.canvas.setOnMouseDragged(e ->{
-            if(dragged==null){
-                view.pan(e.getX() - lastmouse.getX(), e.getY() - lastmouse.getY());
-                lastmouse = new Point2D(e.getX(),e.getY());
-            } else {
-                Point2D mc = view.pointCoordinates(e.getX(),e.getY());
-            }
-        });*/
-
-        view.canvas.setOnScroll(e -> {
-            double factor = Math.pow(1.001, e.getDeltaY());
-            view.canvas.zoom(factor, e.getX(), e.getY());
-        });
+        mapCanvas.init(model);
 
     }
+
+
+    @FXML
+    private void onKeyPressed(KeyEvent e) {
+        switch (e.getCode()) {
+            case V:
+                try {
+                    new View(model, new Stage());
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+                break;
+        }
+    }
+
+
+        @FXML
+        private void onScroll(ScrollEvent e) {
+            double factor = Math.pow(1.001, e.getDeltaY());
+            mapCanvas.zoom(factor, e.getX(), e.getY());
+            System.out.println(e.getDeltaY());
+            System.out.println(x + y);
+        }
+
+
+
+    @FXML
+    private void zoomOut() {
+        mapCanvas.zoom(0.77, 600, 300);
+        mapCanvas.repaint();
+    }
+
+    @FXML
+    private void zoomIn() {
+
+        mapCanvas.zoom(1.29,600,300);
+        mapCanvas.repaint();
+
+    }
+
+    @FXML
+    private void onMouseDragged(MouseEvent e) {
+        if (e.isPrimaryButtonDown()) mapCanvas.pan(e.getX() - x, e.getY() - y);
+        x = e.getX();
+        y = e.getY();
+    }
+
+    @FXML
+    private void onMousePressed(MouseEvent e) {
+        x = e.getX();
+        y = e.getY();
+        System.out.println(x);
+    }
+
+
+
 }
 
 
