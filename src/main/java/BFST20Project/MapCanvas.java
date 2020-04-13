@@ -18,9 +18,6 @@ public class MapCanvas extends Canvas {
     ColorScheme colorScheme = new DefaultColorScheme();
     Affine trans = new Affine();
 
-    public MapCanvas(int width, int height) {
-        super(width, height);
-    }
 
     public void init(Model model){
         this.model = model;

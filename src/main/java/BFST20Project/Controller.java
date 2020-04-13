@@ -95,9 +95,6 @@ public class Controller {
         y = e.getY();
         System.out.println(x);
     }
-
-
-
 }
 
 

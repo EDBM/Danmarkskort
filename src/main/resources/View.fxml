@@ -70,7 +70,7 @@
                                           minWidth="200"
                                           prefHeight="400">
 
-                                        <Label text="Indtast start sted"
+                                        <Label text="Vælg startpunkt"
                                                style="-fx-text-align: center;
                                                       -fx-font-weight: bold;"/>
                                         <TextField fx:id="start"
@@ -78,7 +78,7 @@
                                                           -fx-border-style: solid;
                                                           -fx-background-color: rgba(1,1,1,0.1)"/>
 
-                                        <Label text="Indtast slut sted"
+                                        <Label text="Vælg slutpunkt"
                                                style="-fx-text-align: center;
                                                       -fx-font-weight: bold;"/>
                                         <TextField  fx:id="slut"
@@ -89,9 +89,49 @@
 
 
                                         <HBox minWidth="100"
-                                              minHeight="20">
+                                              minHeight="100">
 
                                         </HBox>
+                                        <HBox  fx:id="car">
+                                            <VBox>
+                                                <ImageView>
+                                                    <image>
+                                                        <Image url="/images/car.png"></Image>
+                                                    </image>
+                                                </ImageView>
+                                            </VBox>
+                                        </HBox>
+
+                                        <HBox minWidth="100"
+                                              minHeight="30">
+
+                                        </HBox>
+
+                                        <HBox  fx:id="bike">
+                                            <VBox>
+                                                <ImageView>
+                                                    <image>
+                                                        <Image url="/images/bike.png"></Image>
+                                                    </image>
+                                                </ImageView>
+                                            </VBox>
+                                        </HBox>
+
+                                        <HBox minWidth="100"
+                                              minHeight="30">
+
+                                        </HBox>
+                                        <HBox  fx:id="walk">
+                                            <VBox>
+                                                <ImageView>
+                                                    <image>
+                                                        <Image url="/images/walk.png"></Image>
+                                                    </image>
+                                                </ImageView>
+                                            </VBox>
+                                        </HBox>
+
+
                                     </VBox>
 
 

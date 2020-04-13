@@ -21,12 +21,6 @@ import javafx.scene.Parent;
 import java.net.URL;
 
 public class View{
-/*
-    Model model;
-    Stage stage;
-    MapCanvas canvas = new MapCanvas(1000,600);
-    BorderPane pane = new BorderPane(canvas);
-    Scene scene = new Scene(pane);*/
 
     public View(Model model, Stage stage)throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View.fxml"));
@@ -37,16 +31,5 @@ public class View{
         stage.show();
         controller.init(model);
     }
-/*
-    public View(Model model, Stage primaryStage){
-        this.model=model;
-        this.stage=primaryStage;
-        stage.setScene(scene);
-        stage.show();
-        canvas.init(model);
-        canvas.widthProperty().bind(scene.widthProperty());
-        canvas.heightProperty().bind(scene.heightProperty());
-        //canvas.widthProperty().addListener((a,b,c) -> repaint());
-        //canvas.heightProperty().addListener((a,b,c) -> repaint());
-    }*/
+
 }
