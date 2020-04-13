@@ -1,6 +1,5 @@
 package BFST20Project;
 
-import com.sun.javafx.geom.Path2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.FillRule;
@@ -8,7 +7,7 @@ import javafx.scene.shape.FillRule;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
+import java.util.List;
 
 
 //TODO Do ring grouping to determine which rings are nested inside other  (maybe not needed?)
@@ -19,6 +18,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     private ArrayList<ArrayList<OSMWay>> rings = new ArrayList<>();
     private int numberOfNodes = 0;
     private WayType type;
+    private float[][] coordinates;
 
     public MultiPolygon(long id){
         super(id);
@@ -51,7 +51,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     //@Override
     public void fill(GraphicsContext gc, ArrayList<ArrayList<OSMWay>> rings) {
         gc.setFillRule(FillRule.EVEN_ODD);
-        double[][] coordinates = new double[2][numberOfNodes];
+        float[][] coordinates = new float[2][numberOfNodes];
         int count = 0;
         //final java.awt.geom.Path2D.Float path = new java.awt.geom.Path2D.Float(Path2D.WIND_EVEN_ODD);
 
@@ -65,7 +65,6 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
                     coordinates[1][count] = -way.get(i).getLat();
 
                     gc.lineTo(coordinates[0][count], coordinates[1][count]);
-
                     count++;
                 }
             }
@@ -78,7 +77,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     }
 
     public float[][] getCoordinates(OSMWay way){
-        float[][] coordinates = coordinates = new float[2][way.size()];
+        float[][] coordinates = new float[2][way.size()];
         for(int i = 0; i < way.size(); i++){
             coordinates[0][i] = 0.56f * way.get(i).getLon();
             coordinates[1][i] = -way.get(i).getLat();
@@ -105,6 +104,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
         ArrayList<OSMWay> unassigned = new ArrayList<>();
         ArrayList<OSMWay> assigned = new ArrayList<>();
         int ringCount = 0;
+        int retry = ways.size();
 
 
         unassigned.addAll(ways);
@@ -116,9 +116,10 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
             //RA-2 Take one unassigned way and mark it assigned to the current ring
             if (!unassigned.isEmpty()) {
                 OSMWay osmWay = unassigned.remove(0);
+                //if(this.id == 6534934) System.out.println("first way: " + osmWay.getId());
                 assigned.add(osmWay);
                 if(osmWay == null){
-                    System.out.println("Ring Assignment failed " + this.id);
+                    System.out.println("Ring Assignment failed, way = null " + this.id);
                     return false;
                 }
                 numberOfNodes += osmWay.size();
@@ -158,27 +159,34 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
                     } else {
                         for (OSMWay way : unassigned) {
                             OSMNode ringEndNode = assigned.get(assigned.size() - 1).last();
+                            //if(this.id == 6534934) System.out.println("test: " + assigned.get(assigned.size() - 1).getId());
                             OSMNode ringStartNode = assigned.get(0).first();
 
 
+                            //if(this.id == 6534934) System.out.println("ring start node: " + ringStartNode.getId());
+                            //if(this.id == 6534934) System.out.println("ring end node: " + ringEndNode.getId());
+                            //if(this.id == 6534934) System.out.println("first: " + way.first().getId());
+                            //if(this.id == 6534934) System.out.println("last: " + way.last().getId());
+
+
                             if (ringEndNode.getId() == way.first().getId()) {
-                                //System.out.println("add way to ring");
+                                //if(this.id == 6534934) System.out.println("add way to ring: " + way.getId());
                                 assigned.add(way);
                                 numberOfNodes += way.size();
                                 unassigned.remove(way);
                                 continue RA3;
                             } else if(ringEndNode.getId() == way.last().getId()){
 
-                                way.removeNode(way.size()-1);
-                                //System.out.println("add reversed way to ring");
+                                //if(this.id == 6534934) System.out.println("add reversed way to ring: " + way.getId());
                                 unassigned.remove(way);
                                 Collections.reverse(way.getAll());
+                                //way.removeNode(way.size()-1);
                                 assigned.add(way);
                                 numberOfNodes += way.size();
                                 continue RA3;
                             }
                         }
-                        System.out.println("Ring Assignment failed " + this.id);
+                        System.out.println("Ring Assignment failed, no ways match " + this.id);
                         return false;
                     }
                 }
@@ -202,5 +210,47 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     public void setWayType(WayType type) {
         this.type = type;
     }
+
+    public float[][] calculateCoordinates(){
+        int count = 0;
+        float[][] coordinates = new float[numberOfNodes][2];
+        for (ArrayList<OSMWay> list : rings) {
+            for (OSMWay way : list) {
+                for (int i = 0; i < way.size(); i++) {
+                    coordinates[count][0] = 0.56f * way.get(i).getLon();
+                    coordinates[count][1] = -way.get(i).getLat();
+                    //System.out.println(coordinates[count][0]);
+                    //System.out.println(coordinates[count][1]);
+                    count++;
+                }
+                count = 0;
+            }
+        }
+        //System.out.println(coordinates.length);
+        return coordinates;
+    }
+
+
+
+    public List<Point> getCoordinates() {
+
+        ArrayList<Point> points = new ArrayList<>();
+
+
+        for (ArrayList<OSMWay> list : rings) {
+            for (OSMWay way : list) {
+                for (OSMNode node: way.getAll()) {
+                    points.add(new Point(0.56f * node.getLon(), -node.getLat()));
+                }
+            }
+        }
+
+        return points;
+
+    }
+
+
+
+
 
 }

@@ -1,72 +1,90 @@
 package BFST20Project;
 
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
-import javafx.fxml.FXML;
+import javafx.scene.transform.NonInvertibleTransformException;
+
 import java.util.EnumMap;
 import java.util.List;
-
-
+import java.util.Map;
 
 public class MapCanvas extends Canvas {
     Model model;
     GraphicsContext gc = getGraphicsContext2D();
     ColorScheme colorScheme = new DefaultColorScheme();
-
     Affine trans = new Affine();
 
+    public MapCanvas(int width, int height) {
+        super(width, height);
+    }
 
     public void init(Model model){
         this.model = model;
         model.addObserver(this::repaint);
         resetView();
-
     }
 
     public void resetView() {
-        var zl = 10000;
         pan(-model.minLon, -model.minLat);
-
-        zoom(zl, 0, 0);
+        zoom(getWidth() / (model.maxLat - model.minLat), 0, 0);
         repaint();
-
     }
 
     public void repaint(){
-        ZoomLevel zoomLevel = curZoomLevel();
         gc.setTransform(new Affine());
         gc.setFill(Color.LIGHTBLUE);
         gc.fillRect(0,0,getWidth(),getHeight());
         gc.setTransform(trans);
-
         gc.setFill(Color.LIGHTGREEN);
         gc.setStroke(Color.BLACK);
 
+        Point topLeft, bottomRight;
+
+        try {
+            topLeft = new Point(trans.inverseTransform(0, 0));
+            bottomRight = new Point(trans.inverseTransform(getWidth(), getHeight()));
+        } catch (NonInvertibleTransformException e) {
+            // This cannot happen
+            topLeft = new Point(model.minLat, model.minLon);
+            bottomRight = new Point(model.maxLon, model.maxLat);
+            System.out.println("oops");
+        }
 
         double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
-        gc.setLineWidth(pixelWidth);
+        // gc.setLineWidth(pixelWidth);
 
-        EnumMap<WayType, List<Drawable>> drawables = model.getDrawables();
+        Map<WayType, List<Drawable>> drawables = model.getDrawables(curZoomLevel(), topLeft, bottomRight);
+
         for (WayType type : drawables.keySet()){
-            final var lineWidth = colorScheme.getWidth(type) * pixelWidth;
-            gc.setLineWidth(lineWidth);
-            if(zoomLevel.compareTo(ZoomLevel.levelForWayType(type)) >= 0){
-                gc.setStroke(colorScheme.getStroke(type));
-
-                boolean shouldFill = colorScheme.shouldFill(type);
-                if(shouldFill){
-                    gc.setFill(colorScheme.getFill(type));
-                }
-                for(Drawable drawable : drawables.get(type)){
-                    drawable.stroke(gc);
-                    if(shouldFill) {
-                        drawable.fill(gc);
-                    }
+            gc.setLineWidth(colorScheme.getWidth(type) * pixelWidth);
+            gc.setStroke(colorScheme.getStroke(type));
+            boolean shouldFill = colorScheme.shouldFill(type);
+            if(shouldFill){
+                gc.setFill(colorScheme.getFill(type));
+            }
+            for(Drawable drawable : drawables.get(type)){
+                drawable.stroke(gc);
+                if(shouldFill) {
+                    drawable.fill(gc);
                 }
             }
         }
+        //drawRectangle(topLeft, bottomRight, pixelWidth * 3);
+    }
+
+    private void drawRectangle(Point2D p1, Point2D p2, double width){
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(width);
+
+        gc.moveTo(p1.getX(), p1.getY());
+        gc.lineTo(p1.getX(), p2.getY());
+        gc.lineTo(p2.getX(), p2.getY());
+        gc.lineTo(p2.getX(), p1.getY());
+        gc.lineTo(p1.getX(), p1.getY());
     }
 
     public ZoomLevel curZoomLevel(){

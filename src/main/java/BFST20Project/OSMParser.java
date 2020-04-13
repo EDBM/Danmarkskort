@@ -10,12 +10,14 @@ import java.io.FileReader;
 import java.util.*;
 
 public class OSMParser extends Parser{
-    private EnumMap<WayType, List<Drawable>> drawables = new EnumMap<>(WayType.class);
     Map<Long, OSMNode> idToNode = new TreeMap<>();
     Map<Long, OSMWay> idToWay = new HashMap<>();
     Map<Long, OSMRelation> idToRelation = new HashMap<>();
     private XMLStreamReader reader;
+
     private float minLat, minLon, maxLat, maxLon;
+    private EnumMap<ZoomLevel, KDTree> drawables = new EnumMap<>(ZoomLevel.class);
+    private List<Drawable> islands = new ArrayList<>();
 
     public OSMParser(File file) throws FileNotFoundException, XMLStreamException {
         System.out.println("load parser");
@@ -25,6 +27,8 @@ public class OSMParser extends Parser{
 
     private void readOSMFile(File file) throws XMLStreamException, FileNotFoundException {
         reader = XMLInputFactory.newFactory().createXMLStreamReader(new FileReader(file));
+
+        int count = 0;
 
         while(reader.hasNext()){
             reader.next();
@@ -36,6 +40,7 @@ public class OSMParser extends Parser{
                         break;
                     case "node":
                         parseNode();
+                        count++;
                         break;
                     case "way":
                         parseWay();
@@ -46,6 +51,8 @@ public class OSMParser extends Parser{
                 }
             }
         }
+
+        System.out.println("number of nodes on map: " + count);
         //calculateBounds();
     }
 
@@ -147,6 +154,7 @@ public class OSMParser extends Parser{
                                 osmRelation = new MultiPolygon(id);
                                 osmRelation.addAllWays(OSMWays);
                                 ((MultiPolygon) osmRelation).RingAssignment();
+//                                ((MultiPolygon) osmRelation).calculateBoundingBox();
                                 idToRelation.put(id, osmRelation);
                             }
                             tags.put(key, value);
@@ -171,30 +179,32 @@ public class OSMParser extends Parser{
     }
 
     private void createDrawables(){
-
+        for(ZoomLevel zoomLevel : ZoomLevel.values())
+            drawables.put(zoomLevel, new KDTree());
 
         for(OSMWay way : idToWay.values()){
             Polylines line = new Polylines(way);
-            if(!drawables.containsKey(way.getWayType()))
-                drawables.put(way.getWayType(), new ArrayList<>());
-            if(way.getWayType() != WayType.BEACH) {
-                drawables.get(way.getWayType()).add(line);
-            }
+            rememberDrawable(line);
         }
 
         for(OSMRelation relation : idToRelation.values()){
-
-            //System.out.println("this relation has the waytype: " + relation.getWayType());
-            //System.out.println(relation.id);
-            if(!drawables.containsKey(relation.getWayType())) {
-                drawables.put(relation.getWayType(), new ArrayList<>());
-            }
-            drawables.get(relation.getWayType()).add(relation);
+            rememberDrawable(relation);
         }
 
     }
 
-    public EnumMap<WayType, List<Drawable>> getDrawables() {
+    private void rememberDrawable(Drawable drawable) {
+        if(drawable.getWayType() == WayType.ISLAND){
+            islands.add(drawable);
+        }
+        else if(drawable.getWayType() != WayType.BEACH) {
+            ZoomLevel zoomLevel = ZoomLevel.levelForWayType(drawable.getWayType());
+            drawables.get(zoomLevel).insertDrawable(drawable);
+        }
+    }
+
+
+    public EnumMap<ZoomLevel, KDTree> getDrawables() {
         return drawables;
     }
 
@@ -212,5 +222,9 @@ public class OSMParser extends Parser{
 
     public float getMaxLon() {
         return maxLon;
+    }
+
+    public List<Drawable> getIslands() {
+        return islands;
     }
 }
