@@ -32,11 +32,17 @@ public class OSMRelation implements Drawable {
 
     @Override
     public WayType getWayType() {
-        return null;
+        return type;
     }
 
 
     public void setWayType(WayType type) {
         this.type = type;
+    }
+
+    @Override
+    public List<Point> getCoordinates() {
+
+        return new ArrayList<>();
     }
 }

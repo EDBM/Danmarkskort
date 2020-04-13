@@ -4,10 +4,9 @@ import java.util.Map;
 
 public class WayTypeSetter {
     public static WayType typeFromTags(Map<String, String> tags) {
-            switch (tags.getOrDefault("building", "")) {
-                case "yes":
-                    return WayType.BUILDING;
-            }
+
+            if(tags.containsKey("building"))
+                return WayType.BUILDING;
             
             switch (tags.getOrDefault("place", "")) {
                 case "island":
@@ -67,6 +66,8 @@ public class WayTypeSetter {
                     return WayType.HEATH;
                 case "wetland":
                     return WayType.WETLAND;
+                case "sand":
+                    return WayType.SAND;
             }
 
             if(tags.containsKey("cycleway"))
@@ -99,8 +100,10 @@ public class WayTypeSetter {
 
             switch (tags.getOrDefault("landuse", "")) {
                 case "grass":
-                case "farmland":
                     return WayType.NATURAL;
+
+                case "farmland":
+                    return WayType.FARMLAND;
 
                 case "harbour":
                     return WayType.HARBOUR;

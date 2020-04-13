@@ -3,19 +3,21 @@ package BFST20Project;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class Polylines implements Drawable, Serializable {
-    private float[][] coordinates;
+    private Point[] coordinates;
     private WayType wayType;
 
     public Polylines(OSMWay way){
-        coordinates = new float[way.size()][2];
+        wayType = way.getWayType();
+        coordinates = new Point[way.size()];
         setWayType(way.getWayType());
         for(int i = 0; i < way.size(); i++){
-            float[] coordinate = new float[2];
-            coordinate[0] = 0.56f * way.get(i).getLon();
-            coordinate[1] = -way.get(i).getLat();
+            Point coordinate = new Point(0.56f * way.get(i).getLon(), -way.get(i).getLat());
             coordinates[i] = coordinate;
         }
     }
@@ -27,10 +29,10 @@ public class Polylines implements Drawable, Serializable {
     }
 
     public void trace(GraphicsContext gc){
-        float[] startCoord = coordinates[0];
-        gc.moveTo(startCoord[0], startCoord[1]);
+        Point startCoord = coordinates[0];
+        gc.moveTo(startCoord.getX(), startCoord.getY());
         for (int i = 1; i<coordinates.length ; i++){
-            gc.lineTo(coordinates[i][0], coordinates[i][1]);
+            gc.lineTo(coordinates[i].getX(), coordinates[i].getY());
         }
     }
 
@@ -48,4 +50,11 @@ public class Polylines implements Drawable, Serializable {
     public void setWayType(WayType type) {
         this.wayType = wayType;
     }
+
+
+    public List<Point> getCoordinates() {
+        return Arrays.asList(coordinates);
+
+    }
+
 }

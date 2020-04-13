@@ -26,6 +26,7 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.SURFACE, Color.web("#000000"));
         resultMap.put(WayType.ASPHALT, Color.web("#000000"));
         resultMap.put(WayType.BEACH, Color.web("#FFFFFF"));
+        resultMap.put(WayType.SAND, Color.web("#FFFFFF"));
         resultMap.put(WayType.WATERWAY, Color.web("#AADAFE"));
         resultMap.put(WayType.AMENITY, Color.web("#EDEDED"));
         resultMap.put(WayType.BRIDGE, Color.web("#FFFFFF"));
@@ -41,6 +42,8 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.TOURISM, Color.web("#DEF6C0"));
         resultMap.put(WayType.MOTORWAY, Color.ORANGE);
         resultMap.put(WayType.SECONDARY, Color.web("#EFCC00"));
+
+        resultMap.put(WayType.FARMLAND, Color.web("#C8D7AB"));
 
 
         return resultMap;
@@ -59,6 +62,7 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.SURFACE, Color.BLACK);
         resultMap.put(WayType.ASPHALT, Color.BLACK);
         resultMap.put(WayType.BEACH, Color.web("#FFF1BA"));
+        resultMap.put(WayType.SAND, Color.web("#FFF1BA"));
         resultMap.put(WayType.WATERWAY, Color.BLACK);
         resultMap.put(WayType.AMENITY, Color.BLACK);
         resultMap.put(WayType.BRIDGE, Color.BLACK);
@@ -72,6 +76,8 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.BREAKWATER, Color.web("#AAAAAA"));
         resultMap.put(WayType.PIER, Color.web("#F3EFE9"));
         resultMap.put(WayType.TOURISM, Color.web("#DEF6C0"));
+
+        resultMap.put(WayType.FARMLAND, Color.web("#C8D7AB"));
 
         return resultMap;
     }
