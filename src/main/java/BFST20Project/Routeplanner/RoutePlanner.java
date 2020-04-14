@@ -3,10 +3,10 @@ package BFST20Project.Routeplanner;
 import java.util.*;
 
 public class RoutePlanner {
-        private List<RouteNode> nodes;
+        private Graph graph;
         RouteNode startNode;
         RouteNode endNode;
-        Queue<Edge> edges;
+        IndexMinPQ<Double> nodesToCheck;
         ArrayList<RouteNode> completedNodes;
         Map<RouteNode,RouteNode> visitedEdges;
         Map<RouteNode, Double> distTo;
@@ -14,16 +14,22 @@ public class RoutePlanner {
     public RoutePlanner(RouteNode startNode, RouteNode endNode){
         this.startNode=startNode;
         this.endNode=endNode;
-        Queue<Edge> edges = new PriorityQueue<>();
-        List<RouteNode> nodes = new ArrayList<>();
+        nodesToCheck = new PriorityQueue<>();
+        completedNodes = new ArrayList<>();
         visitedEdges = new HashMap<>();
         distTo = new HashMap<>();
         }
 
     public List<Edge> findRoute(RouteNode startNode, RouteNode endNode) {
-        RouteNode currentNode = startNode;
-        for(Edge edge: currentNode.incidentEdges){
-            distTo.put(edge.getEndNode(),edge.getLength());
+        distTo.put(startNode, 0.0);
+        nodesToCheck.add(new WeightedNode(startNode, 0.0));
+
+        while(!nodesToCheck.isEmpty()){
+            WeightedNode nodeToRelax = nodesToCheck.poll();
+            if(nodeToRelax.node == endNode){
+                break;
+            }
+            relax(nodeToRelax.node);
         }
 
     }
@@ -34,7 +40,24 @@ public class RoutePlanner {
             if(distTo.get(n)>distTo.get(node)+edge.getLength()){
                 distTo.put(n, distTo.get(node)+edge.getLength());
                 node.addEdge(edge);
+                WeightedNode weightedNode = new WeightedNode(node, distTo.get(node)+edge.getLength());
+                nodesToCheck.add(weightedNode);
             }
+        }
+    }
+
+    private class WeightedNode implements Comparable<WeightedNode>{
+        private RouteNode node;
+        private Double weight;
+
+        private WeightedNode(RouteNode node, Double weight){
+            this.node = node;
+            this.weight = weight;
+        }
+
+        @Override
+        public int compareTo(WeightedNode other) {
+            return weight.compareTo(other.weight);
         }
     }
 }
