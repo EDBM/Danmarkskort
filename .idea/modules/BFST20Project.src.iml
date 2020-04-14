@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
   <component name="ExternalSystem" externalSystem="GRADLE" externalSystemModuleGroup="" externalSystemModuleType="sourceSet" externalSystemModuleVersion="unspecified" linkedProjectId="BFST20Project:src" linkedProjectPath="$MODULE_DIR$/../.." rootProjectPath="$MODULE_DIR$/../.." />
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../build/classes/java/src" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../java" />
+    <content url="file://$MODULE_DIR$/../../src/src" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
 </module>
