@@ -4,8 +4,15 @@ import BFST20Project.OSMNode;
 
 public class Edge {
     private RouteNode startNode;
+
+    public RouteNode getEndNode() {
+        return endNode;
+    }
+
     private RouteNode endNode;
     private double distance;
+    private int speedLimit;
+    private double cost;
 
     public Edge(RouteNode startNode, RouteNode endNode){
         this.startNode=startNode;
@@ -21,4 +28,6 @@ public class Edge {
         distance = Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
         return distance;
     }
+
+    public double getDistance(){return distance;}
 }
