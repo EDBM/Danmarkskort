@@ -7,6 +7,7 @@ public class RoutePlanner {
         RouteNode startNode;
         RouteNode endNode;
         Queue<Edge> edges;
+        ArrayList<RouteNode> completedNodes;
         Map<RouteNode,RouteNode> visitedEdges;
         Map<RouteNode, Double> distTo;
 
@@ -22,10 +23,18 @@ public class RoutePlanner {
     public List<Edge> findRoute(RouteNode startNode, RouteNode endNode) {
         RouteNode currentNode = startNode;
         for(Edge edge: currentNode.incidentEdges){
-            distTo.put(edge.getEndNode(),edge.getDistance());
+            distTo.put(edge.getEndNode(),edge.getLength());
         }
-        
+
     }
 
-
+    public void relax(RouteNode node){
+        for(Edge edge: node.incidentEdges){
+            RouteNode n = edge.getEndNode();
+            if(distTo.get(n)>distTo.get(node)+edge.getLength()){
+                distTo.put(n, distTo.get(node)+edge.getLength());
+                node.addEdge(edge);
+            }
+        }
+    }
 }
