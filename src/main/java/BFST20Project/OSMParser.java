@@ -1,5 +1,9 @@
 package BFST20Project;
 
+import BFST20Project.Routeplanner.DirectedGraph;
+import BFST20Project.Routeplanner.ShortestPath;
+import BFST20Project.Routeplanner.TemporaryGraph;
+
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -13,6 +17,8 @@ public class OSMParser extends Parser{
     Map<Long, OSMNode> idToNode = new TreeMap<>();
     Map<Long, OSMWay> idToWay = new HashMap<>();
     Map<Long, OSMRelation> idToRelation = new HashMap<>();
+    List<OSMWay> drivableWays = new ArrayList<>();
+    DirectedGraph drivableWaysGraph;
     private XMLStreamReader reader;
 
     private float minLat, minLon, maxLat, maxLon;
@@ -23,6 +29,7 @@ public class OSMParser extends Parser{
         System.out.println("load parser");
         readOSMFile(file);
         createDrawables();
+        createDrivableWayGraph();
     }
 
     private void readOSMFile(File file) throws XMLStreamException, FileNotFoundException {
@@ -57,6 +64,7 @@ public class OSMParser extends Parser{
     }
 
     //Obviously slow but makes debugging way easier as the view actually zooms correctly for OSM files without defined bounds
+
     private void calculateBounds() {
         float minLat = Float.MAX_VALUE, minLon = Float.MAX_VALUE;
         float maxLat = Float.MIN_VALUE, maxLon = Float.MIN_VALUE;
@@ -73,7 +81,6 @@ public class OSMParser extends Parser{
         this.maxLat = -maxLat;
         this.maxLon = 0.56f * maxLon;
     }
-
     private void parseBounds(){
         minLat = -Float.parseFloat(reader.getAttributeValue(null, "maxlat"));
         maxLon = 0.56f * Float.parseFloat(reader.getAttributeValue(null, "maxlon"));
@@ -125,6 +132,9 @@ public class OSMParser extends Parser{
         }
 
         osmWay.setType(WayTypeSetter.typeFromTags(tags));
+        if(osmWay.isDrivableWay()){
+            drivableWays.add(osmWay);
+        }
 
         idToWay.put(id, osmWay);
     }
@@ -203,6 +213,10 @@ public class OSMParser extends Parser{
         }
     }
 
+    private void createDrivableWayGraph() {
+        TemporaryGraph temporaryGraph = new TemporaryGraph(drivableWays);
+        drivableWaysGraph = temporaryGraph.compressedGraph();
+    }
 
     public EnumMap<ZoomLevel, KDTree> getDrawables() {
         return drawables;

@@ -18,6 +18,10 @@ public class OSMNode {
         return lon;
     }
 
+    public Point getPoint(){
+        return new Point(lat, lon);
+    }
+
     public long getId(){return id;}
 
     /*public String toString() {

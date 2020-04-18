@@ -89,4 +89,30 @@ class ShortestPathTest {
         Assertions.assertEquals(4, path.size());
         Assertions.assertEquals(5.5, shortestPath.getTotalWeight());
     }
+
+    @Test
+    public void testReversePath(){
+        List<Vertex> vertices = new ArrayList<>();
+        vertices.add(new Vertex(new Point(0,0), 0));
+        vertices.add(new Vertex(new Point(1,1), 1));
+        vertices.add(new Vertex(new Point(2,2), 2));
+        vertices.add(new Vertex(new Point(3,3), 3));
+        vertices.add(new Vertex(new Point(4,4), 4));
+
+        List<DirectedEdge> edges = new ArrayList<>();
+        edges.add(new DirectedEdge(vertices.get(0), vertices.get(1), 1.0));
+        edges.add(new DirectedEdge(vertices.get(1), vertices.get(2), 3.5));
+        edges.add(new DirectedEdge(vertices.get(2), vertices.get(4), 2.0));
+        edges.add(new DirectedEdge(vertices.get(1), vertices.get(3), 1.5));
+        edges.add(new DirectedEdge(vertices.get(3), vertices.get(2), 1.0));
+
+        DirectedGraph graph = new DirectedGraph(vertices, edges);
+
+        ShortestPath shortestPath = new ShortestPath(graph, 4, 0);
+
+        Deque<DirectedEdge> path = shortestPath.getPath();
+
+        Assertions.assertEquals(4, path.size());
+        Assertions.assertEquals(5.5, shortestPath.getTotalWeight());
+    }
 }
