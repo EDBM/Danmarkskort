@@ -42,6 +42,7 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.TOURISM, Color.web("#DEF6C0"));
         resultMap.put(WayType.MOTORWAY, Color.ORANGE);
         resultMap.put(WayType.SECONDARY, Color.web("#EFCC00"));
+        resultMap.put(WayType.SHORTEST_PATH, Color.RED);
 
         resultMap.put(WayType.FARMLAND, Color.web("#C8D7AB"));
 

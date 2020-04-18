@@ -2,6 +2,7 @@ package BFST20Project.Routeplanner;
 
 import BFST20Project.OSMNode;
 import BFST20Project.OSMWay;
+import BFST20Project.Point;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class TemporaryGraph {
     private void createVertex(OSMNode node) {
         if(!OSMIdToVertexId.containsKey(node.getId())){
             int n = vertices.size();
-            vertices.add(new Vertex(node.getPoint(), n));
+            vertices.add(new Vertex(Point.fromLonLat(node.getLon(), node.getLat()), n));
             OSMIdToVertexId.put(node.getId(), n);
         }
     }
@@ -39,8 +40,8 @@ public class TemporaryGraph {
             Vertex v = vertices.get(OSMIdToVertexId.get(nodes.get(i).getId()));
             Vertex w = vertices.get(OSMIdToVertexId.get(nodes.get(i+1).getId()));
 
-            edges.add(new DirectedEdge(v, w, 1.0)); // TODO change weight to reflect speed and distance
-            edges.add(new DirectedEdge(w, v, 1.0));
+            edges.add(new DirectedEdge(v, w, way.getSpeed())); // TODO change weight to reflect speed and distance
+            edges.add(new DirectedEdge(w, v, way.getSpeed()));
         }
     }
 

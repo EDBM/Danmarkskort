@@ -6,13 +6,13 @@ public class DirectedEdge {
     private Vertex start;
     private Vertex end;
     private double length;
-    private double weight;
+    private double speed;
 
-    public DirectedEdge(Vertex start, Vertex end, double weight){
+    public DirectedEdge(Vertex start, Vertex end, double speed){
         this.start = start;
         this.end = end;
-        if (Double.isNaN(weight)) throw new IllegalArgumentException("Weight is Not a Number");
-        this.weight = weight;
+        if (Double.isNaN(speed)) throw new IllegalArgumentException("Speed is Not a Number");
+        this.speed = speed;
         length = calculateLength();
 
         start.addEdge(this);
@@ -36,6 +36,6 @@ public class DirectedEdge {
     }
 
     public double getWeight() {
-        return weight;
+        return length/speed;
     }
 }

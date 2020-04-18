@@ -56,6 +56,7 @@ public abstract class ColorScheme {
     }
     public double getWidth(WayType wayType){
         switch (wayType){
+            case SHORTEST_PATH:
             case MOTORWAY:
                 return 2;
             case WATERWAY:

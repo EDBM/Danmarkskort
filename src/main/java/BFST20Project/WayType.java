@@ -45,6 +45,7 @@ public enum WayType{
   HIGHWAY,
   SECONDARY,
   DIRTROAD,
-  BUILDING
+  BUILDING,
+  SHORTEST_PATH
   ;
 }

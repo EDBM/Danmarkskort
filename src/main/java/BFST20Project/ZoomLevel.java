@@ -15,15 +15,15 @@ public enum ZoomLevel {
             case ISLAND:
             case MOTORWAY:
             case WATER:
-            case WATERWAY:
-            case FARMLAND:
             case NATURAL:
+            case SHORTEST_PATH:
                 return LEVEL_1;
 
             case BEACH:
             case SAND:
             case BRIDGE:
             case DIRT:
+            case FARMLAND:
             case GRASS:
             case HEATH:
             case MEADOW:
@@ -32,6 +32,7 @@ public enum ZoomLevel {
             case RESIDENTIAL:
             case SCRUB:
             case SECONDARY:
+            case WATERWAY:
             case WETLAND:
                 return LEVEL_2;
 

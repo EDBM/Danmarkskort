@@ -17,9 +17,14 @@ public class Polylines implements Drawable, Serializable {
         coordinates = new Point[way.size()];
         setWayType(way.getWayType());
         for(int i = 0; i < way.size(); i++){
-            Point coordinate = new Point(0.56f * way.get(i).getLon(), -way.get(i).getLat());
+            Point coordinate = Point.fromLonLat(way.get(i).getLon(), way.get(i).getLat());
             coordinates[i] = coordinate;
         }
+    }
+
+    public Polylines(Point[] coordinates, WayType wayType){
+        this.coordinates = coordinates;
+        this.wayType = wayType;
     }
 
     public void stroke(GraphicsContext gc){

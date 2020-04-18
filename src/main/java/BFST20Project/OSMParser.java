@@ -216,6 +216,15 @@ public class OSMParser extends Parser{
     private void createDrivableWayGraph() {
         TemporaryGraph temporaryGraph = new TemporaryGraph(drivableWays);
         drivableWaysGraph = temporaryGraph.compressedGraph();
+
+        int id1 = temporaryGraph.OSMIdToVertexId.get(32948578L);
+        int id2 = temporaryGraph.OSMIdToVertexId.get(4791600016L);
+/*
+        ShortestPath shortestPath = new ShortestPath(drivableWaysGraph, id1, id2);
+
+        System.out.println(shortestPath.getPath());
+        System.out.println(shortestPath.getTotalWeight());*/
+        System.out.println(id1 + " " + id2);
     }
 
     public EnumMap<ZoomLevel, KDTree> getDrawables() {
@@ -240,5 +249,9 @@ public class OSMParser extends Parser{
 
     public List<Drawable> getIslands() {
         return islands;
+    }
+
+    public DirectedGraph getDrivableWayGraph() {
+        return drivableWaysGraph;
     }
 }

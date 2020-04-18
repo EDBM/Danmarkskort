@@ -7,6 +7,10 @@ public class Point {
     private float x;
     private float y;
 
+    public static Point fromLonLat(float lon, float lat){
+        return new Point(0.56f * lon, -lat);
+    }
+
     public Point(float x, float y) {
         this.x = x;
         this.y = y;

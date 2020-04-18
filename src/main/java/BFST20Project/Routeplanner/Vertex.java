@@ -8,10 +8,10 @@ import java.util.List;
 public class Vertex {
     private final int id;
 
-    Point node;
+    Point point;
     List<DirectedEdge> incidentEdges;
     public Vertex(Point node, int id){
-        this.node=node;
+        this.point =node;
         this.id = id;
         incidentEdges = new ArrayList<DirectedEdge>();
     }
@@ -24,12 +24,16 @@ public class Vertex {
         return incidentEdges;
     }
 
+    public Point getPoint() {
+        return point;
+    }
+
     public double getLon() {
-        return node.getX();
+        return point.getX();
     }
 
     public double getLat() {
-        return node.getY();
+        return point.getY();
     }
 
     public int getId() {
