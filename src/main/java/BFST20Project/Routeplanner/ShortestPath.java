@@ -8,6 +8,8 @@ public class ShortestPath {
 
     DirectedGraph graph;
 
+    Vertex endVertex;
+
     IndexMinPQ<Double> priorityQueue;
 
     Deque<DirectedEdge> path = new LinkedList<>();
@@ -15,6 +17,7 @@ public class ShortestPath {
 
     public ShortestPath(DirectedGraph graph, int start, int end){
         this.graph = graph;
+        this.endVertex = graph.getVertex(end);
         // this takes time proportional to graph size, no matter start and end.
         distTo = new double[graph.size()];
         Arrays.fill(distTo, Double.POSITIVE_INFINITY);
@@ -58,10 +61,15 @@ public class ShortestPath {
             distTo[to] = distTo[from] + edge.getWeight();
             edgeTo[to] = edge;
             if (priorityQueue.contains(to))
-                priorityQueue.decreaseKey(to, distTo[to]);
+                priorityQueue.decreaseKey(to, distTo[to] + heuristic(to));
             else
-                priorityQueue.insert(to, distTo[to]);
+                priorityQueue.insert(to, distTo[to] + heuristic(to));
         }
+    }
+
+    private double heuristic(int to) {
+        Vertex toVertex = graph.getVertex(to);
+        return endVertex.getPoint().distanceTo(toVertex.getPoint())/DirectedGraph.MAX_DRIVE_SPEED;
     }
 
     public Deque<DirectedEdge> getPath() {

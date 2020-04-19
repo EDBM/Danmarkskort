@@ -22,6 +22,10 @@ public class Point {
         this((float) point2D.getX(), (float) point2D.getY());
     }
 
+    public double distanceTo(Point other){
+        return Math.sqrt((this.x-other.x)*(this.x-other.x)+(this.y-other.y)*(this.y-other.y));
+    }
+
     public float getX() {
         return x;
     }

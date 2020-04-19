@@ -19,11 +19,7 @@ public class DirectedEdge {
     }
 
     private double calculateLength() {
-        double x1 = start.getLat();
-        double x2 = end.getLat();
-        double y1 = start.getLon();
-        double y2 = end.getLon();
-        length = Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+        length = start.getPoint().distanceTo(end.getPoint());
         return length;
     }
 

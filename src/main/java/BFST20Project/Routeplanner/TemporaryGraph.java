@@ -40,7 +40,7 @@ public class TemporaryGraph {
             Vertex v = vertices.get(OSMIdToVertexId.get(nodes.get(i).getId()));
             Vertex w = vertices.get(OSMIdToVertexId.get(nodes.get(i+1).getId()));
 
-            edges.add(new DirectedEdge(v, w, way.getSpeed())); // TODO change weight to reflect speed and distance
+            edges.add(new DirectedEdge(v, w, way.getSpeed()));
             edges.add(new DirectedEdge(w, v, way.getSpeed()));
         }
     }
