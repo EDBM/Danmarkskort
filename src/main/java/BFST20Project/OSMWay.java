@@ -42,5 +42,22 @@ public class OSMWay{
 
     public long getId(){ return id; }
 
+    public int getSpeed(){
+        if(type.equals(WayType.MOTORWAY)){
+            return 130;
+        }
+        if(type.equals(WayType.SECONDARY)){
+            return 80;
+        }
+        else
+            return 50;
+    }
 
+    public boolean isDrivableWay() {
+        return (type.equals(WayType.HIGHWAY)
+            || type.equals(WayType.MOTORWAY)
+            || type.equals(WayType.SECONDARY)
+            || type.equals(WayType.MINIWAY)
+            || type.equals(WayType.DIRTROAD));
+    }
 }
