@@ -224,7 +224,7 @@ public class OSMParser extends Parser{
 
         System.out.println(shortestPath.getPath());
         System.out.println(shortestPath.getTotalWeight());*/
-        System.out.println(id1 + " " + id2);
+       System.out.println(id1 + " " + id2);
     }
 
     public EnumMap<ZoomLevel, KDTree> getDrawables() {

@@ -1,16 +1,35 @@
-Button{
 
-    -fx-max-width: 40px;
-    -fx-max-height: 40px;
-    -fx-border-style: solid;
-    -fx-border-width: 1px;
-
+#zoomInd:hover{
+    -fx-background-color: grey;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
+
+#zoomUd:hover{
+    -fx-background-color: grey;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+#walk:hover{
+    -fx-background-image: url('/images/walkHover.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: rgba(1,1,1,0.0);
+}
+
 
 Label{
     -fx-padding: 20 0 0 0 ;
 }
 
+Button {
+    -fx-border-width: 1px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-background-color: white;
+
+}
 
 .addresssearch{
     -fx-padding: 15px;

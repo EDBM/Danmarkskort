@@ -14,7 +14,7 @@ import java.io.FileNotFoundException;
 import java.nio.file.Watchable;
 import java.util.EnumMap;
 import java.util.List;
-
+import javafx.scene.control.Tooltip;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,6 +30,8 @@ public class View{
         stage.setScene(scene);
         stage.show();
         controller.init(model);
+
+
     }
 
 }
