@@ -14,6 +14,11 @@ public interface Drawable {
     WayType getWayType();
     void setWayType(WayType type);
 
+    float getMaxX();
+    float getMinX();
+    float getMaxY();
+    float getMinY();
+
     Collection<Point> getCoordinates();
 
 }

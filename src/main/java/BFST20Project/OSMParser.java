@@ -163,7 +163,8 @@ public class OSMParser extends Parser{
                             if(value.equals("multipolygon")){
                                 osmRelation = new MultiPolygon(id);
                                 osmRelation.addAllWays(OSMWays);
-                                ((MultiPolygon) osmRelation).RingAssignment();
+                                ((MultiPolygon) osmRelation).RingAssignment(); // should be moved to the constructor
+                                ((MultiPolygon) osmRelation).setMinMax();
 //                                ((MultiPolygon) osmRelation).calculateBoundingBox();
                                 idToRelation.put(id, osmRelation);
                             }
@@ -189,27 +190,32 @@ public class OSMParser extends Parser{
     }
 
     private void createDrawables(){
-        for(ZoomLevel zoomLevel : ZoomLevel.values())
-            drawables.put(zoomLevel, new KDTree());
+        Map<ZoomLevel, List<Drawable>> tempDrawableStorage = new EnumMap<>(ZoomLevel.class);
+
+        for(ZoomLevel zoomLevel : ZoomLevel.values()){
+            tempDrawableStorage.put(zoomLevel, new ArrayList<>());
+        }
 
         for(OSMWay way : idToWay.values()){
             Polylines line = new Polylines(way);
-            rememberDrawable(line);
+            rememberDrawable(line, tempDrawableStorage);
         }
 
         for(OSMRelation relation : idToRelation.values()){
-            rememberDrawable(relation);
+            if(relation instanceof MultiPolygon)
+                rememberDrawable((MultiPolygon) relation, tempDrawableStorage);
         }
-
+        for(ZoomLevel zoomLevel : ZoomLevel.values())
+            drawables.put(zoomLevel, new KDTree(tempDrawableStorage.get(zoomLevel)));
     }
 
-    private void rememberDrawable(Drawable drawable) {
+    private void rememberDrawable(Drawable drawable, Map<ZoomLevel, List<Drawable>> tempDrawableStorage) {
         if(drawable.getWayType() == WayType.ISLAND){
             islands.add(drawable);
         }
         else if(drawable.getWayType() != WayType.BEACH) {
             ZoomLevel zoomLevel = ZoomLevel.levelForWayType(drawable.getWayType());
-            drawables.get(zoomLevel).insertDrawable(drawable);
+            tempDrawableStorage.get(zoomLevel).add(drawable);
         }
     }
 
@@ -217,14 +223,14 @@ public class OSMParser extends Parser{
         TemporaryGraph temporaryGraph = new TemporaryGraph(drivableWays);
         drivableWaysGraph = temporaryGraph.compressedGraph();
 
-        int id1 = temporaryGraph.OSMIdToVertexId.get(32948578L);
+/*        int id1 = temporaryGraph.OSMIdToVertexId.get(32948578L);
         int id2 = temporaryGraph.OSMIdToVertexId.get(4791600016L);
 /*
         ShortestPath shortestPath = new ShortestPath(drivableWaysGraph, id1, id2);
 
         System.out.println(shortestPath.getPath());
         System.out.println(shortestPath.getTotalWeight());*/
-       System.out.println(id1 + " " + id2);
+  //     System.out.println(id1 + " " + id2);
     }
 
     public EnumMap<ZoomLevel, KDTree> getDrawables() {

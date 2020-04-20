@@ -31,7 +31,7 @@ public class Model {
         minLon = osmParser.getMinLon();
         maxLat = osmParser.getMaxLat();
         maxLon = osmParser.getMaxLon();
-
+/*
         Deque<DirectedEdge> edges = new ShortestPath(driveableWayGraph, 1732, 59569).getPath();
         Point[] points = new Point[edges.size() + 1];
         points[0] = edges.getFirst().getStart().getPoint();
@@ -43,7 +43,7 @@ public class Model {
             points[n] = edge.getEnd().getPoint();
             n++;
         }
-        shortestPath = new Polylines(points, WayType.SHORTEST_PATH);
+        shortestPath = new Polylines(points, WayType.SHORTEST_PATH);*/
     }
 
     public void addObserver(Runnable observer) {
