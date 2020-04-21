@@ -5,22 +5,112 @@ import java.util.*;
 
 public class KDTree {
     private int size;
-    private int bucketSize;
+    private int bucketSize = 100;
     private Node rootNode;
 
 
-    public KDTree(){
+    public KDTree(List<Drawable> drawables) {
+        Drawable[] drawableArray = drawables.toArray(new Drawable[0]);
+
+        rootNode = insertIntoTree(drawableArray, 0, drawableArray.length - 1, 0);
+
+   /*     for (Drawable drawable: drawables) {
+            insertDrawable(drawable);
+        }
+*/
+    }
+
+    private Node insertIntoTree(Drawable[] drawables, int start, int end, int height) {
+        if (end - start <= bucketSize) {
+            return new Node(0, 0, height, Arrays.copyOfRange(drawables, start, end + 1));
+        }
+
+        Comparator<Drawable> comparator;
+        if (height % 2 == 0) {
+            comparator = new XComparator();
+        } else {
+            comparator = new YComparator();
+        }
+
+        // sorts smallest maxX first
+        Arrays.sort(drawables, start, end, comparator); // using Quickselect could cut the running time by a factor log(n)
+
+        int middle = start + (end - start) / 2;
+        float splitMax; // All left children have maxX/maxY lower than splitMax. All right children have higher than.
+        float splitMin;
+        if(height % 2 == 0)
+             splitMin = drawables[middle + 1].getMinX();  // The lowest minX of any right child.
+        else
+            splitMin = drawables[middle + 1].getMinY();
+
+        if (height % 2 == 0) {
+            splitMax = drawables[middle].getMaxX();
+            for (int i = middle + 1; i <= end; i++) {
+                if (drawables[i].getMinX() < splitMin)
+                    splitMin = drawables[i].getMinX();
+            }
+        } else {
+            splitMax = drawables[middle].getMaxY();
+            for (int i = middle + 1; i <= end; i++) {
+                if (drawables[i].getMinY() < splitMin)
+                    splitMin = drawables[i].getMinY();
+            }
+        }
+        Node node = new Node(splitMin, splitMax, height, null);
+
+        node.leftChild = insertIntoTree(drawables, start, middle, height + 1);
+        node.rightChild = insertIntoTree(drawables, middle + 1, end, height + 1);
+        return node;
 
     }
 
-    public KDTree(List<Drawable> drawables) {
-        for (Drawable drawable: drawables) {
-            insertDrawable(drawable);
+    public Map<WayType, List<Drawable>> query(float minX, float minY, float maxX, float maxY) {
+        Map<WayType, List<Drawable>> queriedDrawables = new EnumMap<>(WayType.class);
+
+        query(rootNode, minX, minY, maxX, maxY, queriedDrawables);
+
+        Map<WayType, List<Drawable>> toReturn = new EnumMap<>(WayType.class);
+
+        for(WayType wayType : queriedDrawables.keySet()){
+            toReturn.put(wayType, new ArrayList<>(queriedDrawables.get(wayType)));
+        }
+
+        return toReturn;
+    }
+
+    private void query(Node kNode, float minX, float minY, float maxX, float maxY, Map<WayType, List<Drawable>> queriedDrawables) {
+        if(kNode == null)
+            return;
+
+        if(kNode.drawables != null) {
+            for(Drawable drawable : kNode.drawables) {
+                WayType wayType = drawable.getWayType();
+                if (!queriedDrawables.containsKey(wayType))
+                    queriedDrawables.put(wayType, new ArrayList<>());
+                queriedDrawables.get(wayType).add(drawable);
+            }
+        }
+
+        float min, max;
+
+        if(kNode.height % 2 == 0) {
+            min = minX;
+            max = maxX;
+        }
+        else{
+            min = minY;
+            max = maxY;
+        }
+
+        if(min <= kNode.splitMax) {
+            query(kNode.leftChild, minX, minY, maxX, maxY, queriedDrawables);
+        }
+        if(max >= kNode.splitMin){
+            query(kNode.rightChild, minX, minY, maxX, maxY, queriedDrawables);
         }
 
     }
-
-    public void insertDrawable(Drawable drawable){
+ /*   public void insertDrawable(Drawable drawable){
         for (Point point: drawable.getCoordinates()) {
             insertNode(rootNode, point, drawable);
         }
@@ -58,73 +148,46 @@ public class KDTree {
     }
 
 
-    public Map<WayType, List<Drawable>> query(float minX, float minY, float maxX, float maxY) {
-        Map<WayType, Set<Drawable>> queriedDrawables = new EnumMap<>(WayType.class);
 
-        query(rootNode, minX, minY, maxX, maxY, queriedDrawables);
 
-        Map<WayType, List<Drawable>> toReturn = new EnumMap<>(WayType.class);
-
-        for(WayType wayType : queriedDrawables.keySet()){
-            toReturn.put(wayType, new ArrayList<>(queriedDrawables.get(wayType)));
-        }
-
-        return toReturn;
-    }
-
-    private void query(Node kNode, float minX, float minY, float maxX, float maxY, Map<WayType, Set<Drawable>> queriedDrawables) {
-        if(kNode == null)
-            return;
-
-        if(kNode.height % 2 == 0){
-            if(kNode.getX() <= maxX)
-                query(kNode.rightChild, minX, minY, maxX, maxY, queriedDrawables);
-            if(kNode.getX() >= minX)
-                query(kNode.leftChild, minX, minY, maxX, maxY, queriedDrawables);
-        }
-        else{
-            if(kNode.getY() <= maxY)
-                query(kNode.rightChild, minX, minY, maxX, maxY, queriedDrawables);
-            if(kNode.getY() >= minY)
-                query(kNode.leftChild, minX, minY, maxX, maxY, queriedDrawables);
-        }
-
-        if(nodeInBox(kNode, minX, minY, maxX, maxY)) {
-            WayType wayType = kNode.parentWay.getWayType();
-            if (!queriedDrawables.containsKey(wayType))
-                queriedDrawables.put(wayType, new HashSet<>());
-            queriedDrawables.get(wayType).add(kNode.parentWay);
-        }
-    }
 
     private boolean nodeInBox(Node node, float minX, float minY, float maxX, float maxY) {
         return node.getX() >= minX &&
                 node.getX() <= maxX &&
                 node.getY() >= minY &&
                 node.getY() <= maxY;
-    }
+    }*/
 
 
     private class Node{
-        Drawable parentWay;
-        Point coordinates;
+        Drawable[] drawables;  // null if not a leaf node.
+        float splitMin, splitMax;
         public Node leftChild, rightChild;
         public int height;
 
-        public Node(Point coordinates, int height, Drawable parentWay) {
-            this.coordinates = coordinates;
+        public Node(float splitMin, float splitMax, int height, Drawable[] drawables) {
+            this.splitMin = splitMin;
+            this.splitMax = splitMax;
             this.height = height;
-            this.parentWay = parentWay;
+            this.drawables = drawables;
         }
 
-        public float getX(){
-            return coordinates.getX();
-        }
+    }
 
-        public float getY(){
-            return coordinates.getY();
+    private class XComparator implements Comparator<Drawable>{
+        @Override
+        public int compare(Drawable d1, Drawable d2) {
+            return Float.compare(d1.getMaxX(), d2.getMaxX());
         }
     }
+
+    private class YComparator implements Comparator<Drawable>{
+        @Override
+        public int compare(Drawable d1, Drawable d2) {
+            return Float.compare(d1.getMaxY(), d2.getMaxY());
+        }
+    }
+
 }
 
 

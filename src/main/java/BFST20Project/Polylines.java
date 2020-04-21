@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Polylines implements Drawable, Serializable {
     private Point[] coordinates;
+    private Point minPoint, maxPoint;
     private WayType wayType;
 
     public Polylines(OSMWay way){
@@ -20,11 +21,35 @@ public class Polylines implements Drawable, Serializable {
             Point coordinate = Point.fromLonLat(way.get(i).getLon(), way.get(i).getLat());
             coordinates[i] = coordinate;
         }
+
+        setMinMax();
     }
+
 
     public Polylines(Point[] coordinates, WayType wayType){
         this.coordinates = coordinates;
         this.wayType = wayType;
+        setMinMax();
+    }
+
+    private void setMinMax(){
+        float minX = coordinates[0].getX();
+        float minY = coordinates[0].getY();
+        float maxX = minX;
+        float maxY = minY;
+
+        for(int i = 1; i < coordinates.length; i++){
+            if(coordinates[i].getX() < minX)
+                minX = coordinates[i].getX();
+            else if(coordinates[i].getX() > maxX)
+                maxX = coordinates[i].getX();
+            if(coordinates[i].getY() < minY)
+                minY = coordinates[i].getY();
+            else if(coordinates[i].getY() > maxY)
+                maxY = coordinates[i].getY();
+        }
+        minPoint = new Point(minX, minY);
+        maxPoint = new Point(maxX, maxY);
     }
 
     public void stroke(GraphicsContext gc){
@@ -54,6 +79,26 @@ public class Polylines implements Drawable, Serializable {
     @Override
     public void setWayType(WayType type) {
         this.wayType = wayType;
+    }
+
+    @Override
+    public float getMaxX() {
+        return maxPoint.getX();
+    }
+
+    @Override
+    public float getMinX() {
+        return minPoint.getX();
+    }
+
+    @Override
+    public float getMaxY() {
+        return maxPoint.getY();
+    }
+
+    @Override
+    public float getMinY() {
+        return minPoint.getY();
     }
 
 

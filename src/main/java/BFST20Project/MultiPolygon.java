@@ -15,10 +15,10 @@ import java.util.List;
 
 public class MultiPolygon extends OSMRelation implements Drawable, Serializable {
 
-    private ArrayList<ArrayList<OSMWay>> rings = new ArrayList<>();
+    private List<List<Point>> rings = new ArrayList<>();
     private int numberOfNodes = 0;
+    private float minX, minY, maxX, maxY;
     private WayType type;
-    private float[][] coordinates;
 
     public MultiPolygon(long id){
         super(id);
@@ -27,27 +27,13 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     @Override
     public void stroke(GraphicsContext gc) {} //NOT USED
 
-
-    @Override
-    public void fill(GraphicsContext gc){
-        fill(gc, rings);
-    }
-
-    public void fill(GraphicsContext gc, ArrayList<ArrayList<OSMWay>> rings) {
+    public void fill(GraphicsContext gc) {
         gc.setFillRule(FillRule.EVEN_ODD);
-        float[][] coordinates = new float[2][numberOfNodes];
-        int count = 0;
         gc.beginPath();
-        for (ArrayList<OSMWay> list : rings) {
-            gc.moveTo(0.56f * list.get(0).get(0).getLon(), -list.get(0).get(0).getLat());
-            for (OSMWay way : list) {
-                for(int i = 0; i < way.size(); i++){
-                    coordinates[0][count] = 0.56f * way.get(i).getLon();
-                    coordinates[1][count] = -way.get(i).getLat();
-
-                    gc.lineTo(coordinates[0][count], coordinates[1][count]);
-                    count++;
-                }
+        for (List<Point> points : rings) {
+            gc.moveTo(points.get(0).getX(), points.get(0).getY());
+            for (int i = 1; i < points.size(); i++) {
+                gc.lineTo(points.get(i).getX(), points.get(i).getY());
             }
         }
         gc.closePath();
@@ -58,8 +44,8 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     //Code build from this Algorithm: https://wiki.openstreetmap.org/wiki/Relation:multipolygon/Algorithm#Multipolygon_Creation
     public boolean RingAssignment() {
 
-        ArrayList<OSMWay> unassigned = new ArrayList<>();
-        ArrayList<OSMWay> assigned = new ArrayList<>();
+        List<OSMWay> unassigned = new ArrayList<>();
+        List<OSMWay> assigned = new ArrayList<>();
 
         unassigned.addAll(ways);
 
@@ -85,10 +71,10 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
                     if (assigned.get(0).first().getId() == assigned.get(assigned.size() - 1).last().getId()) {
 
                         if (unassigned.isEmpty()) {
-                            rings.add(assigned);
+                            addRing(assigned);
                             return true;
                         } else{
-                            rings.add(assigned);
+                            addRing(assigned);
                             assigned = new ArrayList<>();
                             continue ringAssignment;
                         }
@@ -120,6 +106,36 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
         }
     }
 
+    private void addRing(List<OSMWay> ways) {
+        List<Point> ring = new ArrayList<>();
+        for(OSMWay way : ways){
+            for(OSMNode node : way.getAll()){
+                ring.add(Point.fromLonLat(node.getLon(), node.getLat()));
+            }
+        }
+        rings.add(ring);
+    }
+
+    // almost duplicate of Polylines method. Maybe merge to one method?
+    public void setMinMax(){
+        minX = Float.POSITIVE_INFINITY; // might give funky result if a MultiPolygon exists with no points
+        minY = Float.POSITIVE_INFINITY;
+        maxX = Float.NEGATIVE_INFINITY;
+        maxY = Float.NEGATIVE_INFINITY;
+
+        for(List<Point> ring : rings){
+            for (Point point : ring){
+                if(point.getX() < minX)
+                    minX = point.getX();
+                else if(point.getX() > maxX)
+                    maxX = point.getX();
+                if(point.getY() < minY)
+                    minY = point.getY();
+                else if(point.getY() > maxY)
+                    maxY = point.getY();
+            }
+        }
+    }
 
 
     @Override
@@ -132,16 +148,31 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
         this.type = type;
     }
 
+    @Override
+    public float getMaxX() {
+        return maxX;
+    }
+
+    @Override
+    public float getMinX() {
+        return minX;
+    }
+
+    @Override
+    public float getMaxY() {
+        return maxY;
+    }
+
+    @Override
+    public float getMinY() {
+        return minY;
+    }
+
     public List<Point> getCoordinates() {
+        List<Point> points = new ArrayList<>();
 
-        ArrayList<Point> points = new ArrayList<>();
-
-        for (ArrayList<OSMWay> list : rings) {
-            for (OSMWay way : list) {
-                for (OSMNode node: way.getAll()) {
-                    points.add(new Point(0.56f * node.getLon(), -node.getLat()));
-                }
-            }
+        for (List<Point> ring : rings) {
+            points.addAll(ring);
         }
         return points;
     }
