@@ -19,6 +19,8 @@ public interface Drawable {
     float getMaxY();
     float getMinY();
 
+    float distanceTo(Point point);
+
     Collection<Point> getCoordinates();
 
 }

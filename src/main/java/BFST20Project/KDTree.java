@@ -1,5 +1,8 @@
 package BFST20Project;
 
+import javafx.util.Pair;
+
+import java.awt.geom.FlatteningPathIterator;
 import java.util.*;
 
 
@@ -7,6 +10,8 @@ public class KDTree {
     private int size;
     private int bucketSize = 100;
     private Node rootNode;
+    private float nearestNeighborDistance;
+    private Drawable nearestNeighborDrawable;
 
 
     public KDTree(List<Drawable> drawables) {
@@ -22,7 +27,7 @@ public class KDTree {
 
     private Node insertIntoTree(Drawable[] drawables, int start, int end, int height) {
         if (end - start <= bucketSize) {
-            return new Node(0, 0, height, Arrays.copyOfRange(drawables, start, end + 1));
+            return new Node(height, Arrays.copyOfRange(drawables, start, end + 1));
         }
 
         Comparator<Drawable> comparator;
@@ -38,25 +43,24 @@ public class KDTree {
         int middle = start + (end - start) / 2;
         float splitMax; // All left children have maxX/maxY lower than splitMax. All right children have higher than.
         float splitMin;
-        if(height % 2 == 0)
-             splitMin = drawables[middle + 1].getMinX();  // The lowest minX of any right child.
-        else
-            splitMin = drawables[middle + 1].getMinY();
+
 
         if (height % 2 == 0) {
             splitMax = drawables[middle].getMaxX();
+            splitMin = drawables[middle + 1].getMinX();  // The lowest minX of any right child.
             for (int i = middle + 1; i <= end; i++) {
                 if (drawables[i].getMinX() < splitMin)
                     splitMin = drawables[i].getMinX();
             }
         } else {
             splitMax = drawables[middle].getMaxY();
+            splitMin = drawables[middle + 1].getMinY();
             for (int i = middle + 1; i <= end; i++) {
                 if (drawables[i].getMinY() < splitMin)
                     splitMin = drawables[i].getMinY();
             }
         }
-        Node node = new Node(splitMin, splitMax, height, null);
+        Node node = new Node(splitMin, splitMax, height);
 
         node.leftChild = insertIntoTree(drawables, start, middle, height + 1);
         node.rightChild = insertIntoTree(drawables, middle + 1, end, height + 1);
@@ -69,31 +73,26 @@ public class KDTree {
 
         query(rootNode, minX, minY, maxX, maxY, queriedDrawables);
 
-        Map<WayType, List<Drawable>> toReturn = new EnumMap<>(WayType.class);
-
-        for(WayType wayType : queriedDrawables.keySet()){
-            toReturn.put(wayType, new ArrayList<>(queriedDrawables.get(wayType)));
-        }
-
-        return toReturn;
+        return queriedDrawables;
     }
 
-    private void query(Node kNode, float minX, float minY, float maxX, float maxY, Map<WayType, List<Drawable>> queriedDrawables) {
-        if(kNode == null)
+    private void query(Node node, float minX, float minY, float maxX, float maxY, Map<WayType, List<Drawable>> queriedDrawables) {
+        if(node == null)
             return;
 
-        if(kNode.drawables != null) {
-            for(Drawable drawable : kNode.drawables) {
+        if(node.isLeaf) {
+            for(Drawable drawable : node.drawables) {
                 WayType wayType = drawable.getWayType();
                 if (!queriedDrawables.containsKey(wayType))
                     queriedDrawables.put(wayType, new ArrayList<>());
                 queriedDrawables.get(wayType).add(drawable);
             }
+            return;
         }
 
         float min, max;
 
-        if(kNode.height % 2 == 0) {
+        if(node.height % 2 == 0) {
             min = minX;
             max = maxX;
         }
@@ -102,13 +101,52 @@ public class KDTree {
             max = maxY;
         }
 
-        if(min <= kNode.splitMax) {
-            query(kNode.leftChild, minX, minY, maxX, maxY, queriedDrawables);
+        if(min <= node.splitMax) {
+            query(node.leftChild, minX, minY, maxX, maxY, queriedDrawables);
         }
-        if(max >= kNode.splitMin){
-            query(kNode.rightChild, minX, minY, maxX, maxY, queriedDrawables);
+        if(max >= node.splitMin){
+            query(node.rightChild, minX, minY, maxX, maxY, queriedDrawables);
         }
 
+    }
+
+    public Drawable nearestNeighborOfTypes(Point queryPoint, Collection<WayType> allowedTypes){
+        nearestNeighborDistance = Float.POSITIVE_INFINITY;
+        nearestNeighborOfTypes(rootNode, queryPoint, allowedTypes);
+        return nearestNeighborDrawable;
+    }
+
+    private void nearestNeighborOfTypes(Node node, Point queryPoint, Collection<WayType> allowedTypes) {
+        if(node.isLeaf){
+            for (Drawable drawable : node.drawables){
+                if(allowedTypes.contains(drawable.getWayType())){
+                    float distance = drawable.distanceTo(queryPoint);
+                    if(distance < nearestNeighborDistance){
+                        nearestNeighborDistance = distance;
+                        nearestNeighborDrawable = drawable;
+                    }
+                }
+            }
+        }
+        else{
+            char coord;
+            if(node.height % 2 == 0)
+                coord = 'x';
+            else{
+                coord = 'y';
+            }
+
+            if(queryPoint.getCoord(coord) < node.splitMax){
+                nearestNeighborOfTypes(node.leftChild, queryPoint, allowedTypes);
+                if(queryPoint.getCoord(coord) + nearestNeighborDistance > node.splitMin)
+                    nearestNeighborOfTypes(node.rightChild, queryPoint, allowedTypes);
+            }
+            else {
+                nearestNeighborOfTypes(node.rightChild, queryPoint, allowedTypes);
+                if(queryPoint.getCoord(coord) - nearestNeighborDistance < node.splitMax)
+                    nearestNeighborOfTypes(node.leftChild, queryPoint, allowedTypes);
+            }
+        }
     }
  /*   public void insertDrawable(Drawable drawable){
         for (Point point: drawable.getCoordinates()) {
@@ -160,16 +198,30 @@ public class KDTree {
 
 
     private class Node{
-        Drawable[] drawables;  // null if not a leaf node.
-        float splitMin, splitMax;
-        public Node leftChild, rightChild;
+        boolean isLeaf;
         public int height;
 
-        public Node(float splitMin, float splitMax, int height, Drawable[] drawables) {
+        // Fields for non-leafs
+        float splitMin, splitMax;
+        public Node leftChild, rightChild;
+
+        // Fields for leafs
+        Drawable[] drawables;  // null if not a leaf node.
+
+
+        // Constructor for a non-leaf node
+        public Node(float splitMin, float splitMax, int height) {
             this.splitMin = splitMin;
             this.splitMax = splitMax;
             this.height = height;
+            isLeaf = false;
+        }
+
+        // Constructor for a leaf node
+        public Node(int height, Drawable[] drawables){
+            this.height = height;
             this.drawables = drawables;
+            isLeaf = true;
         }
 
     }

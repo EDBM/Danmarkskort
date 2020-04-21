@@ -101,4 +101,19 @@ public class MapCanvas extends Canvas {
         trans.prependScale(factor, factor, x, y);
         repaint();
     }
+
+    public void highlightNearestRoad(double x, double y) {
+        try {
+            Point mapPoint = new Point(trans.inverseTransform(x, y));
+            Drawable nearestRoad = model.nearestRoad(mapPoint);
+            double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
+            gc.setLineWidth(3 * pixelWidth);
+            gc.setStroke(Color.PURPLE);
+            nearestRoad.stroke(gc);
+
+        } catch (NonInvertibleTransformException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

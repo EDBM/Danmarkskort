@@ -22,7 +22,7 @@ public class Model {
     private Trie trie;
 
     public Model() throws FileNotFoundException, XMLStreamException {
-        file = new File(getClass().getClassLoader().getResource("anholt.osm").getFile());
+        file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
 
 
         OSMParser osmParser = new OSMParser(file);
@@ -76,5 +76,25 @@ public class Model {
 
     public Trie getTrie() {
         return trie;
+    }
+
+    public Drawable nearestRoad(Point mapPoint) {
+        Collection<WayType> allowedWaytypes = Arrays.asList(WayType.MOTORWAY, WayType.HIGHWAY, WayType.SECONDARY, WayType.DIRTROAD, WayType.MINIWAY);
+        List<Drawable> closestRoads = new ArrayList<>();
+
+        for (KDTree kdTree : drawables.values()){
+            closestRoads.add(kdTree.nearestNeighborOfTypes(mapPoint, allowedWaytypes));
+        }
+
+        Drawable closest = closestRoads.get(0);
+
+        for(int i = 1; i < closestRoads.size(); i++){
+            if(closestRoads.get(i) != null) {
+                if (closest == null || closestRoads.get(i).distanceTo(mapPoint) < closest.distanceTo(mapPoint))
+                    closest = closestRoads.get(i);
+            }
+        }
+
+        return closest;
     }
 }

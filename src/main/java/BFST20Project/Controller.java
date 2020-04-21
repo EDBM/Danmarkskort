@@ -112,17 +112,10 @@ public class Controller {
 
     @FXML
     private void onMousePressed(MouseEvent e) {
-        if(e.getButton() == MouseButton.PRIMARY){
-        x = e.getX();
-        y = e.getY();
-        System.out.println(x);
-        }else {
-            System.out.println("Nu højreklikker jeg");
-            x = e.getX();
-            y = e.getY();
-            }
-
+        if(e.getButton() == MouseButton.SECONDARY) {
+            mapCanvas.highlightNearestRoad(e.getX(), e.getY());
         }
+    }
 
 
     @FXML

@@ -168,6 +168,19 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
         return minY;
     }
 
+    @Override
+    public float distanceTo(Point from) {
+        float minDist = Float.POSITIVE_INFINITY;
+        for(List<Point> ring : rings){
+            for(int i = 0; i < ring.size() - 1; i++) {
+                float dist = from.distanceToLine(ring.get(i), ring.get(i + 1));
+                if (dist < minDist)
+                    minDist = dist;
+            }
+        }
+        return minDist;
+    }
+
     public List<Point> getCoordinates() {
         List<Point> points = new ArrayList<>();
 
