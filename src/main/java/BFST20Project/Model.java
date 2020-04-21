@@ -19,6 +19,8 @@ public class Model {
     private DirectedGraph driveableWayGraph;
     private Polylines shortestPath;
 
+    private Trie trie;
+
     public Model() throws FileNotFoundException, XMLStreamException {
         file = new File(getClass().getClassLoader().getResource("anholt.osm").getFile());
 
@@ -31,6 +33,8 @@ public class Model {
         minLon = osmParser.getMinLon();
         maxLat = osmParser.getMaxLat();
         maxLon = osmParser.getMaxLon();
+
+        trie = osmParser.trie;
 /*
         Deque<DirectedEdge> edges = new ShortestPath(driveableWayGraph, 1732, 59569).getPath();
         Point[] points = new Point[edges.size() + 1];
@@ -68,5 +72,9 @@ public class Model {
             }
         }
         return toDraw;
+    }
+
+    public Trie getTrie() {
+        return trie;
     }
 }

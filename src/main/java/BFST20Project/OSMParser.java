@@ -20,7 +20,7 @@ public class OSMParser extends Parser{
     List<OSMWay> drivableWays = new ArrayList<>();
     DirectedGraph drivableWaysGraph;
     private XMLStreamReader reader;
-    Trie trie = new Trie();
+    public Trie trie = new Trie();
 
     private float minLat, minLon, maxLat, maxLon;
     private EnumMap<ZoomLevel, KDTree> drawables = new EnumMap<>(ZoomLevel.class);

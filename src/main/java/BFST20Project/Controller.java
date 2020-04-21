@@ -127,7 +127,7 @@ public class Controller {
 
         @FXML
             private void addressStart(KeyEvent e){
-
+            model.getTrie().autocomplete(e.toString());
             //TODO implement trie for
             System.out.println("her skal der være en adresse :)");
         }
