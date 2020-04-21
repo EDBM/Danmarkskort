@@ -125,22 +125,22 @@ public class Controller {
         }
 
 
-        @FXML
-            private void addressStart(KeyEvent e){
-            model.getTrie().autocomplete(e.toString());
-            //TODO implement trie for
-            System.out.println("her skal der være en adresse :)");
-        }
-
-        @FXML
-        private void addressSlut(KeyEvent e){
-
-            //TODO implement trie
-            System.out.println("her skal der være en adresse :)");
-        }
-
-
+    @FXML
+    private void addressStart(KeyEvent e){
+        System.out.println(model.getTrie().autocomplete(start.getText()));
+        //TODO implement trie for
+        System.out.println("her skal der være en adresse :)");
     }
+
+    @FXML
+    private void addressEnd(KeyEvent e){
+
+        //TODO implement trie
+        System.out.println("her skal der være en adresse :)");
+    }
+
+
+}
 
 
 

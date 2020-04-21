@@ -53,6 +53,8 @@ public class Trie {
         TrieNode lastNode = root;
         for (int i = 0; i<prefix.length(); i++){
             lastNode = lastNode.getChildren(prefix.charAt(i));
+            if(lastNode == null)
+                break;
         }
         if (lastNode==null){
             return new ArrayList<>();
