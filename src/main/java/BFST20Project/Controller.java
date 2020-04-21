@@ -28,6 +28,7 @@ public class Controller {
     double xCoords, yCoords;
     private View view;
     double x, y;
+    Trie trie = new Trie();
 
     @FXML
     private MapCanvas mapCanvas;
@@ -95,6 +96,7 @@ public class Controller {
         y = e.getY();
         System.out.println(x);
     }
+
 }
 
 

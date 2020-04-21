@@ -20,7 +20,7 @@ public class Model {
     private Polylines shortestPath;
 
     public Model() throws FileNotFoundException, XMLStreamException {
-        file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
+        file = new File(getClass().getClassLoader().getResource("anholt.osm").getFile());
 
 
         OSMParser osmParser = new OSMParser(file);
