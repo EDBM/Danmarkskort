@@ -115,6 +115,9 @@ public class Controller {
         if(e.getButton() == MouseButton.SECONDARY) {
             mapCanvas.highlightNearestRoad(e.getX(), e.getY());
         }
+
+        x = e.getX();
+        y = e.getY();
     }
 
 
