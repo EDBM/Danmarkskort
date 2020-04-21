@@ -83,7 +83,11 @@
                                                   minHeight="20">
 
                                             </HBox>
-                                            <ImageView fx:id="car">
+
+                                            <ImageView fx:id="car"
+                                                       pickOnBounds="true"
+                                                       preserveRatio="true"
+                                                       onMouseClicked='#chooseCarPicker'>
 
                                                 <image>
                                                     <Image url ="/images/car.png">
@@ -96,7 +100,10 @@
                                                   minHeight="20">
 
                                             </HBox>
-                                            <ImageView fx:id="walk">
+                                            <ImageView fx:id="walk"
+                                                       pickOnBounds="true"
+                                                       preserveRatio="true"
+                                                       onMouseClicked='#chooseWalkPicker'>
                                                 <image>
                                                     <Image url ="/images/walk.png"></Image>
                                                 </image>
@@ -115,19 +122,24 @@
 
                                         <Label text="Vælg startpunkt"
                                                style="-fx-text-align: center;
-                                                      -fx-font-weight: bold;"/>
+                                                      -fx-font-weight: bold;"
+                                               />
                                         <TextField fx:id="start"
                                                    style="-fx-border-color: none;
                                                           -fx-border-style: solid;
-                                                          -fx-background-color: rgba(1,1,1,0.1)"/>
+                                                          -fx-background-color: rgba(1,1,1,0.1)"
+                                                   onKeyTyped="#addressStart"/>
 
                                         <Label text="Vælg slutpunkt"
                                                style="-fx-text-align: center;
-                                                      -fx-font-weight: bold;"/>
+                                                      -fx-font-weight: bold;
+
+                                                        "/>
                                         <TextField  fx:id="slut"
                                                     style="-fx-border-color: none;
                                                           -fx-border-style: solid;
-                                                          -fx-background-color: rgba(1,1,1,0.1)"/>
+                                                          -fx-background-color: rgba(1,1,1,0.1)"
+                                                    onKeyTyped="#addressSlut"/>
                                         </VBox>
                                  </VBox>
 
@@ -141,16 +153,13 @@
                 </left>
             </BorderPane>
             <AnchorPane pickOnBounds="false">
+
                 <VBox AnchorPane.rightAnchor="0.0"
                       AnchorPane.bottomAnchor="5.0"
                       StackPane.alignment="BOTTOM_RIGHT"
 
                       minWidth="50"
-                      minHeight="50"
-
-
-
-                >
+                      minHeight="50">
 
 
                     <Label
