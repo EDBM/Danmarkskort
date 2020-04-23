@@ -137,7 +137,7 @@ public class Controller {
 
 
         }else {
-            System.out.println("Hej jeg kigger lige med");
+            mapCanvas.highlightNearestRoad(e.getX(), e.getY());
 
         }
 
