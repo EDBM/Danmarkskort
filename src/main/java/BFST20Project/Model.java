@@ -3,6 +3,7 @@ package BFST20Project;
 import BFST20Project.Routeplanner.DirectedEdge;
 import BFST20Project.Routeplanner.DirectedGraph;
 import BFST20Project.Routeplanner.ShortestPath;
+import BFST20Project.Routeplanner.Vertex;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
@@ -17,8 +18,11 @@ public class Model {
     private List<Drawable> islands;
     private EnumMap<ZoomLevel, KDTree> drawables;
     private DirectedGraph driveableWayGraph;
+
+    private Vertex navigateFrom, navigateTo;
     private Polylines shortestPath;
 
+    private Trie trie;
 
     public Model() throws FileNotFoundException, XMLStreamException {
         file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
@@ -32,19 +36,9 @@ public class Model {
         minLon = osmParser.getMinLon();
         maxLat = osmParser.getMaxLat();
         maxLon = osmParser.getMaxLon();
-/*
-        Deque<DirectedEdge> edges = new ShortestPath(driveableWayGraph, 1732, 59569).getPath();
-        Point[] points = new Point[edges.size() + 1];
-        points[0] = edges.getFirst().getStart().getPoint();
 
-        System.out.println(edges.size());
+        trie = osmParser.trie;
 
-        int n = 1;
-        for(DirectedEdge edge : edges){
-            points[n] = edge.getEnd().getPoint();
-            n++;
-        }
-        shortestPath = new Polylines(points, WayType.SHORTEST_PATH);*/
     }
 
     public void addObserver(Runnable observer) {
@@ -69,5 +63,62 @@ public class Model {
             }
         }
         return toDraw;
+    }
+
+    public Trie getTrie() {
+        return trie;
+    }
+
+    public Drawable nearestRoad(Point mapPoint) {
+        Collection<WayType> allowedWaytypes = Arrays.asList(WayType.MOTORWAY, WayType.HIGHWAY, WayType.SECONDARY, WayType.DIRTROAD, WayType.MINIWAY);
+        List<Drawable> closestRoads = new ArrayList<>();
+
+        for (KDTree kdTree : drawables.values()){
+            closestRoads.add(kdTree.nearestNeighborOfTypes(mapPoint, allowedWaytypes));
+        }
+
+        Drawable closest = closestRoads.get(0);
+
+        for(int i = 1; i < closestRoads.size(); i++){
+            if(closestRoads.get(i) != null) {
+                if (closest == null || closestRoads.get(i).distanceTo(mapPoint) < closest.distanceTo(mapPoint))
+                    closest = closestRoads.get(i);
+            }
+        }
+
+        return closest;
+    }
+
+    private void navigate(){
+        if(navigateFrom != null && navigateTo != null){
+            Deque<DirectedEdge> edges = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId()).getPath();
+            Point[] points = new Point[edges.size() + 1];
+            points[0] = edges.getFirst().getStart().getPoint();
+
+            int n = 1;
+            for(DirectedEdge edge : edges){
+                points[n] = edge.getEnd().getPoint();
+                n++;
+            }
+            shortestPath = new Polylines(points, WayType.SHORTEST_PATH);
+
+            notifyObservers();
+        }
+    }
+
+    public void setNavigateFrom(Point from) {
+        Drawable nearestRoad = nearestRoad(from);
+        if(nearestRoad.getVertex() != null) {
+            navigateFrom = nearestRoad.getVertex();
+            navigate();
+        }
+    }
+
+    public void setNavigateTo(Point to) {
+        Drawable nearestRoad = nearestRoad(to);
+        if(nearestRoad.getVertex() != null) {
+            navigateTo = nearestRoad.getVertex();
+            navigate();
+        }
     }
 }

@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 
-public class MapCanvas extends Canvas {
+public class MapCanvas extends Canvas{
     Model model;
 
     final Image image = new Image("file:resources/images/pointer.png");
@@ -148,5 +148,24 @@ public class MapCanvas extends Canvas {
     }
 
 
-}
+    public void highlightNearestRoad(double x, double y) {
+            Point mapPoint = screenCoordinatesToPoint(x, y);
+            Drawable nearestRoad = model.nearestRoad(mapPoint);
+            double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
+            gc.setLineWidth(3 * pixelWidth);
+            gc.setStroke(Color.PURPLE);
+            nearestRoad.stroke(gc);
 
+
+    }
+
+    public Point screenCoordinatesToPoint(double x, double y){
+        try {
+            return new Point(trans.inverseTransform(x, y));
+        } catch (NonInvertibleTransformException e){
+            // This cannot happen with the transforms we are using
+            e.printStackTrace();
+            return null;
+        }
+    }
+}

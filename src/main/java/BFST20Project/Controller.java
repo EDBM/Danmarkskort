@@ -128,6 +128,14 @@ public class Controller {
 
     @FXML
     private void onMousePressed(MouseEvent e) {
+        if(e.getButton() == MouseButton.PRIMARY) {
+            if(e.isControlDown()) {
+                System.out.println("ctrl");
+                model.setNavigateFrom(mapCanvas.screenCoordinatesToPoint(e.getX(), e.getY()));
+            }
+            else if(e.isShiftDown())
+                model.setNavigateTo(mapCanvas.screenCoordinatesToPoint(e.getX(), e.getY()));
+        }
 
         x = e.getX();
         y = e.getY();
