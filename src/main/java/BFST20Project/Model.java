@@ -90,9 +90,7 @@ public class Model {
     }
 
     private void navigate(){
-        System.out.println("navigate()");
         if(navigateFrom != null && navigateTo != null){
-            System.out.println("actually navigate()");
             Deque<DirectedEdge> edges = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId()).getPath();
             Point[] points = new Point[edges.size() + 1];
             points[0] = edges.getFirst().getStart().getPoint();
@@ -104,6 +102,7 @@ public class Model {
             }
             shortestPath = new Polylines(points, WayType.SHORTEST_PATH);
 
+            notifyObservers();
         }
     }
 

@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 
-public class MapCanvas extends Canvas {
+public class MapCanvas extends Canvas{
     Model model;
 
     final Image image = new Image("file:resources/images/pointer.png");
@@ -168,6 +168,4 @@ public class MapCanvas extends Canvas {
             return null;
         }
     }
-
-
 }
