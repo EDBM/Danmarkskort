@@ -20,6 +20,7 @@ public class OSMParser extends Parser{
     List<OSMWay> drivableWays = new ArrayList<>();
     DirectedGraph drivableWaysGraph;
     private XMLStreamReader reader;
+    public Trie trie = new Trie();
 
     private float minLat, minLon, maxLat, maxLon;
     private EnumMap<ZoomLevel, KDTree> drawables = new EnumMap<>(ZoomLevel.class);
@@ -92,14 +93,44 @@ public class OSMParser extends Parser{
         long id = Long.parseLong(reader.getAttributeValue(null, "id"));
         float lat = Float.parseFloat(reader.getAttributeValue(null,"lat"));
         float lon = Float.parseFloat(reader.getAttributeValue(null,"lon"));
+        String[] address = new String[4]; //We could have used a Map, which would have been more intuitive and improve readability, but array was more cost effective
 
         while(reader.hasNext()) {
+            switch (reader.getEventType()){
+                case (XMLStreamConstants.START_ELEMENT):
+                    switch (reader.getLocalName()){
+                        case("tag"):
+                            String key = reader.getAttributeValue(null,"k");
+                            String value = reader.getAttributeValue(null,"v");
+                            if (key.startsWith("addr:")){
+                                String[] keyArray = key.split(":");
+                                switch (keyArray[1]){
+                                    case("street"):
+                                        address[0]=value;
+                                        break;
+                                    case("housenumber"):
+                                        address[1]=value;
+                                        break;
+                                    case("postcode"):
+                                        address[2]=value;
+                                        break;
+                                    case("city"):
+                                        address[3] = value;
+                                        break;
+                                }
+                            }
+                    }
+            }
             if (reader.getEventType() == XMLStreamConstants.END_ELEMENT && reader.getLocalName().equals("node"))
                 break;
             reader.next();
         }
         OSMNode osmNode = new OSMNode(id, lat, lon);
         idToNode.put(id, osmNode);
+        if(!Arrays.asList(address).contains(null)) {
+            AddressParser a = new AddressParser(address[0], address[1], address[2], address[3]);
+            trie.insert(a);
+        }
     }
 
     private void parseWay() throws XMLStreamException {

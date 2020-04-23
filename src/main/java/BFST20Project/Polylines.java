@@ -101,6 +101,17 @@ public class Polylines implements Drawable, Serializable {
         return minPoint.getY();
     }
 
+    @Override
+    public float distanceTo(Point from) {
+        float minDist = Float.POSITIVE_INFINITY;
+        for(int i = 0; i < coordinates.length - 1; i++){
+            float dist = from.distanceToLine(coordinates[i], coordinates[i+1]);
+            if(dist < minDist)
+                minDist = dist;
+        }
+        return minDist;
+    }
+
 
     public List<Point> getCoordinates() {
         return Arrays.asList(coordinates);

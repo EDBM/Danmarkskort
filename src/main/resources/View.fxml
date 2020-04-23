@@ -142,7 +142,7 @@
                                                     style="-fx-border-color: none;
                                                           -fx-border-style: solid;
                                                           -fx-background-color: rgba(1,1,1,0.1)"
-                                                    onKeyTyped="#addressSlut"/>
+                                                    onKeyTyped="#addressEnd"/>
                                         </VBox>
 
 
