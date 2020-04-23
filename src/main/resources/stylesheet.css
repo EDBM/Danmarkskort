@@ -1,40 +1,43 @@
 
-#zoomInd:hover{
-    -fx-background-color: grey;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
 
 
-#zoomUd:hover{
+Button:hover{
     -fx-background-color: grey;
     -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
 }
 
 #walk:hover{
     -fx-background-image: url('/images/walkHover.png');
     -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
     -fx-border-color: rgba(1,1,1,0.0);
 }
-
-#pointOfinterest{
-
-}
-
-
-
 
 Label{
     -fx-padding: 20 0 0 0 ;
 }
 
-Button {
-    -fx-border-width: 1px;
-    -fx-max-width: 40px;
-    -fx-max-height: 40px;
+Button{
+
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
     -fx-background-color: white;
+
+}
+
+#changeColor:hover{
+
+    -fx-background-color: pink;
+    -fx-background-repeat: no-repeat;
+}
+
+
+#colorButton {
+
+    -fx-max-width: 200px;
+    -fx-max-height: 50px;
+
+
+
 
 }
 
