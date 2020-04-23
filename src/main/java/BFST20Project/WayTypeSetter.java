@@ -10,6 +10,7 @@ public class WayTypeSetter {
             
             switch (tags.getOrDefault("place", "")) {
                 case "island":
+                case "peninsula":
                     return WayType.ISLAND;
             }
 
@@ -68,6 +69,8 @@ public class WayTypeSetter {
                     return WayType.WETLAND;
                 case "sand":
                     return WayType.SAND;
+                case "peninsula":
+                    return WayType.PENINSULA;
             }
 
             if(tags.containsKey("cycleway"))

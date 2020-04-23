@@ -5,6 +5,7 @@ import java.util.Map;
 public enum WayType{
   UNKNOWN,
   ISLAND,
+  PENINSULA,
   LANDUSE,
   NATURAL,
   TOURISM,
