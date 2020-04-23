@@ -19,6 +19,7 @@ public class Model {
     private DirectedGraph driveableWayGraph;
     private Polylines shortestPath;
 
+
     public Model() throws FileNotFoundException, XMLStreamException {
         file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
 

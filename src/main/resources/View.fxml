@@ -48,7 +48,11 @@
                                       -fx-text-fill: White;"
 
                                text="DanmarksKort"/>
+
+
+
                     </HBox>
+
 
                 </top>
 
@@ -77,8 +81,7 @@
 
                                         <FlowPane fx:id="images"
                                             prefWrapLength="200"
-                                            style="-fx-text-align: center;
-                                                ">
+                                            style="-fx-text-align: center;">
                                             <HBox minWidth="30"
                                                   minHeight="20">
 
@@ -141,10 +144,48 @@
                                                           -fx-background-color: rgba(1,1,1,0.1)"
                                                     onKeyTyped="#addressSlut"/>
                                         </VBox>
+
+
                                  </VBox>
 
 
                                 </top>
+
+
+                                <bottom >
+
+
+                                <HBox fx:id = "colorButton"
+                                      BorderPane.alignment="BOTTOM_CENTER">
+
+
+                                    <Button fx:id="changeColor"
+                                                StackPane.alignment="CENTER"
+                                                prefHeight="40"
+                                                prefWidth="200"
+                                                text="Barbie mode"
+                                                textAlignment="CENTER"
+                                                style="-fx-border-color:#D7B3D8;
+
+                                                      "
+                                                onMouseClicked="#changeColor">
+
+                                    </Button>
+
+                                    <Button fx:id="changeColor2"
+                                            StackPane.alignment="CENTER"
+                                            prefHeight="40"
+                                            prefWidth="200"
+                                            text="Batman mode"
+                                            textAlignment="CENTER"
+                                            style="-fx-border-color: black;
+
+                                                      "
+                                            onMouseClicked="#changeColor2">
+
+                                    </Button>
+                                </HBox>
+                                </bottom>
 
                             </BorderPane>
 
@@ -152,7 +193,7 @@
                     </Pane>
                 </left>
             </BorderPane>
-            <AnchorPane pickOnBounds="false">
+            <AnchorPane fx:id="root" pickOnBounds="false">
 
                 <VBox AnchorPane.rightAnchor="0.0"
                       AnchorPane.bottomAnchor="5.0"

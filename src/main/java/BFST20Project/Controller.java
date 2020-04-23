@@ -1,40 +1,37 @@
 package BFST20Project;
-import javafx.geometry.Point2D;
-import com.sun.javafx.scene.control.inputmap.InputMap;
+
 import javafx.fxml.FXML;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Point2D;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
-import javafx.scene.control.ScrollToEvent;
+
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import javafx.scene.layout.AnchorPane;
+
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
 
 
 public class Controller {
 
     private Model model;
-    double xCoords, yCoords;
     private View view;
     double x, y;
-    ImageView imageView = new ImageView();
+    private Point point;
 
 
-    private static final String IMAGE1 = "\\resources\\images\\PoI.png";
+
+
+
+    @FXML private AnchorPane root;
+
     @FXML
     private MapCanvas mapCanvas;
+
+
     @FXML
     private TextField start, slut;
 
@@ -52,9 +49,28 @@ public class Controller {
     @FXML
     private void onKeyPressed(KeyEvent e) {
         switch (e.getCode()) {
-            case V:
+            case B:
                 try {
-                    new View(model, new Stage());
+                    if(mapCanvas.getDefaultcolor() == 1){
+                        mapCanvas.setToColorBlindMode();
+                    } else{
+                        mapCanvas.setDefaultcolor();
+                    }
+                    mapCanvas.repaint();
+
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+                break;
+            case L:
+                try {
+                    if(mapCanvas.getDefaultcolor() == 3){
+                        mapCanvas.setToColorBlindMode();
+                    } else{
+                        mapCanvas.setDefaultcolor();
+                    }
+                    mapCanvas.repaint();
+
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -112,35 +128,57 @@ public class Controller {
 
     @FXML
     private void onMousePressed(MouseEvent e) {
-        if(e.getButton() == MouseButton.PRIMARY){
+
         x = e.getX();
         y = e.getY();
-        System.out.println(x);
+
+        if(e.getButton() == MouseButton.PRIMARY){
+            System.out.println(x);
+
+
         }else {
-            System.out.println("Nu højreklikker jeg");
-            x = e.getX();
-            y = e.getY();
+            System.out.println("Hej jeg kigger lige med");
+
+        }
+
             }
 
+
+    @FXML
+     private void addressStart(KeyEvent e){
+         //TODO implement trie for
+         System.out.println("her skal der være en adresse :)");
         }
 
-
-        @FXML
-            private void addressStart(KeyEvent e){
-
-            //TODO implement trie for
-            System.out.println("her skal der være en adresse :)");
-        }
-
-        @FXML
-        private void addressSlut(KeyEvent e){
+     @FXML
+     private void addressSlut(KeyEvent e){
 
             //TODO implement trie
-            System.out.println("her skal der være en adresse :)");
+        System.out.println("her skal der være en adresse :)");
+     }
+
+     @FXML
+     private void changeColor(){
+        if(mapCanvas.getDefaultcolor() == 1|| mapCanvas.getDefaultcolor() == 3){
+        mapCanvas.setToColorBlindMode();
+        } else{
+            mapCanvas.setDefaultcolor();
         }
+         mapCanvas.repaint();
+     }
 
-
+    @FXML
+    private void changeColor2(){
+        if(mapCanvas.getDefaultcolor() == 1 || mapCanvas.getDefaultcolor() == 2){
+            mapCanvas.setToBatmanMode();
+        } else{
+            mapCanvas.setDefaultcolor();
+        }
+        mapCanvas.repaint();
     }
+
+
+}
 
 
 

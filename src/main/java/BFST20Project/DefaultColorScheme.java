@@ -43,7 +43,6 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.MOTORWAY, Color.ORANGE);
         resultMap.put(WayType.SECONDARY, Color.web("#EFCC00"));
         resultMap.put(WayType.SHORTEST_PATH, Color.RED);
-
         resultMap.put(WayType.FARMLAND, Color.web("#C8D7AB"));
 
 
@@ -77,7 +76,6 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.BREAKWATER, Color.web("#AAAAAA"));
         resultMap.put(WayType.PIER, Color.web("#F3EFE9"));
         resultMap.put(WayType.TOURISM, Color.web("#DEF6C0"));
-
         resultMap.put(WayType.FARMLAND, Color.web("#C8D7AB"));
 
         return resultMap;
