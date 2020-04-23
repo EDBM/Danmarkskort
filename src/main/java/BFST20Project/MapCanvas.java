@@ -103,17 +103,25 @@ public class MapCanvas extends Canvas {
     }
 
     public void highlightNearestRoad(double x, double y) {
-        try {
-            Point mapPoint = new Point(trans.inverseTransform(x, y));
+            Point mapPoint = screenCoordinatesToPoint(x, y);
             Drawable nearestRoad = model.nearestRoad(mapPoint);
             double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
             gc.setLineWidth(3 * pixelWidth);
             gc.setStroke(Color.PURPLE);
             nearestRoad.stroke(gc);
 
-        } catch (NonInvertibleTransformException e) {
-            e.printStackTrace();
-        }
 
     }
+
+    public Point screenCoordinatesToPoint(double x, double y){
+        try {
+            return new Point(trans.inverseTransform(x, y));
+        } catch (NonInvertibleTransformException e){
+            // This cannot happen with the transforms we are using
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }

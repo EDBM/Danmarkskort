@@ -19,6 +19,7 @@ public class TemporaryGraph {
             for (OSMNode node : way.getAll()){
                 createVertex(node);
             }
+            way.setVertex(vertices.get(OSMIdToVertexId.get(way.get(0).getId())));
         }
 
         for(OSMWay way : drivableWays){

@@ -3,6 +3,7 @@ package BFST20Project;
 import BFST20Project.Routeplanner.DirectedEdge;
 import BFST20Project.Routeplanner.DirectedGraph;
 import BFST20Project.Routeplanner.ShortestPath;
+import BFST20Project.Routeplanner.Vertex;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
@@ -17,6 +18,8 @@ public class Model {
     private List<Drawable> islands;
     private EnumMap<ZoomLevel, KDTree> drawables;
     private DirectedGraph driveableWayGraph;
+
+    private Vertex navigateFrom, navigateTo;
     private Polylines shortestPath;
 
     private Trie trie;
@@ -35,19 +38,7 @@ public class Model {
         maxLon = osmParser.getMaxLon();
 
         trie = osmParser.trie;
-/*
-        Deque<DirectedEdge> edges = new ShortestPath(driveableWayGraph, 1732, 59569).getPath();
-        Point[] points = new Point[edges.size() + 1];
-        points[0] = edges.getFirst().getStart().getPoint();
 
-        System.out.println(edges.size());
-
-        int n = 1;
-        for(DirectedEdge edge : edges){
-            points[n] = edge.getEnd().getPoint();
-            n++;
-        }
-        shortestPath = new Polylines(points, WayType.SHORTEST_PATH);*/
     }
 
     public void addObserver(Runnable observer) {
@@ -96,5 +87,39 @@ public class Model {
         }
 
         return closest;
+    }
+
+    private void navigate(){
+        System.out.println("navigate()");
+        if(navigateFrom != null && navigateTo != null){
+            System.out.println("actually navigate()");
+            Deque<DirectedEdge> edges = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId()).getPath();
+            Point[] points = new Point[edges.size() + 1];
+            points[0] = edges.getFirst().getStart().getPoint();
+
+            int n = 1;
+            for(DirectedEdge edge : edges){
+                points[n] = edge.getEnd().getPoint();
+                n++;
+            }
+            shortestPath = new Polylines(points, WayType.SHORTEST_PATH);
+
+        }
+    }
+
+    public void setNavigateFrom(Point from) {
+        Drawable nearestRoad = nearestRoad(from);
+        if(nearestRoad.getVertex() != null) {
+            navigateFrom = nearestRoad.getVertex();
+            navigate();
+        }
+    }
+
+    public void setNavigateTo(Point to) {
+        Drawable nearestRoad = nearestRoad(to);
+        if(nearestRoad.getVertex() != null) {
+            navigateTo = nearestRoad.getVertex();
+            navigate();
+        }
     }
 }

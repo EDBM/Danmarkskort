@@ -1,5 +1,6 @@
 package BFST20Project;
 
+import BFST20Project.Routeplanner.Vertex;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
@@ -11,10 +12,12 @@ import java.util.List;
 public class Polylines implements Drawable, Serializable {
     private Point[] coordinates;
     private Point minPoint, maxPoint;
+    private Vertex vertex;
     private WayType wayType;
 
     public Polylines(OSMWay way){
         wayType = way.getWayType();
+        vertex = way.getVertex();
         coordinates = new Point[way.size()];
         setWayType(way.getWayType());
         for(int i = 0; i < way.size(); i++){
@@ -99,6 +102,11 @@ public class Polylines implements Drawable, Serializable {
     @Override
     public float getMinY() {
         return minPoint.getY();
+    }
+
+    @Override
+    public Vertex getVertex() {
+        return vertex;
     }
 
     @Override

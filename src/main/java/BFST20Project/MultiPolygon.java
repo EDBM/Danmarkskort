@@ -1,5 +1,6 @@
 package BFST20Project;
 
+import BFST20Project.Routeplanner.Vertex;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.FillRule;
@@ -14,7 +15,6 @@ import java.util.List;
 
 
 public class MultiPolygon extends OSMRelation implements Drawable, Serializable {
-
     private List<List<Point>> rings = new ArrayList<>();
     private int numberOfNodes = 0;
     private float minX, minY, maxX, maxY;
@@ -166,6 +166,11 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     @Override
     public float getMinY() {
         return minY;
+    }
+
+    @Override
+    public Vertex getVertex() {
+        return null;
     }
 
     @Override
