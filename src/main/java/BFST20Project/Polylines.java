@@ -69,7 +69,7 @@ public class Polylines implements Drawable, Serializable {
         }
     }
 
-    public void fill(GraphicsContext gc){
+    public void fill(GraphicsContext gc){ //TODO dont trace twice if the polyline needs to be filled
         gc.beginPath();
         trace(gc);
         gc.fill();
