@@ -53,11 +53,28 @@ public class OSMWay{
             return 50;
     }
 
-    public boolean isDrivableWay() {
+    public boolean isTraversableWay() {
         return (type.equals(WayType.HIGHWAY)
             || type.equals(WayType.MOTORWAY)
             || type.equals(WayType.SECONDARY)
             || type.equals(WayType.MINIWAY)
             || type.equals(WayType.DIRTROAD));
     }
+
+    public boolean isDrivableWay() {
+        return (type.equals(WayType.HIGHWAY)
+                || type.equals(WayType.MOTORWAY)
+                || type.equals(WayType.SECONDARY)
+                || type.equals(WayType.DIRTROAD));
+    }
+
+    public boolean isWalkableWay() {
+        return (type.equals(WayType.HIGHWAY)
+                || type.equals(WayType.SECONDARY)
+                || type.equals(WayType.MINIWAY)
+                || type.equals(WayType.DIRTROAD));
+    }
+
+
+
 }

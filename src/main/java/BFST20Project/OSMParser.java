@@ -17,7 +17,7 @@ public class OSMParser extends Parser{
     Map<Long, OSMNode> idToNode = new TreeMap<>();
     Map<Long, OSMWay> idToWay = new HashMap<>();
     Map<Long, OSMRelation> idToRelation = new HashMap<>();
-    List<OSMWay> drivableWays = new ArrayList<>();
+    List<OSMWay> traversableWays = new ArrayList<>();
     DirectedGraph drivableWaysGraph;
     private XMLStreamReader reader;
     public Trie trie = new Trie();
@@ -163,8 +163,8 @@ public class OSMParser extends Parser{
         }
 
         osmWay.setType(WayTypeSetter.typeFromTags(tags));
-        if(osmWay.isDrivableWay()){
-            drivableWays.add(osmWay);
+        if(osmWay.isTraversableWay()){
+            traversableWays.add(osmWay);
         }
 
         idToWay.put(id, osmWay);
@@ -196,7 +196,7 @@ public class OSMParser extends Parser{
                                 osmRelation.addAllWays(OSMWays);
                                 ((MultiPolygon) osmRelation).RingAssignment(); // should be moved to the constructor
                                 ((MultiPolygon) osmRelation).setMinMax();
-//                                ((MultiPolygon) osmRelation).calculateBoundingBox();
+
                                 idToRelation.put(id, osmRelation);
                             }
                             tags.put(key, value);
@@ -213,7 +213,6 @@ public class OSMParser extends Parser{
 
             reader.next();
         }
-
 
         //System.out.println("type from tags: " + WayTypeSetter.typeFromTags(tags) + " id: " + id);
 
@@ -251,17 +250,17 @@ public class OSMParser extends Parser{
     }
 
     private void createDrivableWayGraph() {
-        TemporaryGraph temporaryGraph = new TemporaryGraph(drivableWays);
+        TemporaryGraph temporaryGraph = new TemporaryGraph(traversableWays);
         drivableWaysGraph = temporaryGraph.compressedGraph();
 
-/*        int id1 = temporaryGraph.OSMIdToVertexId.get(32948578L);
+        int id1 = temporaryGraph.OSMIdToVertexId.get(32948578L);
         int id2 = temporaryGraph.OSMIdToVertexId.get(4791600016L);
-/*
-        ShortestPath shortestPath = new ShortestPath(drivableWaysGraph, id1, id2);
 
-        System.out.println(shortestPath.getPath());
-        System.out.println(shortestPath.getTotalWeight());*/
-  //     System.out.println(id1 + " " + id2);
+        ShortestPath shortestPath = new ShortestPath(drivableWaysGraph, id1, id2, false);
+
+        //System.out.println(shortestPath.getPath());
+        System.out.println("Total weight: " + shortestPath.getTotalWeight());
+        System.out.println(id1 + " " + id2);
     }
 
     public EnumMap<ZoomLevel, KDTree> getDrawables() {
