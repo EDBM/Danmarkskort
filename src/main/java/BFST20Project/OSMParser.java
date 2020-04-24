@@ -194,7 +194,7 @@ public class OSMParser extends Parser{
                             if(value.equals("multipolygon")){
                                 osmRelation = new MultiPolygon(id);
                                 osmRelation.addAllWays(OSMWays);
-                                ((MultiPolygon) osmRelation).RingAssignment(); // should be moved to the constructor
+                                ((MultiPolygon) osmRelation).RingAssignment(); //TODO should be moved to the constructor
                                 ((MultiPolygon) osmRelation).setMinMax();
 
                                 idToRelation.put(id, osmRelation);
@@ -251,7 +251,7 @@ public class OSMParser extends Parser{
 
     private void createDrivableWayGraph() {
         TemporaryGraph temporaryGraph = new TemporaryGraph(traversableWays);
-        drivableWaysGraph = temporaryGraph.compressedGraph();
+        drivableWaysGraph = temporaryGraph.compressedGraph();//TODO maybe rename this to something more fitting/precise.
 
         int id1 = temporaryGraph.OSMIdToVertexId.get(32948578L);
         int id2 = temporaryGraph.OSMIdToVertexId.get(4791600016L);
