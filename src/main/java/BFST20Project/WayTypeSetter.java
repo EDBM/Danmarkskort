@@ -39,10 +39,10 @@ public class WayTypeSetter {
                 case "passing_place":
                 case "rest_area":
                 case "cycleway":
+                case "living_street":
                     return WayType.HIGHWAY;
 
                 case "pedestrian":
-                case "living_street":
                 case "footway":
                     return WayType.MINIWAY;
 
