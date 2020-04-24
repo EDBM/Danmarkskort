@@ -1,11 +1,14 @@
 package BFST20Project;
 
+import BFST20Project.Routeplanner.Vertex;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class OSMWay{
     private long id;
     private WayType type;
+    private Vertex vertex;
     private List<OSMNode> nodes = new ArrayList<>();
 
     public OSMWay(long id) {
@@ -75,6 +78,11 @@ public class OSMWay{
                 || type.equals(WayType.DIRTROAD));
     }
 
+    public Vertex getVertex() {
+        return vertex;
+    }
 
-
+    public void setVertex(Vertex vertex) {
+        this.vertex = vertex;
+    }
 }

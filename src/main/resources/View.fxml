@@ -22,20 +22,17 @@
 
     <root>
         <StackPane minWidth="1200"
-                   minHeight="800"
-                   prefWidth="${scene.width}"
-                   prefHeight="${scene.height}">
+                   minHeight="800">
             <MapCanvas fx:id="mapCanvas"
                        width="${scene.width}"
                        height="${scene.height}"
                        onScroll="#onScroll"
-
                        onMousePressed="#onMousePressed"
                        onMouseDragged="#onMouseDragged"
             />
             <BorderPane pickOnBounds="false">
                 <top>
-                    <HBox styleClass="headline" layoutX="100"
+                    <HBox
                           minWidth="300"
                           minHeight="50"
                           style="-fx-background-color: rgba(0,0,0,0.3);
@@ -48,17 +45,20 @@
                                       -fx-text-fill: White;"
 
                                text="DanmarksKort"/>
+
+
+
                     </HBox>
+
 
                 </top>
 
 
                 <left>
-                    <Pane fx:id="upperbox"
-                          minWidth="100"
+                    <Pane minWidth="100"
                           minHeight="400"
-                          style="-fx-background-color: #fff;
-                                 -fx-border: solid 2px black;">
+                          style="-fx-background-color: rgba(255,255,255,0.5);
+                                 ">
 
                         <VBox minWidth="100"
                               minHeight="300">
@@ -77,8 +77,7 @@
 
                                         <FlowPane fx:id="images"
                                             prefWrapLength="200"
-                                            style="-fx-text-align: center;
-                                                ">
+                                            style="-fx-text-align: center;">
                                             <HBox minWidth="30"
                                                   minHeight="20">
 
@@ -127,7 +126,7 @@
                                         <TextField fx:id="start"
                                                    style="-fx-border-color: none;
                                                           -fx-border-style: solid;
-                                                          -fx-background-color: rgba(1,1,1,0.1)"
+                                                          -fx-background-color: rgba(255,255,255,1)"
                                                    onKeyTyped="#addressStart"/>
 
                                         <Label text="Vælg slutpunkt"
@@ -138,13 +137,51 @@
                                         <TextField  fx:id="slut"
                                                     style="-fx-border-color: none;
                                                           -fx-border-style: solid;
-                                                          -fx-background-color: rgba(1,1,1,0.1)"
+                                                          -fx-background-color: rgba(255,255,255,1)"
                                                     onKeyTyped="#addressEnd"/>
                                         </VBox>
+
+
                                  </VBox>
 
 
                                 </top>
+
+
+                                <bottom >
+
+
+                                <HBox fx:id = "colorButton"
+                                      BorderPane.alignment="BOTTOM_CENTER">
+
+
+                                    <Button fx:id="changeColor"
+                                                StackPane.alignment="CENTER"
+                                                prefHeight="40"
+                                                prefWidth="200"
+                                                text="Barbie mode"
+                                                textAlignment="CENTER"
+                                                style="-fx-border-color:#D7B3D8;
+
+                                                      "
+                                                onMouseClicked="#changeColor">
+
+                                    </Button>
+
+                                    <Button fx:id="changeColor2"
+                                            StackPane.alignment="CENTER"
+                                            prefHeight="40"
+                                            prefWidth="200"
+                                            text="Batman mode"
+                                            textAlignment="CENTER"
+                                            style="-fx-border-color: black;
+
+                                                      "
+                                            onMouseClicked="#changeColor2">
+
+                                    </Button>
+                                </HBox>
+                                </bottom>
 
                             </BorderPane>
 
@@ -152,7 +189,7 @@
                     </Pane>
                 </left>
             </BorderPane>
-            <AnchorPane pickOnBounds="false">
+            <AnchorPane fx:id="root" pickOnBounds="false">
 
                 <VBox AnchorPane.rightAnchor="0.0"
                       AnchorPane.bottomAnchor="5.0"

@@ -29,8 +29,8 @@ public class OSMParser extends Parser{
     public OSMParser(File file) throws FileNotFoundException, XMLStreamException {
         System.out.println("load parser");
         readOSMFile(file);
-        createDrawables();
         createDrivableWayGraph();
+        createDrawables();
     }
 
     private void readOSMFile(File file) throws XMLStreamException, FileNotFoundException {
