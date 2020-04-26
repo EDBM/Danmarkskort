@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OSMWay{
-    private long id;
+    private long id; //TODO is this used?
     private WayType type;
     private Vertex vertex;
     private List<OSMNode> nodes = new ArrayList<>();
@@ -56,12 +56,26 @@ public class OSMWay{
             return 50;
     }
 
-    public boolean isDrivableWay() {
+    public boolean isTraversableWay() {
         return (type.equals(WayType.HIGHWAY)
             || type.equals(WayType.MOTORWAY)
             || type.equals(WayType.SECONDARY)
             || type.equals(WayType.MINIWAY)
             || type.equals(WayType.DIRTROAD));
+    }
+
+    public boolean isDrivableWay() {
+        return (type.equals(WayType.HIGHWAY)
+                || type.equals(WayType.MOTORWAY) //Drivable only, walking not permitted
+                || type.equals(WayType.SECONDARY)
+                || type.equals(WayType.DIRTROAD));
+    }
+
+    public boolean isWalkableWay() {
+        return (type.equals(WayType.HIGHWAY)
+                || type.equals(WayType.SECONDARY)
+                || type.equals(WayType.MINIWAY) //Walkable only, driving not permitted
+                || type.equals(WayType.DIRTROAD));
     }
 
     public Vertex getVertex() {

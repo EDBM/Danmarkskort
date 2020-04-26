@@ -1,19 +1,23 @@
 package BFST20Project.Routeplanner;
 
-import BFST20Project.OSMNode;
-
 public class DirectedEdge {
     private Vertex start;
     private Vertex end;
     private double length;
     private double speed;
+    public boolean isDrivable;
+    public boolean isWalkable;
 
-    public DirectedEdge(Vertex start, Vertex end, double speed){
+    public DirectedEdge(Vertex start, Vertex end, double speed, boolean isDrivable, boolean isWalkable){
         this.start = start;
         this.end = end;
         if (Double.isNaN(speed)) throw new IllegalArgumentException("Speed is Not a Number");
         this.speed = speed;
         length = calculateLength();
+
+        //These are not mutually exclusive
+        this.isDrivable = isDrivable;
+        this.isWalkable = isWalkable;
 
         start.addEdge(this);
     }
@@ -31,7 +35,8 @@ public class DirectedEdge {
         return end;
     }
 
-    public double getWeight() {
-        return length/speed;
+    public double getWeight(boolean isDriving) {
+        if(isDriving) return length/speed;
+        else return length;
     }
 }

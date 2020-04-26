@@ -113,15 +113,15 @@ public class MapCanvas extends Canvas{
     }
 
     public void setToBatmanMode(){
-        defaultcolor=3;
+        defaultcolor = 3;
     }
 
     public void setToColorBlindMode(){
-        defaultcolor=2;
+        defaultcolor = 2;
     }
 
     public void setDefaultcolor(){
-        defaultcolor =1;
+        defaultcolor = 1;
     }
 
 

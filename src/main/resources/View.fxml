@@ -22,20 +22,17 @@
 
     <root>
         <StackPane minWidth="1200"
-                   minHeight="800"
-                   prefWidth="${scene.width}"
-                   prefHeight="${scene.height}">
+                   minHeight="800">
             <MapCanvas fx:id="mapCanvas"
                        width="${scene.width}"
                        height="${scene.height}"
                        onScroll="#onScroll"
-
                        onMousePressed="#onMousePressed"
                        onMouseDragged="#onMouseDragged"
             />
             <BorderPane pickOnBounds="false">
                 <top>
-                    <HBox styleClass="headline" layoutX="100"
+                    <HBox
                           minWidth="300"
                           minHeight="50"
                           style="-fx-background-color: rgba(0,0,0,0.3);
@@ -58,11 +55,10 @@
 
 
                 <left>
-                    <Pane fx:id="upperbox"
-                          minWidth="100"
+                    <Pane minWidth="100"
                           minHeight="400"
-                          style="-fx-background-color: #fff;
-                                 -fx-border: solid 2px black;">
+                          style="-fx-background-color: rgba(255,255,255,0.5);
+                                 ">
 
                         <VBox minWidth="100"
                               minHeight="300">
@@ -130,7 +126,7 @@
                                         <TextField fx:id="start"
                                                    style="-fx-border-color: none;
                                                           -fx-border-style: solid;
-                                                          -fx-background-color: rgba(1,1,1,0.1)"
+                                                          -fx-background-color: rgba(255,255,255,1)"
                                                    onKeyTyped="#addressStart"/>
 
                                         <Label text="Vælg slutpunkt"
@@ -141,7 +137,7 @@
                                         <TextField  fx:id="slut"
                                                     style="-fx-border-color: none;
                                                           -fx-border-style: solid;
-                                                          -fx-background-color: rgba(1,1,1,0.1)"
+                                                          -fx-background-color: rgba(255,255,255,1)"
                                                     onKeyTyped="#addressEnd"/>
                                         </VBox>
 

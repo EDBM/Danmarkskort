@@ -31,6 +31,7 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.AMENITY, Color.web("#EDEDED"));
         resultMap.put(WayType.BRIDGE, Color.web("#FFFFFF"));
         resultMap.put(WayType.ISLAND, Color.web("#FFFFFF"));
+        resultMap.put(WayType.PENINSULA, Color.web("#FFFFFF"));
         resultMap.put(WayType.HEATH, Color.web("#D6D99F"));
         resultMap.put(WayType.SCRUB, Color.web("#C8D7AB"));
         resultMap.put(WayType.MEADOW, Color.web("#CDEBB0"));
@@ -67,6 +68,7 @@ public class DefaultColorScheme extends ColorScheme {
         resultMap.put(WayType.AMENITY, Color.BLACK);
         resultMap.put(WayType.BRIDGE, Color.BLACK);
         resultMap.put(WayType.ISLAND, Color.web("#FFFFFF"));
+        resultMap.put(WayType.PENINSULA, Color.web("#FFFFFF"));
         resultMap.put(WayType.HEATH, Color.web("#D6D99F"));
         resultMap.put(WayType.SCRUB, Color.web("#C8D7AB"));
         resultMap.put(WayType.MEADOW, Color.web("#CDEBB0"));

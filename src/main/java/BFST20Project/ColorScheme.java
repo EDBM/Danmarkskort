@@ -49,6 +49,7 @@ public abstract class ColorScheme {
             case LANDUSE:
             case NATURAL:
             case FARMLAND:
+            case PENINSULA:
                 return true;
             default:
                 return false;

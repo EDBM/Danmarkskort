@@ -41,8 +41,8 @@ public class TemporaryGraph {
             Vertex v = vertices.get(OSMIdToVertexId.get(nodes.get(i).getId()));
             Vertex w = vertices.get(OSMIdToVertexId.get(nodes.get(i+1).getId()));
 
-            edges.add(new DirectedEdge(v, w, way.getSpeed()));
-            edges.add(new DirectedEdge(w, v, way.getSpeed()));
+            edges.add(new DirectedEdge(v, w, way.getSpeed(), way.isDrivableWay(), way.isWalkableWay()));
+            edges.add(new DirectedEdge(w, v, way.getSpeed(), way.isDrivableWay(), way.isWalkableWay()));
         }
     }
 
