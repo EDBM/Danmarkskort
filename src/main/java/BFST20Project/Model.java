@@ -109,7 +109,7 @@ public class Model {
     public void setNavigateFrom(Point from) {
         Drawable nearestRoad = nearestRoad(from);
         if(nearestRoad.getVertex() != null) {
-            navigateFrom = nearestRoad.getVertex();
+            navigateFrom = driveableWayGraph.nearestVertex(nearestRoad.getVertex(), from);
             navigate();
         }
     }
@@ -117,7 +117,7 @@ public class Model {
     public void setNavigateTo(Point to) {
         Drawable nearestRoad = nearestRoad(to);
         if(nearestRoad.getVertex() != null) {
-            navigateTo = nearestRoad.getVertex();
+            navigateTo = driveableWayGraph.nearestVertex(nearestRoad.getVertex(), to);
             navigate();
         }
     }

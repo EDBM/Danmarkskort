@@ -26,6 +26,10 @@ public class Point {
         return Math.sqrt((this.x-other.x)*(this.x-other.x)+(this.y-other.y)*(this.y-other.y));
     }
 
+    public float distanceSquared(Point other){
+        return (this.x-other.x)*(this.x-other.x)+(this.y-other.y)*(this.y-other.y);
+    }
+
     public float getCoord(char c){
         if(c == 'x')
             return x;
