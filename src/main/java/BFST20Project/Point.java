@@ -2,7 +2,9 @@ package BFST20Project;
 
 import javafx.geometry.Point2D;
 
-public class Point {
+import java.io.Serializable;
+
+public class Point implements Serializable {
 
     private float x;
     private float y;

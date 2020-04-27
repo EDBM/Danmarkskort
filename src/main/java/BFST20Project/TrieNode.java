@@ -1,8 +1,9 @@
 package BFST20Project;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class TrieNode {
+public class TrieNode implements Serializable {
     private char c;
     private TrieNode parent;
     private String address;

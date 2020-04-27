@@ -3,10 +3,11 @@ package BFST20Project;
 import javafx.util.Pair;
 
 import java.awt.geom.FlatteningPathIterator;
+import java.io.Serializable;
 import java.util.*;
 
 
-public class KDTree {
+public class KDTree implements Serializable {
     private int size;
     private int bucketSize = 100;
     private Node rootNode;
@@ -197,7 +198,7 @@ public class KDTree {
     }*/
 
 
-    private class Node{
+    private class Node implements Serializable{
         boolean isLeaf;
         public int height;
 
@@ -226,14 +227,14 @@ public class KDTree {
 
     }
 
-    private class XComparator implements Comparator<Drawable>{
+    private class XComparator implements Comparator<Drawable>, Serializable{
         @Override
         public int compare(Drawable d1, Drawable d2) {
             return Float.compare(d1.getMaxX(), d2.getMaxX());
         }
     }
 
-    private class YComparator implements Comparator<Drawable>{
+    private class YComparator implements Comparator<Drawable>, Serializable{
         @Override
         public int compare(Drawable d1, Drawable d2) {
             return Float.compare(d1.getMaxY(), d2.getMaxY());

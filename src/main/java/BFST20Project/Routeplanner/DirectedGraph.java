@@ -1,9 +1,10 @@
 package BFST20Project.Routeplanner;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectedGraph {
+public class DirectedGraph implements Serializable {
     public static final int MAX_DRIVE_SPEED = 130;
     private final List<Vertex> vertices;
     private final List<DirectedEdge> edges;

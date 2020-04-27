@@ -20,13 +20,13 @@ class ShortestPathTest {
         vertices.add(new Vertex(new Point(3,3), 3));
 
         List<DirectedEdge> edges = new ArrayList<>();
-        edges.add(new DirectedEdge(vertices.get(0), vertices.get(1), 1.0));
-        edges.add(new DirectedEdge(vertices.get(1), vertices.get(2), 2.0));
-        edges.add(new DirectedEdge(vertices.get(2), vertices.get(3), 3.0));
+        edges.add(new DirectedEdge(vertices.get(0), vertices.get(1), 1.0, true, true));
+        edges.add(new DirectedEdge(vertices.get(1), vertices.get(2), 2.0, true, true));
+        edges.add(new DirectedEdge(vertices.get(2), vertices.get(3), 3.0, true, true));
 
         DirectedGraph graph = new DirectedGraph(vertices, edges);
 
-        ShortestPath shortestPath = new ShortestPath(graph, 0, 3);
+        ShortestPath shortestPath = new ShortestPath(graph, 0, 3, true);
 
         Iterator<DirectedEdge> iterator = shortestPath.getPath().iterator();
 
@@ -48,15 +48,15 @@ class ShortestPathTest {
         vertices.add(new Vertex(new Point(4,4), 4));
 
         List<DirectedEdge> edges = new ArrayList<>();
-        edges.add(new DirectedEdge(vertices.get(0), vertices.get(1), 1.0));
-        edges.add(new DirectedEdge(vertices.get(1), vertices.get(2), 1.5));
-        edges.add(new DirectedEdge(vertices.get(2), vertices.get(4), 1.5));
-        edges.add(new DirectedEdge(vertices.get(1), vertices.get(3), 1.0));
-        edges.add(new DirectedEdge(vertices.get(3), vertices.get(2), 1.0));
+        edges.add(new DirectedEdge(vertices.get(0), vertices.get(1), 1.0, true, true));
+        edges.add(new DirectedEdge(vertices.get(1), vertices.get(2), 1.5, true, true));
+        edges.add(new DirectedEdge(vertices.get(2), vertices.get(4), 1.5, true, true));
+        edges.add(new DirectedEdge(vertices.get(1), vertices.get(3), 1.0, true, true));
+        edges.add(new DirectedEdge(vertices.get(3), vertices.get(2), 1.0, true, true));
 
         DirectedGraph graph = new DirectedGraph(vertices, edges);
 
-        ShortestPath shortestPath = new ShortestPath(graph, 0, 4);
+        ShortestPath shortestPath = new ShortestPath(graph, 0, 4, true);
 
         Deque<DirectedEdge> path = shortestPath.getPath();
 
@@ -74,15 +74,15 @@ class ShortestPathTest {
         vertices.add(new Vertex(new Point(4,4), 4));
 
         List<DirectedEdge> edges = new ArrayList<>();
-        edges.add(new DirectedEdge(vertices.get(0), vertices.get(1), 1.0));
-        edges.add(new DirectedEdge(vertices.get(1), vertices.get(2), 3.5));
-        edges.add(new DirectedEdge(vertices.get(2), vertices.get(4), 2.0));
-        edges.add(new DirectedEdge(vertices.get(1), vertices.get(3), 1.5));
-        edges.add(new DirectedEdge(vertices.get(3), vertices.get(2), 1.0));
+        edges.add(new DirectedEdge(vertices.get(0), vertices.get(1), 1.0, true, true));
+        edges.add(new DirectedEdge(vertices.get(1), vertices.get(2), 3.5, true, true));
+        edges.add(new DirectedEdge(vertices.get(2), vertices.get(4), 2.0, true, true));
+        edges.add(new DirectedEdge(vertices.get(1), vertices.get(3), 1.5, true, true));
+        edges.add(new DirectedEdge(vertices.get(3), vertices.get(2), 1.0, true, true));
 
         DirectedGraph graph = new DirectedGraph(vertices, edges);
 
-        ShortestPath shortestPath = new ShortestPath(graph, 0, 4);
+        ShortestPath shortestPath = new ShortestPath(graph, 0, 4, true);
 
         Deque<DirectedEdge> path = shortestPath.getPath();
 
@@ -100,15 +100,15 @@ class ShortestPathTest {
         vertices.add(new Vertex(new Point(4,4), 4));
 
         List<DirectedEdge> edges = new ArrayList<>();
-        edges.add(new DirectedEdge(vertices.get(0), vertices.get(1), 1.0));
-        edges.add(new DirectedEdge(vertices.get(1), vertices.get(2), 3.5));
-        edges.add(new DirectedEdge(vertices.get(2), vertices.get(4), 2.0));
-        edges.add(new DirectedEdge(vertices.get(1), vertices.get(3), 1.5));
-        edges.add(new DirectedEdge(vertices.get(3), vertices.get(2), 1.0));
+        edges.add(new DirectedEdge(vertices.get(0), vertices.get(1), 1.0, true, true));
+        edges.add(new DirectedEdge(vertices.get(1), vertices.get(2), 3.5, true, true));
+        edges.add(new DirectedEdge(vertices.get(2), vertices.get(4), 2.0, true, true));
+        edges.add(new DirectedEdge(vertices.get(1), vertices.get(3), 1.5, true, true));
+        edges.add(new DirectedEdge(vertices.get(3), vertices.get(2), 1.0, true, true));
 
         DirectedGraph graph = new DirectedGraph(vertices, edges);
 
-        ShortestPath shortestPath = new ShortestPath(graph, 4, 0);
+        ShortestPath shortestPath = new ShortestPath(graph, 4, 0, true);
 
         Deque<DirectedEdge> path = shortestPath.getPath();
 

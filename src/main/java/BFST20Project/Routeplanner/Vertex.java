@@ -2,10 +2,11 @@ package BFST20Project.Routeplanner;
 
 import BFST20Project.Point;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vertex {
+public class Vertex implements Serializable {
     private final int id;
 
     Point point;

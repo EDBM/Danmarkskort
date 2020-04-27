@@ -1,10 +1,11 @@
 package BFST20Project;
 // Made with help https://github.com/eugenp/tutorials/blob/master/data-structures/src/main/java/com/baeldung/trie/Trie.java
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Trie {
+public class Trie implements Serializable {
     private TrieNode root;
 
     public Trie(){root = new TrieNode(' ');}

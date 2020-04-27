@@ -1,6 +1,8 @@
 package BFST20Project;
 
-public class OSMNode {
+import java.io.Serializable;
+
+public class OSMNode implements Serializable {
     private long id;
     private float lat, lon;
 
@@ -18,9 +20,7 @@ public class OSMNode {
         return lon;
     }
 
-    public Point getPoint(){
-        return new Point(lat, lon);
-    }
+    public Point getPoint(){ return new Point(lat, lon); }
 
     public long getId(){return id;}
 

@@ -4,27 +4,37 @@ import BFST20Project.OSMNode;
 import BFST20Project.OSMWay;
 import BFST20Project.Point;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TemporaryGraph {
-    public Map<Long, Integer> OSMIdToVertexId = new HashMap<>();
-    List<Vertex> vertices = new ArrayList<>();
-    List<DirectedEdge> edges = new ArrayList<>();
+public class TemporaryGraph implements Serializable {
+    transient public Map<Long, Integer> OSMIdToVertexId = new HashMap<>();
+    transient List<Vertex> vertices = new ArrayList<>();
+    transient List<DirectedEdge> edges = new ArrayList<>();
+    List<OSMWay> traversableWays;
 
-    public TemporaryGraph(List<OSMWay> drivableWays) {
-        for (OSMWay way: drivableWays ) {
+
+    //Helping to prevent stackoverflow with serializing
+    public TemporaryGraph(List<OSMWay> traversableWays){
+        this.traversableWays = traversableWays;
+    }
+
+    public void createTemporaryGraph() {
+        for (OSMWay way: traversableWays ) {
             for (OSMNode node : way.getAll()){
                 createVertex(node);
             }
             way.setVertex(vertices.get(OSMIdToVertexId.get(way.get(0).getId())));
         }
 
-        for(OSMWay way : drivableWays){
+        for(OSMWay way : traversableWays){
             createEdges(way);
         }
+
+        traversableWays.clear();
     }
 
     private void createVertex(OSMNode node) {

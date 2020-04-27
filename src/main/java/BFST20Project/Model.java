@@ -6,12 +6,11 @@ import BFST20Project.Routeplanner.ShortestPath;
 import BFST20Project.Routeplanner.Vertex;
 
 import javax.xml.stream.XMLStreamException;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 
 
-public class Model {
+public class Model implements Serializable {
     public float minLat,minLon, maxLat, maxLon;
     List<Runnable> observers = new ArrayList<>();
     File file;
@@ -24,21 +23,26 @@ public class Model {
 
     private Trie trie;
 
-    public Model() throws FileNotFoundException, XMLStreamException {
+    public Model() throws IOException, XMLStreamException, ClassNotFoundException {
         file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
+        //file = new File("F:\\denmark-latest.osm");
 
+        //OSMParser parser = new OSMParser(file);
+        BinaryParser parser = new BinaryParser(new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin"));
 
-        OSMParser osmParser = new OSMParser(file);
-        drawables = osmParser.getDrawables();
-        islands = osmParser.getIslands();
-        driveableWayGraph = osmParser.getDrivableWayGraph();
-        minLat = osmParser.getMinLat();
-        minLon = osmParser.getMinLon();
-        maxLat = osmParser.getMaxLat();
-        maxLon = osmParser.getMaxLon();
-
-        trie = osmParser.trie;
-
+        drawables = parser.getDrawables();
+        drawables = parser.getDrawables();
+        islands = parser.getIslands();
+        driveableWayGraph = parser.getDrivableWayGraph();
+        minLat = parser.getMinLat();
+        minLon = parser.getMinLon();
+        maxLat = parser.getMaxLat();
+        maxLon = parser.getMaxLon();
+        minLat = -55.3041f;
+        minLon = 8.218784f;
+        maxLat = -54.9264f;
+        maxLon = 8.491f;
+        trie = parser.getTrie();
     }
 
     public void addObserver(Runnable observer) {

@@ -98,14 +98,13 @@ public class MapCanvas extends Canvas{
             boolean shouldFill = color.shouldFill(type);
             if (shouldFill) {
                 gc.setFill(color.getFill(type));
-
             }
 
             for(Drawable drawable : drawables.get(type)){
-                drawable.stroke(gc);
-                if(shouldFill) {
-                    drawable.fill(gc);
-                }
+                drawable.stroke(gc, shouldFill);
+                //if(shouldFill) {
+                  //  drawable.fill(gc);
+                //}
             }
 
         }
@@ -154,7 +153,7 @@ public class MapCanvas extends Canvas{
             double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
             gc.setLineWidth(3 * pixelWidth);
             gc.setStroke(Color.PURPLE);
-            nearestRoad.stroke(gc);
+            nearestRoad.stroke(gc, false);
 
 
     }

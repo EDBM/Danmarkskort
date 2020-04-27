@@ -2,13 +2,14 @@ package BFST20Project;
 
 import BFST20Project.Routeplanner.Vertex;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OSMWay{
+public class OSMWay implements Serializable {
     private long id; //TODO is this used?
     private WayType type;
-    private Vertex vertex;
+    transient private Vertex vertex;
     private List<OSMNode> nodes = new ArrayList<>();
 
     public OSMWay(long id) {

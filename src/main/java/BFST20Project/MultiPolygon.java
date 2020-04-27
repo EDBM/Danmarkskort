@@ -25,7 +25,8 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     }
 
     @Override
-    public void stroke(GraphicsContext gc) {} //NOT USED
+    public void stroke(GraphicsContext gc, boolean shouldFill) { fill(gc); } //NOT USED
+
 
     public void fill(GraphicsContext gc) {
         gc.setFillRule(FillRule.EVEN_ODD);

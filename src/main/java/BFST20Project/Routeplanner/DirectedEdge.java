@@ -1,6 +1,8 @@
 package BFST20Project.Routeplanner;
 
-public class DirectedEdge {
+import java.io.Serializable;
+
+public class DirectedEdge implements Serializable {
     private Vertex start;
     private Vertex end;
     private double length;
@@ -11,7 +13,6 @@ public class DirectedEdge {
     public DirectedEdge(Vertex start, Vertex end, double speed, boolean isDrivable, boolean isWalkable){
         this.start = start;
         this.end = end;
-        if (Double.isNaN(speed)) throw new IllegalArgumentException("Speed is Not a Number");
         this.speed = speed;
         length = calculateLength();
 
@@ -31,9 +32,7 @@ public class DirectedEdge {
         return start;
     }
 
-    public Vertex getEnd() {
-        return end;
-    }
+    public Vertex getEnd() { return end; }
 
     public double getWeight(boolean isDriving) {
         if(isDriving) return length/speed;

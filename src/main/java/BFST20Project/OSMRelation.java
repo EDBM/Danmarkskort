@@ -2,10 +2,11 @@ package BFST20Project;
 
 import javafx.scene.canvas.GraphicsContext;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OSMRelation{
+public class OSMRelation implements Serializable {
     long id;
     List<OSMWay> ways = new ArrayList<>();
     private WayType type;

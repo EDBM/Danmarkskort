@@ -8,12 +8,10 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
-public class OSMParser extends Parser{
+public class OSMParser extends Parser implements Serializable{
     Map<Long, OSMNode> idToNode = new TreeMap<>();
     Map<Long, OSMWay> idToWay = new HashMap<>();
     Map<Long, OSMRelation> idToRelation = new HashMap<>();
@@ -23,14 +21,16 @@ public class OSMParser extends Parser{
     public Trie trie = new Trie();
 
     private float minLat, minLon, maxLat, maxLon;
+    private Bounds bounds;
     private EnumMap<ZoomLevel, KDTree> drawables = new EnumMap<>(ZoomLevel.class);
     private List<Drawable> islands = new ArrayList<>();
 
-    public OSMParser(File file) throws FileNotFoundException, XMLStreamException {
+    public OSMParser(File file) throws IOException, XMLStreamException {
         System.out.println("load parser");
         readOSMFile(file);
         createDrivableWayGraph();
         createDrawables();
+        createBinaryFile();
     }
 
     private void readOSMFile(File file) throws XMLStreamException, FileNotFoundException {
@@ -87,6 +87,8 @@ public class OSMParser extends Parser{
         maxLon = 0.56f * Float.parseFloat(reader.getAttributeValue(null, "maxlon"));
         maxLat = -Float.parseFloat(reader.getAttributeValue(null, "minlat"));
         minLon = 0.56f * Float.parseFloat(reader.getAttributeValue(null, "minlon"));
+
+        bounds = new Bounds(minLat, minLon, maxLat, maxLon);
     }
 
     private void parseNode() throws XMLStreamException {
@@ -235,14 +237,17 @@ public class OSMParser extends Parser{
             if(relation instanceof MultiPolygon)
                 rememberDrawable((MultiPolygon) relation, tempDrawableStorage);
         }
-        for(ZoomLevel zoomLevel : ZoomLevel.values())
+
+        for(ZoomLevel zoomLevel : ZoomLevel.values()) {
             drawables.put(zoomLevel, new KDTree(tempDrawableStorage.get(zoomLevel)));
+        }
     }
 
     private void rememberDrawable(Drawable drawable, Map<ZoomLevel, List<Drawable>> tempDrawableStorage) {
         if(drawable.getWayType() == WayType.ISLAND){
             islands.add(drawable);
         }
+
         else if(drawable.getWayType() != WayType.BEACH) {
             ZoomLevel zoomLevel = ZoomLevel.levelForWayType(drawable.getWayType());
             tempDrawableStorage.get(zoomLevel).add(drawable);
@@ -251,6 +256,7 @@ public class OSMParser extends Parser{
 
     private void createDrivableWayGraph() {
         TemporaryGraph temporaryGraph = new TemporaryGraph(traversableWays);
+        temporaryGraph.createTemporaryGraph();
         drivableWaysGraph = temporaryGraph.compressedGraph();//TODO maybe rename this to something more fitting/precise.
 
         int id1 = temporaryGraph.OSMIdToVertexId.get(32948578L);
@@ -290,4 +296,57 @@ public class OSMParser extends Parser{
     public DirectedGraph getDrivableWayGraph() {
         return drivableWaysGraph;
     }
+
+    public Trie getTrie(){
+        return trie;
+    }
+
+
+
+    public void createBinaryFile() throws IOException {
+        File file = new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin");
+
+        FileOutputStream fileOut = new FileOutputStream(file);
+        ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+
+        System.out.println("ways");
+        for(OSMWay way : idToWay.values()){
+            objectOut.writeObject(way);
+        }
+
+        System.out.println("relations");
+        for(OSMRelation relation : idToRelation.values()){
+            objectOut.writeObject((MultiPolygon) relation);
+        }
+
+        System.out.println("bounds");
+        //objectOut.writeObject(bounds);
+
+        System.out.println("graph");
+        objectOut.writeObject(new TemporaryGraph(traversableWays));
+
+        System.out.println("islands");
+        objectOut.writeObject(islands);
+
+        System.out.println("trie");
+        objectOut.writeObject(trie);
+
+        objectOut.close();
+
+    }
+
+
+    private class Bounds implements Serializable{
+        private float minLat, minLon, maxLat, maxLon;
+
+        public Bounds(float minLat, float minLon, float maxLat, float maxLon){
+            this.minLat = minLat;
+            this.minLon = minLon;
+            this.maxLat = maxLat;
+            this.maxLon = maxLon;
+        }
+    }
+
+
+
 }

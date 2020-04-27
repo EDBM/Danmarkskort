@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface Drawable {
 
-    void stroke(GraphicsContext gc);
-    void fill(GraphicsContext gc);
+    void stroke(GraphicsContext gc, boolean shouldFill);
+    //void fill(GraphicsContext gc);
 
     WayType getWayType();
     void setWayType(WayType type);

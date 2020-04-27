@@ -96,8 +96,6 @@ public class Controller {
         private void onScroll(ScrollEvent e) {
             double factor = Math.pow(1.001, e.getDeltaY());
             mapCanvas.zoom(factor, e.getX(), e.getY());
-            System.out.println(e.getDeltaY());
-            System.out.println(x + y);
         }
 
 
@@ -110,10 +108,8 @@ public class Controller {
 
     @FXML
     private void zoomIn() {
-
         mapCanvas.zoom(1.29,600,300);
         mapCanvas.repaint();
-
     }
 
     @FXML

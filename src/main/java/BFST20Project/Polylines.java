@@ -55,9 +55,10 @@ public class Polylines implements Drawable, Serializable {
         maxPoint = new Point(maxX, maxY);
     }
 
-    public void stroke(GraphicsContext gc){
+    public void stroke(GraphicsContext gc, boolean shouldFill){
         gc.beginPath();
         trace(gc);
+        if(shouldFill) gc.fill();
         gc.stroke();
     }
 
