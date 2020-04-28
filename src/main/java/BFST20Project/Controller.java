@@ -96,8 +96,8 @@ public class Controller {
         private void onScroll(ScrollEvent e) {
             double factor = Math.pow(1.001, e.getDeltaY());
             mapCanvas.zoom(factor, e.getX(), e.getY());
-            System.out.println(e.getDeltaY());
-            System.out.println(x + y);
+            //System.out.println(e.getDeltaY());
+            //System.out.println(x + y);
         }
 
 
@@ -141,7 +141,7 @@ public class Controller {
         y = e.getY();
 
         if(e.getButton() == MouseButton.PRIMARY){
-            System.out.println(x);
+            //System.out.println(x);
 
 
         }else {

@@ -54,7 +54,7 @@ public class DirectedGraph {
 
         while(!potentiallyCloser.isEmpty()) {
             Vertex toConsider = potentiallyCloser.poll();
-            System.out.println(point.distanceSquared(toConsider.getPoint()));
+            //System.out.println(point.distanceSquared(toConsider.getPoint()));
             if(minDist > point.distanceSquared(toConsider.getPoint())){
                 closeVertex = toConsider;
                 minDist = point.distanceSquared(toConsider.getPoint());

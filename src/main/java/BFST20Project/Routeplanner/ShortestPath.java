@@ -89,24 +89,23 @@ public class ShortestPath {
         String roadName = previousEdge.getName();
 
         for (DirectedEdge edge : path) {
-            if (roadName == edge.getName()) {
+            if (roadName.equals(edge.getName())) {
                 length += edge.getLength();
-                previousEdge = edge;
-            } if (previousEdge.getStart().getIncidentEdges().size()== 2){
-                textRoute.add("Fortsæt af vejen");
             }
-            else {
-                double angle = calculateTurnAngle(edge, previousEdge);
-                if (angle >= 0 && angle <= Math.PI/4) {
+            if (previousEdge.getStart().getIncidentEdges().size() != 2) {
+                double angle = calculateTurnAngle(previousEdge, edge);
+                System.out.println(angle);
+                if (angle >= 0 && angle <= Math.PI/2) {
                     direction = "Drej til højre";
-                } else if (angle <= Math.PI && angle >= Math.PI/2) {
+                } else if (angle <= Math.PI && angle >= Math.PI/2.5) {
                     direction = "Drej til venstre";
                 } else {
                     direction = "Fortsæt ligeud";
                 }
                 textRoute.add("Følg " + roadName + " " + length + "m, derefter" + direction + " af " + edge.getName());
-                previousEdge = edge;
+                length = 0;
             }
+            previousEdge = edge;
         }
 
             textRoute.add("Du er nu ankommet");
