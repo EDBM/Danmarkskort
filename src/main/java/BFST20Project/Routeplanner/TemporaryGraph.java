@@ -13,6 +13,7 @@ public class TemporaryGraph {
     public Map<Long, Integer> OSMIdToVertexId = new HashMap<>();
     List<Vertex> vertices = new ArrayList<>();
     List<DirectedEdge> edges = new ArrayList<>();
+    String name;
 
     public TemporaryGraph(List<OSMWay> drivableWays) {
         for (OSMWay way: drivableWays ) {
@@ -41,8 +42,8 @@ public class TemporaryGraph {
             Vertex v = vertices.get(OSMIdToVertexId.get(nodes.get(i).getId()));
             Vertex w = vertices.get(OSMIdToVertexId.get(nodes.get(i+1).getId()));
 
-            edges.add(new DirectedEdge(v, w, way.getSpeed(), way.isDrivableWay(), way.isWalkableWay()));
-            edges.add(new DirectedEdge(w, v, way.getSpeed(), way.isDrivableWay(), way.isWalkableWay()));
+            edges.add(new DirectedEdge(v, w, way.getSpeed(), way.getName(), way.isDrivableWay(), way.isWalkableWay()));
+            edges.add(new DirectedEdge(w, v, way.getSpeed(), way.getName(), way.isDrivableWay(), way.isWalkableWay()));
         }
     }
 

@@ -1,29 +1,33 @@
 package BFST20Project.Routeplanner;
 
+import BFST20Project.OSMNode;
+import BFST20Project.Point;
+
 public class DirectedEdge {
     private Vertex start;
     private Vertex end;
     private double length;
     private double speed;
-    public boolean isDrivable;
-    public boolean isWalkable;
+    private String name;
+    boolean isDriveable;
+    boolean isWalkable;
 
-    public DirectedEdge(Vertex start, Vertex end, double speed, boolean isDrivable, boolean isWalkable){
+    public DirectedEdge(Vertex start, Vertex end, double speed,String name, boolean isDriveable, boolean isWalkable){
         this.start = start;
         this.end = end;
         if (Double.isNaN(speed)) throw new IllegalArgumentException("Speed is Not a Number");
         this.speed = speed;
         length = calculateLength();
-
-        //These are not mutually exclusive
-        this.isDrivable = isDrivable;
+        this.name=name;
+        this.isDriveable = isDriveable;
         this.isWalkable = isWalkable;
 
         start.addEdge(this);
     }
 
     private double calculateLength() {
-        length = start.getPoint().distanceTo(end.getPoint());
+        length= Point.distanceBetweenPoint(start.getPoint(),end.getPoint());
+        //length = start.getPoint().distanceTo(end.getPoint());
         return length;
     }
 
@@ -35,8 +39,9 @@ public class DirectedEdge {
         return end;
     }
 
-    public double getWeight(boolean isDriving) {
-        if(isDriving) return length/speed;
-        else return length;
+    public double getWeight() {
+        return length/speed;
     }
+    public String getName(){return name;}
+    public double getLength(){return length;}
 }
