@@ -44,4 +44,6 @@ public class DirectedEdge {
     }
     public String getName(){return name;}
     public double getLength(){return length;}
+
+
 }

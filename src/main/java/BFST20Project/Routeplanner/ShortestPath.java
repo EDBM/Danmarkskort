@@ -1,5 +1,7 @@
 package BFST20Project.Routeplanner;
 
+import BFST20Project.Point;
+
 import java.util.*;
 
 public class ShortestPath {
@@ -85,27 +87,36 @@ public class ShortestPath {
         ArrayList<String> textRoute = new ArrayList<>();
         String direction;
         int length = 0;
+        double angle;
         DirectedEdge previousEdge = path.poll();
         String roadName = previousEdge.getName();
 
         for (DirectedEdge edge : path) {
-            if (roadName.equals(edge.getName())) {
-                length += edge.getLength();
-            }
-            if (previousEdge.getStart().getIncidentEdges().size() != 2) {
-                double angle = calculateTurnAngle(previousEdge, edge);
-                System.out.println(angle);
-                if (angle >= 0 && angle <= Math.PI/2) {
-                    direction = "Drej til højre";
-                } else if (angle <= Math.PI && angle >= Math.PI/2.5) {
-                    direction = "Drej til venstre";
+            if(roadName!=null) {
+                if (roadName.equals(edge.getName())) {
+                    length += edge.getLength();
+                    previousEdge = edge;
+                } else if (!roadName.equals("")) {
+                    angle = calculateTurnAngle(previousEdge, edge);
+                    //angle = ((previousEdge.getEnd().getLon()-previousEdge.getStart().getLon())*(edge.getEnd().getLat()-previousEdge.getStart().getLat()))-
+                    //      ((previousEdge.getEnd().getLat()-previousEdge.getStart().getLat())*(edge.getEnd().getLon()-previousEdge.getStart().getLon()));
+                    System.out.println(angle);
+                    if (angle >= 0 && angle <= 90) {
+                        direction = " drej til højre";
+                    } else if (angle >= 100 && angle <= 180) {
+                        direction = " drej til venstre";
+                    } else {
+                        direction = " fortsæt ligeud";
+                    }
+
+                    textRoute.add("Følg " + roadName + " " + length + "m, derefter" + direction + " af " + edge.getName());
+                    roadName = edge.getName();
+                    length = 0;
+
                 } else {
-                    direction = "Fortsæt ligeud";
+                    roadName = edge.getName();
                 }
-                textRoute.add("Følg " + roadName + " " + length + "m, derefter" + direction + " af " + edge.getName());
-                length = 0;
             }
-            previousEdge = edge;
         }
 
             textRoute.add("Du er nu ankommet");
@@ -125,19 +136,24 @@ public class ShortestPath {
         double by2 = b.getEnd().getLon();
         double bx2 = b.getEnd().getLat();
 
-        double aLength = a.getLength();
-        double bLength = b.getLength();
-        double cLength = a.getStart().getPoint().distanceTo(b.getEnd().getPoint());
+        double aLenght = Math.sqrt(Math.pow(Math.abs(ax1-ax2),2)+Math.pow(ay1-ay2,2));
+        double bLength = Math.sqrt(Math.pow(Math.abs(ax1-bx2),2)+Math.pow(ay1-by2,2));
+        double cLength = Math.sqrt(Math.pow(Math.abs(ax2-bx2),2)+Math.pow(ay2-by2,2));
+        //double aLength = a.getLength();
+        //double bLength = b.getLength();
+        //double cLength = Point.distanceBetweenPoint(a.getStart().getPoint(),(b.getEnd().getPoint()));
 
+        double turnAngle = Math.acos(aLenght*aLenght+bLength*bLength-cLength*cLength/(2*aLenght*bLength))*(180/Math.PI);
+        /*
         double vectorABx = ax1 - bx1;
         double vectorABy = ay1 - by1;
         double vectorACx = ax1 - bx2;
         double vectorACy = ay1 - by2;
 
-        double turnAngle = Math.acos((vectorABx*vectorACx+vectorABy*vectorACy)/(cLength));
+        double turnAngle = Math.acos((vectorABx*vectorACx+vectorABy*vectorACy)/(cLength))*(180/Math.PI);
         //double turnAngle = Math.acos((Math.pow(aLength,2)+Math.pow(cLength,2)-Math.pow(bLength,2))/(2*aLength*cLength));
         //turnAngle = turnAngle;
-
+        */
 
         return turnAngle;
     }
