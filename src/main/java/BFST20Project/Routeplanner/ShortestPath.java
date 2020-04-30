@@ -107,9 +107,9 @@ public class ShortestPath {
                     //angle = calculateTurnAngle(previousEdge, edge);
                     angle = ((previousEdge.getEnd().getLon()-previousEdge.getStart().getLon())*(edge.getEnd().getLat()-previousEdge.getStart().getLat()))-
                             ((previousEdge.getEnd().getLat()-previousEdge.getStart().getLat())*(edge.getEnd().getLon()-previousEdge.getStart().getLon()));
-                    if (angle>0) {
+                    if (angle > 0) {
                         direction = " drej til højre";
-                    } else if (angle<0) {
+                    } else if (angle < 0) {
                         direction = " drej til venstre";
                     } else {
                         direction = " fortsæt ligeud";
