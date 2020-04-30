@@ -1,32 +1,41 @@
 package BFST20Project;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.event.EventHandler;
 
+import java.awt.*;
+import java.sql.SQLOutput;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class Controller {
-
     private Model model;
     private View view;
     double x, y;
     private Point point;
+    //To get km
+    private double zoomFactor = 3.4 * 2857 * 1000;
 
-
-
-
-
-    @FXML private AnchorPane root;
 
     @FXML
     private MapCanvas mapCanvas;
@@ -35,15 +44,20 @@ public class Controller {
     @FXML
     private TextField start, slut;
 
+    @FXML
+    private Text text;
 
 
 
     public void init(Model model) throws Exception {
         this.model = model;
         mapCanvas.init(model);
-
-
+        final double factor = mapCanvas.getWidth() / (model.maxLat - model.minLat);
+        mapCanvas.pan(-model.minLon, -model.minLat);
+        mapCanvas.zoom(factor, 0, 0);
+        zoomText(factor);
     }
+
 
 
     @FXML
@@ -92,27 +106,50 @@ public class Controller {
         System.out.println("her må jeg gå");
     }
 
-        @FXML
-        private void onScroll(ScrollEvent e) {
-            double factor = Math.pow(1.001, e.getDeltaY());
-            mapCanvas.zoom(factor, e.getX(), e.getY());
-            System.out.println(e.getDeltaY());
-            System.out.println(x + y);
-        }
-
 
 
     @FXML
-    private void zoomOut() {
-        mapCanvas.zoom(0.77, 600, 300);
-        mapCanvas.repaint();
+    private void onScroll(ScrollEvent e) {
+        double factor = Math.pow(1.001, e.getDeltaY());
+        mapCanvas.zoom(factor, e.getX(), e.getY());
+        zoomText(factor);
+
+    }
+
+    private String toMetric(double number){
+        String[] prefix = {"","k", "M"};
+        int scale = 0;
+        while(number >= 1000 && scale < prefix.length -1){
+            number/=1000;
+            scale++;
+        }
+
+        return String.format("%.2f %s", number, prefix[scale]);
+    }
+
+    //Shorthand assigntment x /= y -> x = x / y
+    private void zoomText(double delta){
+        zoomFactor /= delta ;
+        text.setText(toMetric(zoomFactor) + "m");
     }
 
     @FXML
-    private void zoomIn() {
+    private void zoomOut() {
+        double factor = 0.77;
+        mapCanvas.zoom(factor, 600, 300);
+        mapCanvas.repaint();
+        zoomText(factor);
+    }
 
+
+    @FXML
+    private void zoomIn() {
+        double factor = 1.29;
         mapCanvas.zoom(1.29,600,300);
         mapCanvas.repaint();
+
+        zoomText(factor);
+
 
     }
 
@@ -146,34 +183,32 @@ public class Controller {
 
         }else {
             mapCanvas.highlightNearestRoad(e.getX(), e.getY());
-
         }
-
-            }
+    }
 
 
     @FXML
-     private void addressStart(KeyEvent e){
-         //TODO implement trie for
-         System.out.println("her skal der være en adresse :)");
-        }
-
-     @FXML
-     private void addressSlut(KeyEvent e){
-
-            //TODO implement trie
+    private void addressStart(KeyEvent e){
+        //TODO implement trie for
         System.out.println("her skal der være en adresse :)");
-     }
+    }
 
-     @FXML
-     private void changeColor(){
+    @FXML
+    private void addressSlut(KeyEvent e){
+
+        //TODO implement trie
+        System.out.println("her skal der være en adresse :)");
+    }
+
+    @FXML
+    private void changeColor(){
         if(mapCanvas.getDefaultcolor() == 1|| mapCanvas.getDefaultcolor() == 3){
-        mapCanvas.setToColorBlindMode();
+            mapCanvas.setToColorBlindMode();
         } else{
             mapCanvas.setDefaultcolor();
         }
-         mapCanvas.repaint();
-     }
+        mapCanvas.repaint();
+    }
 
     @FXML
     private void changeColor2(){
@@ -186,7 +221,23 @@ public class Controller {
     }
 
 
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
