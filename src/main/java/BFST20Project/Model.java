@@ -25,7 +25,7 @@ public class Model {
     private Trie trie;
 
     public Model() throws FileNotFoundException, XMLStreamException {
-        file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
+        file = new File(getClass().getClassLoader().getResource("anholt.osm").getFile());
 
 
         OSMParser osmParser = new OSMParser(file);

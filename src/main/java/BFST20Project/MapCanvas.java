@@ -31,16 +31,16 @@ public class MapCanvas extends Canvas{
     public void init(Model model){
         this.model = model;
         model.addObserver(this::repaint);
-        resetView();
+        repaint();
     }
 
 
 
-    public void resetView() {
+/*    public void resetView() {
         pan(-model.minLon, -model.minLat);
         zoom(getWidth() / (model.maxLat - model.minLat), 0, 0);
         repaint();
-    }
+    }*/
 
     public void repaint(){
         gc.setTransform(new Affine());
@@ -49,7 +49,7 @@ public class MapCanvas extends Canvas{
             gc.fillRect(0,0,getWidth(),getHeight());
             gc.setFill(Color.RED);
             gc.setStroke(Color.DARKRED);
-            System.out.println("jeg er her");
+
         }
         if(defaultcolor == 3){
             gc.setFill(Color.web("#6C6868"));
