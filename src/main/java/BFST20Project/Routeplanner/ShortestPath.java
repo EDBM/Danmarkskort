@@ -85,25 +85,31 @@ public class ShortestPath {
 
     public ArrayList<String> textRoutePlanner() {
         ArrayList<String> textRoute = new ArrayList<>();
+
+        if(path.isEmpty()){
+            textRoute.add("No route available");
+            return textRoute;
+        }
+
         String direction;
         int length = 0;
         double angle;
+        String roadName;
         DirectedEdge previousEdge = path.poll();
-        String roadName = previousEdge.getName();
+        roadName = previousEdge.getName();
 
-        for (DirectedEdge edge : path) {
-            if(roadName!=null) {
+        if(previousEdge.getName()!=null) {
+            for (DirectedEdge edge : path) {
                 if (roadName.equals(edge.getName())) {
                     length += edge.getLength();
                     previousEdge = edge;
                 } else if (!roadName.equals("")) {
-                    angle = calculateTurnAngle(previousEdge, edge);
-                    //angle = ((previousEdge.getEnd().getLon()-previousEdge.getStart().getLon())*(edge.getEnd().getLat()-previousEdge.getStart().getLat()))-
-                    //      ((previousEdge.getEnd().getLat()-previousEdge.getStart().getLat())*(edge.getEnd().getLon()-previousEdge.getStart().getLon()));
-                    System.out.println(angle);
-                    if (angle >= 0 && angle <= 90) {
+                    //angle = calculateTurnAngle(previousEdge, edge);
+                    angle = ((previousEdge.getEnd().getLon()-previousEdge.getStart().getLon())*(edge.getEnd().getLat()-previousEdge.getStart().getLat()))-
+                            ((previousEdge.getEnd().getLat()-previousEdge.getStart().getLat())*(edge.getEnd().getLon()-previousEdge.getStart().getLon()));
+                    if (angle>0) {
                         direction = " drej til højre";
-                    } else if (angle >= 100 && angle <= 180) {
+                    } else if (angle<0) {
                         direction = " drej til venstre";
                     } else {
                         direction = " fortsæt ligeud";
@@ -117,43 +123,54 @@ public class ShortestPath {
                     roadName = edge.getName();
                 }
             }
-        }
 
             textRoute.add("Du er nu ankommet");
-        for(String s:textRoute){
-            System.out.println(s);
+            for (String s : textRoute) {
+                System.out.println(s);
+            }
         }
         return textRoute;
     }
 
     private double calculateTurnAngle(DirectedEdge a, DirectedEdge b) {
-        double ay1 = a.getStart().getLon();
-        double ax1 = a.getStart().getLat();
-        double ay2 = a.getEnd().getLon();
-        double ax2 = a.getEnd().getLat();
-        double by1 = b.getStart().getLon();
-        double bx1 = b.getStart().getLat();
-        double by2 = b.getEnd().getLon();
-        double bx2 = b.getEnd().getLat();
+        double ax1 = a.getStart().getLon();
+        double ay1 = a.getStart().getLat();
+        double ax2 = a.getEnd().getLon();
+        double ay2 = a.getEnd().getLat();
+        double bx1 = b.getStart().getLon();
+        double by1 = b.getStart().getLat();
+        double bx2 = b.getEnd().getLon();
+        double by2 = b.getEnd().getLat();
 
-        double aLenght = Math.sqrt(Math.pow(Math.abs(ax1-ax2),2)+Math.pow(ay1-ay2,2));
-        double bLength = Math.sqrt(Math.pow(Math.abs(ax1-bx2),2)+Math.pow(ay1-by2,2));
-        double cLength = Math.sqrt(Math.pow(Math.abs(ax2-bx2),2)+Math.pow(ay2-by2,2));
+
+        double aLength = Math.sqrt(Math.pow(Math.abs(ax1-bx1),2)+Math.pow(ay1-by1,2)); //length from point1 to point2
+        double bLength = Math.sqrt(Math.pow(Math.abs(ax2-bx2),2)+Math.pow(ay2-by2,2)); // length from point2 to point3
+        double cLength = Math.sqrt(Math.pow(Math.abs(ax1-bx2),2)+Math.pow(ay1-by2,2)); //length from point1 to point3
+
         //double aLength = a.getLength();
         //double bLength = b.getLength();
         //double cLength = Point.distanceBetweenPoint(a.getStart().getPoint(),(b.getEnd().getPoint()));
 
-        double turnAngle = Math.acos(aLenght*aLenght+bLength*bLength-cLength*cLength/(2*aLenght*bLength))*(180/Math.PI);
+        double ab = (aLength*aLength+bLength*bLength);
+        double cc = cLength*cLength;
         /*
+        double twoab = 2*aLength*bLength;
+        double abcc = ab-cc;
+        double turnAngle = Math.acos(abcc/(twoab))*180/Math.PI;
+*/
         double vectorABx = ax1 - bx1;
         double vectorABy = ay1 - by1;
         double vectorACx = ax1 - bx2;
         double vectorACy = ay1 - by2;
+        double vectorBAx = bx1-ax1;
 
-        double turnAngle = Math.acos((vectorABx*vectorACx+vectorABy*vectorACy)/(cLength))*(180/Math.PI);
+        double vectorBAy = by1 - ay1;
+        double vectorBCx = bx2-bx1;
+        double vectorBCy = by2-by1;
+        double turnAngle = Math.acos((vectorABx*vectorACx+vectorABy*vectorACy)/(aLength*cLength));
         //double turnAngle = Math.acos((Math.pow(aLength,2)+Math.pow(cLength,2)-Math.pow(bLength,2))/(2*aLength*cLength));
         //turnAngle = turnAngle;
-        */
+
 
         return turnAngle;
     }
