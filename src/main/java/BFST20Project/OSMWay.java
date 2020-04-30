@@ -8,6 +8,7 @@ import java.util.List;
 public class OSMWay{
     private long id; //TODO is this used?
     private WayType type;
+    private String name;
     private Vertex vertex;
     private List<OSMNode> nodes = new ArrayList<>();
 
@@ -26,6 +27,9 @@ public class OSMWay{
     public void addNode(OSMNode node) {
         nodes.add(node);
     }
+
+    public void setName(String name){this.name=name;}
+    public String getName(){return name;}
 
     public void removeNode(int index) { nodes.remove(index); }
 

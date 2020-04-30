@@ -64,4 +64,21 @@ public class Point {
         double dist = Math.sqrt(dx * dx + dy * dy);
         return (float) dist;
     }
+
+    public static double distanceBetweenPoint(Point start, Point end){
+        int R = 6371; //earth radius in km
+        float startLat = start.getX()/0.56f;
+        float startLon = start.getY()*-1;
+        float endLat = end.getX()/0.56f;
+        float endLon = end.getY()*-1;
+        double deltaLat = startLat*Math.PI/180-endLat*Math.PI/180;
+        double deltaLon = startLon*Math.PI/180-endLon*Math.PI/180;
+        //Haversine formula
+        double a = Math.pow(Math.sin(deltaLat/2),2)+Math.cos(startLat*Math.PI/180)*Math.cos(endLat*Math.PI/180)*Math.pow(Math.sin(deltaLon/2),2);
+        double c = 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+        double d = R * c;
+        d = d*1000; //converts to meters
+
+        return d;
+    }
 }

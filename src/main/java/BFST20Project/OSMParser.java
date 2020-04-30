@@ -150,6 +150,9 @@ public class OSMParser extends Parser{
                         case "tag":
                             String key = reader.getAttributeValue(null, "k");
                             String value = reader.getAttributeValue(null, "v");
+                            if(key.startsWith("name")){
+                                osmWay.setName(value);
+                            }
                             tags.put(key, value);
                             break;
                     }
@@ -256,7 +259,7 @@ public class OSMParser extends Parser{
         int id1 = temporaryGraph.OSMIdToVertexId.get(32948578L);
         int id2 = temporaryGraph.OSMIdToVertexId.get(4791600016L);
 
-        ShortestPath shortestPath = new ShortestPath(drivableWaysGraph, id1, id2, false);
+        ShortestPath shortestPath = new ShortestPath(drivableWaysGraph, id1, id2);
 
         //System.out.println(shortestPath.getPath());
         System.out.println("Total weight: " + shortestPath.getTotalWeight());
