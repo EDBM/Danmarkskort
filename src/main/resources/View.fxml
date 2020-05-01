@@ -151,12 +151,29 @@
                                                           -fx-border-style: solid;
                                                           -fx-background-color: rgba(255,255,255,1)"
                                                     onKeyTyped="#addressEnd"/>
+                                        <HBox minWidth="100"
+                                              minHeight="20">
+
+                                        </HBox>
+                                        <Label
+                                        style="
+                                        -fx-text-align: center;
+                                        -fx-font-weight: bold;">
+                                            Rutevejledning</Label>
+                                        <HBox><TextArea fx:id="textarea" prefHeight="200.0" prefWidth="200.0" visible="true" editable="false"/>
+                                        </HBox>
+
+                                    </VBox>
+
+
+
                                         </VBox>
-                                 </VBox>
 
                                 </top>
 
-                                <bottom >
+
+
+                                <bottom>
 
                                 <HBox fx:id = "colorButton"
                                       BorderPane.alignment="BOTTOM_CENTER">

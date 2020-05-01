@@ -153,14 +153,6 @@ public class Controller {
 
 
     @FXML
-    private void fileChooser(){
-
-        FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(null);
-        }
-
-
-    @FXML
     private void zoomIn() {
         double factor = 1.29;
         mapCanvas.zoom(1.29,600,300);
@@ -214,12 +206,16 @@ public class Controller {
         set.add(mapCanvas.curZoomLevel());
 
         Drawable nearestRoad = model.nearestRoad(mapPoint, set);
-        if(nearestRoad.getName() != null) {
-            this.nearestRoad.setText("Vejnavn: " + nearestRoad.getName());
-
+            if(nearestRoad.getName() != null) {
+                if (mapCanvas.getDefaultcolor() == 1 || mapCanvas.getDefaultcolor() == 2) {
+                    this.nearestRoad.setText("Vejnavn: " + nearestRoad.getName());
+                } else {
+                    this.nearestRoad.setText("Vejnavn: Gotham");
+                }
+            }
         }
 
-    }
+
 
 
 
@@ -234,6 +230,13 @@ public class Controller {
 
         //TODO implement trie
         System.out.println("her skal der være en adresse :)");
+    }
+
+    @FXML
+    private void fileChooser(){
+
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
     }
 
     @FXML
