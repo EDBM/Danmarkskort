@@ -116,8 +116,8 @@ public class ShortestPath {
                     }
 
                     textRoute.add("Følg " + roadName + " " + length + "m, derefter" + direction + " af " + edge.getName());
+                    length= (int) Math.floor(edge.getLength());
                     roadName = edge.getName();
-                    length = 0;
 
                 } else {
                     roadName = edge.getName();

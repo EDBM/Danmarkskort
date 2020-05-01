@@ -4,6 +4,7 @@ import BFST20Project.Routeplanner.DirectedEdge;
 import BFST20Project.Routeplanner.DirectedGraph;
 import BFST20Project.Routeplanner.ShortestPath;
 import BFST20Project.Routeplanner.Vertex;
+import javafx.scene.control.TextField;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.*;
@@ -99,6 +100,7 @@ public class Model implements Serializable {
 
         return closest;
     }
+
 
     private void navigate(){
         if(navigateFrom != null && navigateTo != null){

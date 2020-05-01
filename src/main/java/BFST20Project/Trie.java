@@ -44,7 +44,7 @@ public class Trie implements Serializable {
                 current = current.getChildren(c);
             }
         }
-        if (current.isEndWord() == true) {
+        if (current.isEndWord()) {
             return true;
         }
         return false;
@@ -62,4 +62,19 @@ public class Trie implements Serializable {
         }
         return lastNode.getWords();
     }
+/*
+    public List<String> searchTrie(String prefix, String house){
+        TrieNode lastNode = root;
+        List<String> addresses = new ArrayList<>();
+
+        for (int i = 0; i<prefix.length(); i++) {
+            lastNode = lastNode.getChildren(prefix.charAt(i));
+            if (lastNode == null) {
+                return new ArrayList<>();
+            }
+        }
+        for (String address : lastNode.)
+    }
+    */
+
 }
