@@ -12,7 +12,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 
-
+<?import javafx.scene.text.Text?>
 <Scene
         xmlns="http://javafx.com/javafx"
         xmlns:fx="http://javafx.com/fxml"
@@ -86,7 +86,8 @@
                                             <ImageView fx:id="car"
                                                        pickOnBounds="true"
                                                        preserveRatio="true"
-                                                       onMouseClicked='#chooseCarPicker'>
+                                                       onMouseClicked='#chooseCarPicker'
+                                                       >
 
                                                 <image>
                                                     <Image url ="/images/car.png">
@@ -189,7 +190,7 @@
                     </Pane>
                 </left>
             </BorderPane>
-            <AnchorPane fx:id="root" pickOnBounds="false">
+            <AnchorPane pickOnBounds="false">
 
                 <VBox AnchorPane.rightAnchor="0.0"
                       AnchorPane.bottomAnchor="5.0"
@@ -208,8 +209,6 @@
                             style="
                             -fx-border-color: #676767;"
                             onMouseClicked="#zoomIn"
-
-
                     >
 
                     </Button>
@@ -220,6 +219,33 @@
                             onMouseClicked="#zoomOut">
 
                     </Button>
+                </VBox>
+            </AnchorPane>
+
+            <AnchorPane pickOnBounds="false">
+
+                <VBox AnchorPane.rightAnchor="100.0"
+                      AnchorPane.bottomAnchor="5.0"
+                      StackPane.alignment="BOTTOM_LEFT"
+
+                      minWidth="50"
+                      minHeight="50">
+
+
+                    <Label
+                            style="-fx-text-alignment: center;"
+
+                    />
+                    <Text fx:id="text"
+                    ></Text>
+                    <ImageView fx:id="scale"
+                               pickOnBounds="true"
+                               preserveRatio="true">
+                        <image>
+                            <Image url ="/images/scalebar.png"></Image>
+                        </image>
+                    </ImageView>
+
                 </VBox>
             </AnchorPane>
         </StackPane>
