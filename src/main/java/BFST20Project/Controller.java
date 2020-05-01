@@ -1,6 +1,5 @@
 package BFST20Project;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -38,6 +37,8 @@ public class Controller {
     private View view;
     double x, y;
     private Point point;
+    private Trie trie;
+    private AddressParser addressParser;
 
     //To get km
     private double zoomFactor = 3.4 * 2857 * 1000;
@@ -107,6 +108,7 @@ public class Controller {
     @FXML
     public void chooseCarPicker(){
         //TODO shortest path for car
+        //addressParser.parse(start.getText());
         System.out.println("her må jeg køre");
     }
 
@@ -222,6 +224,9 @@ public class Controller {
     @FXML
     private void addressStart(KeyEvent e){
         //TODO implement trie for
+        //List l = (List) trie.autocomplete(start.getText());
+
+        //trie.autocomplete(start.getText());
         System.out.println("her skal der være en adresse :)");
     }
 
