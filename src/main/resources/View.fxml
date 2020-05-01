@@ -11,8 +11,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.text.Text?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <Scene
         xmlns="http://javafx.com/javafx"
         xmlns:fx="http://javafx.com/fxml"
@@ -20,7 +25,9 @@
         fx:id="scene"
         onKeyPressed="#onKeyPressed">
 
+
     <root>
+
         <StackPane minWidth="1200"
                    minHeight="800">
             <MapCanvas fx:id="mapCanvas"
@@ -31,8 +38,19 @@
                        onMouseDragged="#onMouseDragged"
                        onMouseMoved="#onMouseMoved"
             />
+
             <BorderPane pickOnBounds="false">
+
                 <top>
+                    <VBox>
+                        <VBox>
+                        <MenuBar>
+                            <Menu fx:id="filechoser" text="Ny fil" >
+                                <MenuItem fx:id="file" text="Vælg ny fil" onAction="#fileChooser"></MenuItem>
+                            </Menu>
+
+                        </MenuBar>
+                        </VBox>
                     <HBox
                           minWidth="300"
                           minHeight="50"
@@ -46,14 +64,9 @@
                                       -fx-text-fill: White;"
 
                                text="DanmarksKort"/>
-
-
-
                     </HBox>
-
-
+                    </VBox>
                 </top>
-
 
                 <left>
                     <Pane minWidth="100"
@@ -66,10 +79,7 @@
 
                             <BorderPane>
 
-
-
                                 <top>
-
 
                                         <VBox style="-fx-padding: 30px"
                                             BorderPane.alignment="TOP_CENTER"
@@ -141,19 +151,29 @@
                                                           -fx-border-style: solid;
                                                           -fx-background-color: rgba(255,255,255,1)"
                                                     onKeyTyped="#addressEnd"/>
+                                        <HBox minWidth="100"
+                                              minHeight="20">
+
+                                        </HBox>
+                                        <Label
+                                        style="
+                                        -fx-text-align: center;
+                                        -fx-font-weight: bold;">
+                                            Rutevejledning</Label>
+                                        <HBox><TextArea fx:id="textarea" prefHeight="200.0" prefWidth="200.0" visible="true" editable="false"/>
+                                        </HBox>
+
+                                    </VBox>
+
+
+
                                         </VBox>
-
-
-                                 </VBox>
-
-                                <Label fx:id="nearestRoad"></Label>
-
 
                                 </top>
 
 
-                                <bottom >
 
+                                <bottom>
 
                                 <HBox fx:id = "colorButton"
                                       BorderPane.alignment="BOTTOM_CENTER">
@@ -194,7 +214,14 @@
                 </left>
             </BorderPane>
             <AnchorPane pickOnBounds="false">
+                <VBox AnchorPane.RightAnchor="20.0"
+                AnchorPane.topAnchor="120.0">
 
+                    <Label fx:id="nearestRoad"
+                           style= "-fx-font-weight: bold;
+                                   -fx-font-size: 2em;
+                                   -fx-text-fill: Black;"/>
+                </VBox>
                 <VBox AnchorPane.rightAnchor="0.0"
                       AnchorPane.bottomAnchor="5.0"
                       StackPane.alignment="BOTTOM_RIGHT"
@@ -222,24 +249,21 @@
                             onMouseClicked="#zoomOut">
 
                     </Button>
+
                 </VBox>
             </AnchorPane>
 
             <AnchorPane pickOnBounds="false">
 
-                <VBox AnchorPane.rightAnchor="100.0"
-                      AnchorPane.bottomAnchor="5.0"
+                <VBox AnchorPane.rightAnchor="90.0"
+                      AnchorPane.bottomAnchor="0.0"
                       StackPane.alignment="BOTTOM_LEFT"
-
                       minWidth="50"
-                      minHeight="50">
+                      minHeight="40">
 
-
-                    <Label
-                            style="-fx-text-alignment: center;"
-
-                    />
                     <Text fx:id="text"
+                    style="
+                    -fx-font-size: 12px;"
                     ></Text>
                     <ImageView fx:id="scale"
                                pickOnBounds="true"
@@ -248,7 +272,6 @@
                             <Image url ="/images/scalebar.png"></Image>
                         </image>
                     </ImageView>
-
                 </VBox>
             </AnchorPane>
         </StackPane>
