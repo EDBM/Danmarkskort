@@ -8,12 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.image.Image;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
 
-
-
+import java.util.*;
 
 
 public class MapCanvas extends Canvas{
@@ -146,10 +142,10 @@ public class MapCanvas extends Canvas{
         repaint();
     }
 
-
+    //Highlights nearest road in the current zoom level
     public void highlightNearestRoad(double x, double y) {
             Point mapPoint = screenCoordinatesToPoint(x, y);
-            Drawable nearestRoad = model.nearestRoad(mapPoint);
+            Drawable nearestRoad = model.nearestRoad(mapPoint, new HashSet<>(Arrays.asList(curZoomLevel())));
             double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
             gc.setLineWidth(3 * pixelWidth);
             gc.setStroke(Color.PURPLE);

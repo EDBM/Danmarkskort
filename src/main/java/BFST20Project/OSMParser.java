@@ -30,7 +30,7 @@ public class OSMParser extends Parser implements Serializable{
         readOSMFile(file);
         createDrivableWayGraph();
         createDrawables();
-        createBinaryFile();
+        //createBinaryFile();
     }
 
     private void readOSMFile(File file) throws XMLStreamException, FileNotFoundException {
