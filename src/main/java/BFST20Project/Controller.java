@@ -5,9 +5,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
-
+import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
@@ -16,11 +18,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.event.EventHandler;
+import javafx.stage.FileChooser;
 
 import java.awt.*;
 import java.sql.SQLOutput;
 import java.util.HashSet;
-
+import java.io.File;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -35,9 +38,12 @@ public class Controller {
     private View view;
     double x, y;
     private Point point;
+
     //To get km
     private double zoomFactor = 3.4 * 2857 * 1000;
 
+    @FXML
+    private MenuItem file;
 
     @FXML
     private MapCanvas mapCanvas;
@@ -147,6 +153,14 @@ public class Controller {
 
 
     @FXML
+    private void fileChooser(){
+
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+        }
+
+
+    @FXML
     private void zoomIn() {
         double factor = 1.29;
         mapCanvas.zoom(1.29,600,300);
@@ -191,18 +205,20 @@ public class Controller {
 
         }
 
-            }
+    }
 
     @FXML
-    private void onMouseMoved(MouseEvent e){
+    private void onMouseMoved(MouseEvent e) {
         Point mapPoint = mapCanvas.screenCoordinatesToPoint(e.getX(), e.getY());
         HashSet<ZoomLevel> set = new HashSet<>();
         set.add(mapCanvas.curZoomLevel());
 
         Drawable nearestRoad = model.nearestRoad(mapPoint, set);
         if(nearestRoad.getName() != null) {
-            this.nearestRoad.setText(nearestRoad.getName());
+            this.nearestRoad.setText("Vejnavn: " + nearestRoad.getName());
+
         }
+
     }
 
 
@@ -239,10 +255,6 @@ public class Controller {
         }
         mapCanvas.repaint();
     }
-
-
-
-
 }
 
 
