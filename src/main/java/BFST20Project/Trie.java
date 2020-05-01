@@ -1,5 +1,4 @@
 package BFST20Project;
-// Made with help https://github.com/eugenp/tutorials/blob/master/data-structures/src/main/java/com/baeldung/trie/Trie.java
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,18 +49,24 @@ public class Trie implements Serializable {
         return false;
     }
 
-    public List<String> autocomplete(String prefix){
+    public List<String> autocomplete(String prefix) {
         TrieNode lastNode = root;
-        for (int i = 0; i<prefix.length(); i++){
-            lastNode = lastNode.getChildren(prefix.charAt(i));
-            if(lastNode == null)
-                break;
+        if (prefix.length() > 3) {
+            for (int i = 0; i < prefix.length(); i++) {
+                lastNode = lastNode.getChildren(prefix.charAt(i));
+                if (lastNode == null)
+                    break;
+            }
+            if (lastNode == null) {
+                return new ArrayList<>();
+            }
         }
-        if (lastNode==null){
+        else{
             return new ArrayList<>();
         }
-        return lastNode.getWords();
-    }
+            return lastNode.getWords();
+        }
+
 /*
     public List<String> searchTrie(String prefix, String house){
         TrieNode lastNode = root;
