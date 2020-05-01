@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.*;
 import java.util.*;
 
-public class OSMParser extends Parser implements Serializable{
+public class OSMParser extends Parser{
     Map<Long, OSMNode> idToNode = new TreeMap<>();
     Map<Long, OSMWay> idToWay = new HashMap<>();
     Map<Long, OSMRelation> idToRelation = new HashMap<>();
@@ -21,16 +21,14 @@ public class OSMParser extends Parser implements Serializable{
     public Trie trie = new Trie();
 
     private float minLat, minLon, maxLat, maxLon;
-    private Bounds bounds;
     private EnumMap<ZoomLevel, KDTree> drawables = new EnumMap<>(ZoomLevel.class);
     private List<Drawable> islands = new ArrayList<>();
 
-    public OSMParser(File file) throws IOException, XMLStreamException {
+    public OSMParser(File file) throws FileNotFoundException, XMLStreamException {
         System.out.println("load parser");
         readOSMFile(file);
         createDrivableWayGraph();
         createDrawables();
-        createBinaryFile();
     }
 
     private void readOSMFile(File file) throws XMLStreamException, FileNotFoundException {
@@ -88,7 +86,7 @@ public class OSMParser extends Parser implements Serializable{
         maxLat = -Float.parseFloat(reader.getAttributeValue(null, "minlat"));
         minLon = 0.56f * Float.parseFloat(reader.getAttributeValue(null, "minlon"));
 
-        bounds = new Bounds(minLat, minLon, maxLat, maxLon);
+        //bounds = new Bounds(minLat, minLon, maxLat, maxLon);
     }
 
     private void parseNode() throws XMLStreamException {
@@ -152,6 +150,9 @@ public class OSMParser extends Parser implements Serializable{
                         case "tag":
                             String key = reader.getAttributeValue(null, "k");
                             String value = reader.getAttributeValue(null, "v");
+                            if(key.startsWith("name")){
+                                osmWay.setName(value);
+                            }
                             tags.put(key, value);
                             break;
                     }
@@ -247,7 +248,6 @@ public class OSMParser extends Parser implements Serializable{
         if(drawable.getWayType() == WayType.ISLAND){
             islands.add(drawable);
         }
-
         else if(drawable.getWayType() != WayType.BEACH) {
             ZoomLevel zoomLevel = ZoomLevel.levelForWayType(drawable.getWayType());
             tempDrawableStorage.get(zoomLevel).add(drawable);
@@ -256,17 +256,16 @@ public class OSMParser extends Parser implements Serializable{
 
     private void createDrivableWayGraph() {
         TemporaryGraph temporaryGraph = new TemporaryGraph(traversableWays);
-        temporaryGraph.createTemporaryGraph();
         drivableWaysGraph = temporaryGraph.compressedGraph();//TODO maybe rename this to something more fitting/precise.
 
-        int id1 = temporaryGraph.OSMIdToVertexId.get(32948578L);
-        int id2 = temporaryGraph.OSMIdToVertexId.get(4791600016L);
+        //int id1 = temporaryGraph.OSMIdToVertexId.get(32948578L);
+        //int id2 = temporaryGraph.OSMIdToVertexId.get(4791600016L);
 
-        ShortestPath shortestPath = new ShortestPath(drivableWaysGraph, id1, id2, false);
+        //ShortestPath shortestPath = new ShortestPath(drivableWaysGraph, id1, id2, false);
 
         //System.out.println(shortestPath.getPath());
-        System.out.println("Total weight: " + shortestPath.getTotalWeight());
-        System.out.println(id1 + " " + id2);
+        //System.out.println("Total weight: " + shortestPath.getTotalWeight());
+        //System.out.println(id1 + " " + id2);
     }
 
     public EnumMap<ZoomLevel, KDTree> getDrawables() {
@@ -337,7 +336,7 @@ public class OSMParser extends Parser implements Serializable{
 
 
     private class Bounds implements Serializable{
-        private float minLat, minLon, maxLat, maxLon;
+        private Float minLat, minLon, maxLat, maxLon;
 
         public Bounds(float minLat, float minLon, float maxLat, float maxLon){
             this.minLat = minLat;

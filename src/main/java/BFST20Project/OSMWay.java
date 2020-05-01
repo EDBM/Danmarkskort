@@ -9,7 +9,8 @@ import java.util.List;
 public class OSMWay implements Serializable {
     private long id; //TODO is this used?
     private WayType type;
-    transient private Vertex vertex;
+    private String name;
+    private Vertex vertex;
     private List<OSMNode> nodes = new ArrayList<>();
 
     public OSMWay(long id) {
@@ -27,6 +28,10 @@ public class OSMWay implements Serializable {
     public void addNode(OSMNode node) {
         nodes.add(node);
     }
+
+    public void setName(String name){this.name=name;}
+
+    public String getName(){return name;}
 
     public void removeNode(int index) { nodes.remove(index); }
 

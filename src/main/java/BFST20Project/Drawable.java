@@ -26,4 +26,6 @@ public interface Drawable {
 
     Collection<Point> getCoordinates();
 
+    String getName();
+
 }

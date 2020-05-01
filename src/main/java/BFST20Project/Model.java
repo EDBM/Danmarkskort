@@ -27,8 +27,8 @@ public class Model implements Serializable {
         file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
         //file = new File("F:\\denmark-latest.osm");
 
-        //OSMParser parser = new OSMParser(file);
-        BinaryParser parser = new BinaryParser(new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin"));
+        OSMParser parser = new OSMParser(file);
+        //BinaryParser parser = new BinaryParser(new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin"));
 
         drawables = parser.getDrawables();
         drawables = parser.getDrawables();
@@ -38,6 +38,7 @@ public class Model implements Serializable {
         minLon = parser.getMinLon();
         maxLat = parser.getMaxLat();
         maxLon = parser.getMaxLon();
+        //TODO bounds not being Serialized properly
         minLat = -55.3041f;
         minLon = 8.218784f;
         maxLat = -54.9264f;
@@ -73,13 +74,19 @@ public class Model implements Serializable {
         return trie;
     }
 
-    public Drawable nearestRoad(Point mapPoint) {
+    //zoomLevel = 4, means we get the nearestRoad in all the zoomlevels
+    public Drawable nearestRoad(Point mapPoint, Set<ZoomLevel> zoomLevel) {
         Collection<WayType> allowedWaytypes = Arrays.asList(WayType.MOTORWAY, WayType.HIGHWAY, WayType.SECONDARY, WayType.DIRTROAD, WayType.MINIWAY);
         List<Drawable> closestRoads = new ArrayList<>();
 
-        for (KDTree kdTree : drawables.values()){
-            closestRoads.add(kdTree.nearestNeighborOfTypes(mapPoint, allowedWaytypes));
-        }
+            for (KDTree kdTree : drawables.values()) {
+                for (ZoomLevel ZoomLevel : zoomLevel) {
+                    if(drawables.get(ZoomLevel) == kdTree){
+                        closestRoads.add(kdTree.nearestNeighborOfTypes(mapPoint, allowedWaytypes));
+                    }
+                }
+            }
+
 
         Drawable closest = closestRoads.get(0);
 
@@ -111,7 +118,7 @@ public class Model implements Serializable {
     }
 
     public void setNavigateFrom(Point from) {
-        Drawable nearestRoad = nearestRoad(from);
+        Drawable nearestRoad = nearestRoad(from, drawables.keySet());
         if(nearestRoad.getVertex() != null) {
             navigateFrom = driveableWayGraph.nearestVertex(nearestRoad.getVertex(), from);
             navigate();
@@ -119,7 +126,7 @@ public class Model implements Serializable {
     }
 
     public void setNavigateTo(Point to) {
-        Drawable nearestRoad = nearestRoad(to);
+        Drawable nearestRoad = nearestRoad(to, drawables.keySet());
         if(nearestRoad.getVertex() != null) {
             navigateTo = driveableWayGraph.nearestVertex(nearestRoad.getVertex(), to);
             navigate();

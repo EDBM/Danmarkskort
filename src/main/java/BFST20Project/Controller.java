@@ -2,6 +2,7 @@ package BFST20Project;
 
 import javafx.fxml.FXML;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 
@@ -13,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.HashSet;
 
 
 public class Controller {
@@ -34,6 +36,9 @@ public class Controller {
 
     @FXML
     private TextField start, slut;
+
+    @FXML
+    private Label nearestRoad;
 
 
 
@@ -143,16 +148,30 @@ public class Controller {
         }else {
             mapCanvas.highlightNearestRoad(e.getX(), e.getY());
 
+
         }
 
             }
 
+    @FXML
+    private void onMouseMoved(MouseEvent e){
+        Point mapPoint = mapCanvas.screenCoordinatesToPoint(e.getX(), e.getY());
+        HashSet<ZoomLevel> set = new HashSet<>();
+        set.add(mapCanvas.curZoomLevel());
+
+        Drawable nearestRoad = model.nearestRoad(mapPoint, set);
+        if(nearestRoad.getName() != null) {
+            this.nearestRoad.setText(nearestRoad.getName());
+        }
+    }
+
+
 
     @FXML
-     private void addressStart(KeyEvent e){
-         //TODO implement trie for
-         System.out.println("her skal der være en adresse :)");
-        }
+    private void addressStart(KeyEvent e){
+        //TODO implement trie for
+        System.out.println("her skal der være en adresse :)");
+    }
 
      @FXML
      private void addressSlut(KeyEvent e){
