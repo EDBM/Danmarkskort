@@ -14,17 +14,18 @@ public class Polylines implements Drawable, Serializable {
     private Point minPoint, maxPoint;
     private Vertex vertex;
     private WayType wayType;
+    private String name;
 
     public Polylines(OSMWay way){
         wayType = way.getWayType();
         vertex = way.getVertex();
         coordinates = new Point[way.size()];
+        name = way.getName();
         setWayType(way.getWayType());
         for(int i = 0; i < way.size(); i++){
             Point coordinate = Point.fromLonLat(way.get(i).getLon(), way.get(i).getLat());
             coordinates[i] = coordinate;
         }
-
         setMinMax();
     }
 
@@ -124,7 +125,11 @@ public class Polylines implements Drawable, Serializable {
 
     public List<Point> getCoordinates() {
         return Arrays.asList(coordinates);
+    }
 
+    @Override
+    public String getName() {
+        return name;
     }
 
 }

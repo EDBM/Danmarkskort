@@ -38,6 +38,7 @@ public class Model implements Serializable {
         minLon = parser.getMinLon();
         maxLat = parser.getMaxLat();
         maxLon = parser.getMaxLon();
+        //TODO bounds not being Serialized properly
         minLat = -55.3041f;
         minLon = 8.218784f;
         maxLat = -54.9264f;
@@ -101,7 +102,7 @@ public class Model implements Serializable {
 
     private void navigate(){
         if(navigateFrom != null && navigateTo != null){
-            Deque<DirectedEdge> edges = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId(), true).getPath(); //TODO is always driving
+            Deque<DirectedEdge> edges = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId()).getPath(); //TODO is always driving
             Point[] points = new Point[edges.size() + 1];
             points[0] = edges.getFirst().getStart().getPoint();
 

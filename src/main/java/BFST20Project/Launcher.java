@@ -15,10 +15,12 @@ public class Launcher extends Application {
     public void start(Stage primaryStage) throws Exception {
         Model model = new Model();
         View view = new View(model, primaryStage);
+
     }
 
     public static void main(String[] args){
         launch(args);
     }
+
 
 }

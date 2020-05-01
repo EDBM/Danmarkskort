@@ -195,4 +195,10 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
         }
         return points;
     }
+
+    //Hopefully multipolygons dont have names
+    @Override
+    public String getName() {
+        return null;
+    }
 }
