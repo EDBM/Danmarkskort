@@ -256,6 +256,7 @@ public class OSMParser extends Parser{
 
     private void createDrivableWayGraph() {
         TemporaryGraph temporaryGraph = new TemporaryGraph(traversableWays);
+        temporaryGraph.createTemporaryGraph();
         drivableWaysGraph = temporaryGraph.compressedGraph();//TODO maybe rename this to something more fitting/precise.
 
         //int id1 = temporaryGraph.OSMIdToVertexId.get(32948578L);

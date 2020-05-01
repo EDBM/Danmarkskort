@@ -11,23 +11,23 @@ public class ShortestPath {
     DirectedGraph graph;
 
     Vertex endVertex;
+    boolean isDriving;
 
     IndexMinPQ<Double> priorityQueue;
 
     Deque<DirectedEdge> path = new LinkedList<>();
     double totalWeight;
 
-    public ShortestPath(DirectedGraph graph, int start, int end){
+    public ShortestPath(DirectedGraph graph, int start, int end, boolean isDriving){
         this.graph = graph;
         this.endVertex = graph.getVertex(end);
+        this.isDriving = isDriving;
         // this takes time proportional to graph size, no matter start and end.
         distTo = new double[graph.size()];
         Arrays.fill(distTo, Double.POSITIVE_INFINITY);
         edgeTo = new DirectedEdge[graph.size()];
         priorityQueue = new IndexMinPQ<>(graph.size());
-
         distTo[start] = 0.0;
-
         priorityQueue.insert(start, 0.0);
 
         while(!priorityQueue.isEmpty()){
@@ -45,7 +45,7 @@ public class ShortestPath {
         totalWeight = 0.0;
         DirectedEdge edge = edgeTo[end];
         while(edge != null){
-            totalWeight += edge.getWeight();
+            totalWeight += edge.getWeight(isDriving);
             path.push(edge);
             edge = edgeTo[edge.getStart().getId()];
         }
@@ -53,18 +53,33 @@ public class ShortestPath {
 
     private void relaxVertex(int toRelax) {
         for (DirectedEdge edge : graph.getIncidentEdges(toRelax)) {
-            relaxEdge(edge);
+            if(!isDriving && edge.isWalkable) {
+                relaxEdge(edge);
+            }
+
+            if(isDriving && edge.isDriveable){
+                relaxEdge(edge);
+            }
         }
     }
 
     private void relaxEdge(DirectedEdge edge){
         int from = edge.getStart().getId();
         int to = edge.getEnd().getId();
-        if (distTo[to] > distTo[from] + edge.getWeight()) {
-            distTo[to] = distTo[from] + edge.getWeight();
+        if (distTo[to] > distTo[from] + edge.getWeight(isDriving)) {
+            distTo[to] = distTo[from] + edge.getWeight(isDriving);
             edgeTo[to] = edge;
             if (priorityQueue.contains(to))
-                priorityQueue.decreaseKey(to, distTo[to] + heuristic(to));
+                try {
+                    priorityQueue.decreaseKey(to, distTo[to] + heuristic(to));
+                } catch (IllegalArgumentException e){
+                    System.out.println("from id: " + from);
+                    System.out.println("to id: " + to);
+
+                    System.out.println("distTo[to]: " + distTo[to]);
+                    System.out.println("heuristic(to): " + heuristic(to));
+                    System.out.println(priorityQueue.keyOf(to));
+                }
             else
                 priorityQueue.insert(to, distTo[to] + heuristic(to));
         }
@@ -72,7 +87,8 @@ public class ShortestPath {
 
     private double heuristic(int to) {
         Vertex toVertex = graph.getVertex(to);
-        return endVertex.getPoint().distanceTo(toVertex.getPoint())/DirectedGraph.MAX_DRIVE_SPEED;
+        if (isDriving) return endVertex.getPoint().distanceTo(toVertex.getPoint()) / DirectedGraph.MAX_DRIVE_SPEED;
+        else return endVertex.getPoint().distanceTo(toVertex.getPoint());
     }
 
     public Deque<DirectedEdge> getPath() {
