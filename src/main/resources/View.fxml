@@ -29,6 +29,7 @@
                        onScroll="#onScroll"
                        onMousePressed="#onMousePressed"
                        onMouseDragged="#onMouseDragged"
+                       onMouseMoved="#onMouseMoved"
             />
             <BorderPane pickOnBounds="false">
                 <top>
@@ -144,6 +145,8 @@
 
 
                                  </VBox>
+
+                                <Label fx:id="nearestRoad"></Label>
 
 
                                 </top>

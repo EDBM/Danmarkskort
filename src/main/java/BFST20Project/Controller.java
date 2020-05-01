@@ -42,7 +42,6 @@ public class Controller {
     @FXML
     private MapCanvas mapCanvas;
 
-
     @FXML
     private TextField start, slut;
 
@@ -206,7 +205,6 @@ public class Controller {
         }
     }
 
-    }
 
 
     @FXML
