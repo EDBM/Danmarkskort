@@ -142,13 +142,10 @@ public class MapCanvas extends Canvas{
         repaint();
     }
 
-
+    //Highlights nearest road in the current zoom level
     public void highlightNearestRoad(double x, double y) {
             Point mapPoint = screenCoordinatesToPoint(x, y);
-            HashSet<ZoomLevel> set = new HashSet<>();
-            set.add(curZoomLevel());
-
-            Drawable nearestRoad = model.nearestRoad(mapPoint, set);
+            Drawable nearestRoad = model.nearestRoad(mapPoint, new HashSet<>(Arrays.asList(curZoomLevel())));
             double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
             gc.setLineWidth(3 * pixelWidth);
             gc.setStroke(Color.PURPLE);
