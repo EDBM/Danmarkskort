@@ -210,7 +210,7 @@ public class Controller {
                 if (mapCanvas.getDefaultcolor() == 1 || mapCanvas.getDefaultcolor() == 2) {
                     this.nearestRoad.setText("Vejnavn: " + nearestRoad.getName());
                 } else {
-                    this.nearestRoad.setText("Vejnavn: Gotham");
+                    this.nearestRoad.setText("Vejnavn: " + nearestRoad.getName() +"-Gotham");
                 }
             }
         }
