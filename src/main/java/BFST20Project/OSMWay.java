@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OSMWay implements Serializable {
-    private long id; //TODO is this used?
+    private long id;
     private WayType type;
     private String name;
-    private Vertex vertex;
+    transient private Vertex vertex;
     private List<OSMNode> nodes = new ArrayList<>();
 
     public OSMWay(long id) {

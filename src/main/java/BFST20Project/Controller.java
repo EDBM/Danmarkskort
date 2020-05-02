@@ -23,6 +23,7 @@ import javafx.event.EventHandler;
 import javafx.stage.FileChooser;
 
 import java.awt.*;
+import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -34,6 +35,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import javax.xml.stream.XMLStreamException;
 
 public class Controller {
     private Model model;
@@ -78,6 +81,8 @@ public class Controller {
         model.addObserver(this::updateRoutePlanner);
         start.getEditor().setOnKeyTyped(this::addressStart);
         end.getEditor().setOnKeyTyped(this::addressEnd);
+
+        System.out.println("initial factor: " + factor);
     }
 
     private void updateRoutePlanner(){
@@ -218,14 +223,16 @@ public class Controller {
         set.add(mapCanvas.curZoomLevel());
 
         Drawable nearestRoad = model.nearestRoad(mapPoint, set);
-            if(nearestRoad.getName() != null) {
+        if(nearestRoad != null) {
+            if (nearestRoad.getName() != null) {
                 if (mapCanvas.getDefaultcolor() == 1 || mapCanvas.getDefaultcolor() == 2) {
                     this.nearestRoad.setText("Vejnavn: " + nearestRoad.getName());
                 } else {
-                    this.nearestRoad.setText("Vejnavn: " + nearestRoad.getName() +"-Gotham");
+                    this.nearestRoad.setText("Vejnavn: " + nearestRoad.getName() + "-Gotham");
                 }
             }
         }
+    }
 
     private void updateComboBox(ComboBox comboBox){
         String prefix =  comboBox.getEditor().getText();
@@ -266,10 +273,24 @@ public class Controller {
     }
 
     @FXML
-    private void fileChooser(){
+    private void fileChooser() throws Exception {
 
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
+        model.loadModel(selectedFile);
+
+        mapCanvas.resetTrans();
+        zoomFactor = 3.4 * 2857 * 1000;
+
+
+        double factor = mapCanvas.getWidth() / (model.maxLat - model.minLat);
+        mapCanvas.pan(-model.minLon, -model.minLat);
+        mapCanvas.zoom(factor, 0, 0);
+        zoomText(factor);
+        System.out.println("factor: " + factor);
+
+        mapCanvas.repaint();
+        System.out.println(selectedFile.getAbsolutePath());
     }
 
     @FXML

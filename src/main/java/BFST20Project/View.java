@@ -17,7 +17,6 @@ public class View{
         Scene scene = loader.load();
         scene.getStylesheets().add("stylesheet.css");
         Controller controller = loader.getController();
-        System.out.println(scene.getAntiAliasing());
         stage.setScene(scene);
         stage.show();
         controller.init(model);

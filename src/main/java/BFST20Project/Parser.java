@@ -19,4 +19,5 @@ public abstract class Parser {
     abstract DirectedGraph getDrivableWayGraph();
 
 
+    abstract Trie getTrie();
 }

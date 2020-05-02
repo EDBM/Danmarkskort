@@ -306,14 +306,18 @@ public class OSMParser extends Parser implements Serializable{
 
 
     public void createBinaryFile() throws IOException {
+        System.out.println("binary parsing");
         File file = new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin");
 
         FileOutputStream fileOut = new FileOutputStream(file);
         ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 
         System.out.println("ways");
+        int count = 0;
         for(OSMWay way : idToWay.values()){
             objectOut.writeObject(way);
+            count++;
+            System.out.println(count);
         }
 
         System.out.println("relations");

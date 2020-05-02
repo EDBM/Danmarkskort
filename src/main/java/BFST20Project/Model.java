@@ -28,12 +28,24 @@ public class Model implements Serializable {
 
     private Boolean isDriving = true;
 
-    public Model() throws IOException, XMLStreamException, ClassNotFoundException {
-        file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
-        //file = new File("F:\\denmark-latest.osm");
+    public Model(File file) throws IOException, XMLStreamException, ClassNotFoundException {
+        loadModel(file);
+    }
 
-        OSMParser parser = new OSMParser(file);
-        //BinaryParser parser = new BinaryParser(new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin"));
+    public void loadModel(File file) throws IOException, XMLStreamException, ClassNotFoundException {
+
+        Parser parser;
+
+        if(file == null) {
+            System.out.println("binary parser");
+            parser = new BinaryParser(new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin"));
+        } else {
+            System.out.println("OSM parser");
+            file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
+            parser = new OSMParser(file);
+        }
+
+
 
         drawables = parser.getDrawables();
         drawables = parser.getDrawables();
@@ -50,6 +62,8 @@ public class Model implements Serializable {
         maxLon = 8.491f;
         trie = parser.getTrie();
     }
+
+
 
     public void addObserver(Runnable observer) {
         if (observers != null) observers.add(observer);
@@ -120,7 +134,7 @@ public class Model implements Serializable {
                 n++;
             }
             shortestPath = new Polylines(points, WayType.SHORTEST_PATH);
-            routeAsText = String.join("\n", sp.textRoutePlanner());
+            routeAsText = String.join("\n", sp.textRoutePlanner()).replace(", ","\n");
             routeIsChanged = true;
             notifyObservers();
         }

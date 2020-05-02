@@ -88,7 +88,6 @@ public class BinaryParser extends Parser {
         }
 
         for(Polylines polyline : polylines){
-            //System.out.println(polyline.getWayType());
             rememberDrawable(polyline, tempDrawableStorage);
         }
 
@@ -106,7 +105,6 @@ public class BinaryParser extends Parser {
             islands.add(drawable);
         }
         else if(drawable.getWayType() != WayType.BEACH) {
-            //System.out.println(drawable.getWayType());
             ZoomLevel zoomLevel = ZoomLevel.levelForWayType(drawable.getWayType());
             tempDrawableStorage.get(zoomLevel).add(drawable);
         }
@@ -149,6 +147,7 @@ public class BinaryParser extends Parser {
         return drivableWaysGraph;
     }
 
+    @Override
     Trie getTrie() {
         return trie;
     }

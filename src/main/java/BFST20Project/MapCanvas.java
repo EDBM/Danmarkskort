@@ -31,6 +31,9 @@ public class MapCanvas extends Canvas{
     }
 
 
+    public void resetTrans(){
+        this.trans = new Affine();
+    }
 
 /*    public void resetView() {
         pan(-model.minLon, -model.minLat);
@@ -72,7 +75,6 @@ public class MapCanvas extends Canvas{
             // This cannot happen
             topLeft = new Point(model.minLat, model.minLon);
             bottomRight = new Point(model.maxLon, model.maxLat);
-            System.out.println("oops");
         }
 
         double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
