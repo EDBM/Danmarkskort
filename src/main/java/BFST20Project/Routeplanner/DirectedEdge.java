@@ -27,7 +27,7 @@ public class DirectedEdge implements Serializable {
     }
 
     private double calculateLength() {
-        length= Point.distanceBetweenPoint(start.getPoint(),end.getPoint());
+        length = Point.distanceBetweenPoint(start.getPoint(),end.getPoint());
         //length = start.getPoint().distanceTo(end.getPoint());
         return length;
     }
@@ -38,9 +38,9 @@ public class DirectedEdge implements Serializable {
 
     public Vertex getEnd() { return end; }
 
-    //TODO why was this changed??
-    public double getWeight() {
-        return length/speed;
+    public double getWeight(boolean isDriving) {
+        if(isDriving) return length/speed;
+        else return length;
     }
 
     public void setName(String name){this.name=name;}
