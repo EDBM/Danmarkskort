@@ -107,7 +107,7 @@ public class Model implements Serializable {
 
     private void navigate(){
         if(navigateFrom != null && navigateTo != null){
-            ShortestPath sp = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId());
+            ShortestPath sp = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId(),true);
             Deque<DirectedEdge> edges = sp.getPath(); //TODO is always driving
             Point[] points = new Point[edges.size() + 1];
             points[0] = edges.getFirst().getStart().getPoint();
@@ -118,11 +118,14 @@ public class Model implements Serializable {
                 n++;
             }
             shortestPath = new Polylines(points, WayType.SHORTEST_PATH);
-            routeAsText = sp.textRoutePlanner().toString();
+            String routeText = sp.textRoutePlanner().toString().replaceAll(",", "\n");
+            routeAsText = routeText.substring(1, routeText.length()-1);
             routeIsChanged = true;
             notifyObservers();
         }
     }
+
+
 
     public void setNavigateFrom(Point from) {
         Drawable nearestRoad = nearestRoad(from, drawables.keySet());

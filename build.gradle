@@ -75,3 +75,7 @@ sourceSets {
     }
 }
 
+run{
+    args = ['']
+}
+

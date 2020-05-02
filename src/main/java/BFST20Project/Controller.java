@@ -77,7 +77,6 @@ public class Controller {
         model.addObserver(this::updateRoutePlanner);
         start.getEditor().setOnKeyTyped(this::addressStart);
         end.getEditor().setOnKeyTyped(this::addressEnd);
-
     }
 
     private void updateRoutePlanner(){
@@ -151,8 +150,7 @@ public class Controller {
             number/=1000;
             scale++;
         }
-
-        return String.format("%.2f %s", number, prefix[scale]);
+        return String.format("%.0f %s", number, prefix[scale]);
     }
 
     //Shorthand assigntment x /= y -> x = x / y
@@ -236,9 +234,9 @@ public class Controller {
         model.getTrie().autocomplete(prefix);
 
         comboBox.getItems().clear();
-        System.out.println(prefix + "hej1");
+
         comboBox.getItems().addAll(model.getTrie().autocomplete(prefix));
-        System.out.println(prefix + "hej2");
+
 
     }
 
@@ -252,7 +250,7 @@ public class Controller {
         //trie.autocomplete(start.getText());
         updateComboBox(start);
 
-        System.out.println("hej Johannes");
+
 
 
     }
