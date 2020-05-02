@@ -46,8 +46,7 @@ public class DirectedGraph implements Serializable {
      * This is done for performance reasons, so as to not examine the entire Graph.
      */
     public Vertex nearestVertex(Vertex startingVertex, Point point){
-        System.out.println();
-        float minDist = Float.POSITIVE_INFINITY;
+        double minDist = Double.POSITIVE_INFINITY;
         Queue<Vertex> potentiallyCloser = new LinkedList<>();
         Vertex closeVertex = startingVertex;
 
@@ -56,9 +55,9 @@ public class DirectedGraph implements Serializable {
         while(!potentiallyCloser.isEmpty()) {
             Vertex toConsider = potentiallyCloser.poll();
             //System.out.println(point.distanceSquared(toConsider.getPoint()));
-            if(minDist > point.distanceSquared(toConsider.getPoint())){
+            if(minDist > point.distanceTo(toConsider.getPoint())){
                 closeVertex = toConsider;
-                minDist = point.distanceSquared(toConsider.getPoint());
+                minDist = point.distanceTo(toConsider.getPoint());
                 for (DirectedEdge edge : toConsider.getIncidentEdges()) {
                     potentiallyCloser.add(edge.getEnd());
                 }

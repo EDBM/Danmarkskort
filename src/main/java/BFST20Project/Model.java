@@ -134,4 +134,20 @@ public class Model implements Serializable {
             navigate();
         }
     }
+
+    public void navigateFromAddress(String address) {
+        Point navigateFrom = trie.searchTrie(address);
+
+        if(navigateFrom != null){
+            setNavigateFrom(navigateFrom);
+        }
+    }
+
+    public void navigateToAddress(String address){
+        Point navigateTo = trie.searchTrie(address);
+
+        if(navigateTo != null){
+            setNavigateTo(navigateTo);
+        }
+    }
 }

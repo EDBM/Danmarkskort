@@ -9,11 +9,11 @@ public class Trie implements Serializable {
 
     public Trie(){root = new TrieNode(' ');}
 
-    public void insert(AddressParser a){
+    public void insert(AddressParser a, Point p){
         String address = a.toString();
 
-        if(searchTrie(address)==true)
-            return;
+        /*        if(searchTrie(address)==true)
+            return;*/
 
         TrieNode current = root;
         TrieNode previousNode;
@@ -31,22 +31,23 @@ public class Trie implements Serializable {
             }
         }
         current.setEndOfWord(true);
+        current.setPoint(p);
     }
 
-    private boolean searchTrie(String address) {
+    public Point searchTrie(String address) {
         TrieNode current = root;
 
         for (char c : address.toCharArray()) {
             if (current.getChildren(c) == null) {
-                return false;
+                return null;
             } else {
                 current = current.getChildren(c);
             }
         }
         if (current.isEndWord()) {
-            return true;
+            return current.getPoint();
         }
-        return false;
+        return null;
     }
 
     public List<String> autocomplete(String prefix) {
