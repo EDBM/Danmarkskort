@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.*;
 import java.util.*;
 
-public class OSMParser extends Parser{
+public class OSMParser extends Parser implements Serializable{
     Map<Long, OSMNode> idToNode = new TreeMap<>();
     Map<Long, OSMWay> idToWay = new HashMap<>();
     Map<Long, OSMRelation> idToRelation = new HashMap<>();
@@ -21,14 +21,16 @@ public class OSMParser extends Parser{
     public Trie trie = new Trie();
 
     private float minLat, minLon, maxLat, maxLon;
+    private Bounds bounds;
     private EnumMap<ZoomLevel, KDTree> drawables = new EnumMap<>(ZoomLevel.class);
     private List<Drawable> islands = new ArrayList<>();
 
-    public OSMParser(File file) throws FileNotFoundException, XMLStreamException {
+    public OSMParser(File file) throws IOException, XMLStreamException {
         System.out.println("load parser");
         readOSMFile(file);
         createDrivableWayGraph();
         createDrawables();
+        //createBinaryFile();
     }
 
     private void readOSMFile(File file) throws XMLStreamException, FileNotFoundException {
