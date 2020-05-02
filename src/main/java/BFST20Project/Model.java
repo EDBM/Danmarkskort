@@ -21,6 +21,8 @@ public class Model implements Serializable {
 
     private Vertex navigateFrom, navigateTo;
     private Polylines shortestPath;
+    public Boolean routeIsChanged;
+    public String routeAsText;
 
     private Trie trie;
 
@@ -55,6 +57,7 @@ public class Model implements Serializable {
         for (Runnable observer : observers) {
             observer.run();
         }
+        routeIsChanged = false;
     }
 
     public EnumMap<WayType, List<Drawable>> getDrawables(ZoomLevel desiredZoomLevel, Point min, Point max) {
@@ -104,7 +107,8 @@ public class Model implements Serializable {
 
     private void navigate(){
         if(navigateFrom != null && navigateTo != null){
-            Deque<DirectedEdge> edges = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId()).getPath(); //TODO is always driving
+            ShortestPath sp = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId());
+            Deque<DirectedEdge> edges = sp.getPath(); //TODO is always driving
             Point[] points = new Point[edges.size() + 1];
             points[0] = edges.getFirst().getStart().getPoint();
 
@@ -114,7 +118,8 @@ public class Model implements Serializable {
                 n++;
             }
             shortestPath = new Polylines(points, WayType.SHORTEST_PATH);
-
+            routeAsText = sp.textRoutePlanner().toString();
+            routeIsChanged = true;
             notifyObservers();
         }
     }

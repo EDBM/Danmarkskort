@@ -13,7 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.text.Text?>
-
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -135,22 +135,26 @@
                                                style="-fx-text-align: center;
                                                       -fx-font-weight: bold;"
                                                />
-                                        <TextField fx:id="start"
+                                        <ComboBox fx:id="start" editable="true"
                                                    style="-fx-border-color: none;
                                                           -fx-border-style: solid;
                                                           -fx-background-color: rgba(255,255,255,1)"
-                                                   onKeyTyped="#addressStart"/>
+                                                   onAction="#addressStart"
+                                                  />
 
                                         <Label text="Vælg slutpunkt"
                                                style="-fx-text-align: center;
                                                       -fx-font-weight: bold;
 
                                                         "/>
-                                        <TextField  fx:id="end"
+                                        <ComboBox  fx:id="end" editable="true"
                                                     style="-fx-border-color: none;
                                                           -fx-border-style: solid;
                                                           -fx-background-color: rgba(255,255,255,1)"
-                                                    onKeyTyped="#addressEnd"/>
+                                                    onAction="#addressEnd"
+
+                                        >
+                                        </ComboBox>
                                         <HBox minWidth="100"
                                               minHeight="20">
 

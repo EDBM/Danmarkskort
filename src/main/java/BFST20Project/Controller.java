@@ -1,14 +1,17 @@
 package BFST20Project;
 
+import BFST20Project.Routeplanner.ShortestPath;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 
+import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
-import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
@@ -29,7 +32,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -40,6 +42,7 @@ public class Controller {
     private Point point;
     private Trie trie;
     private AddressParser addressParser;
+    private ShortestPath shortestPath;
 
     //To get km
     private double zoomFactor = 3.4 * 2857 * 1000;
@@ -51,10 +54,13 @@ public class Controller {
     private MapCanvas mapCanvas;
 
     @FXML
-    private TextField start, end;
+    private ComboBox start, end;
 
     @FXML
     private Label nearestRoad;
+
+    @FXML
+    private TextArea textarea;
 
     @FXML
     private Text text;
@@ -68,8 +74,17 @@ public class Controller {
         mapCanvas.pan(-model.minLon, -model.minLat);
         mapCanvas.zoom(factor, 0, 0);
         zoomText(factor);
+        model.addObserver(this::updateRoutePlanner);
+        start.getEditor().setOnKeyTyped(this::addressStart);
+        end.getEditor().setOnKeyTyped(this::addressEnd);
+
     }
 
+    private void updateRoutePlanner(){
+        if(model.routeIsChanged){
+            textarea.setText(model.routeAsText);
+        }
+    }
 
 
     @FXML
@@ -186,7 +201,6 @@ public class Controller {
             else if(e.isShiftDown())
                 model.setNavigateTo(mapCanvas.screenCoordinatesToPoint(e.getX(), e.getY()));
         }
-
         x = e.getX();
         y = e.getY();
 
@@ -196,11 +210,10 @@ public class Controller {
 
         }else {
             mapCanvas.highlightNearestRoad(e.getX(), e.getY());
-
-
         }
 
     }
+
 
     @FXML
     private void onMouseMoved(MouseEvent e) {
@@ -218,29 +231,42 @@ public class Controller {
             }
         }
 
+    private void updateComboBox(ComboBox comboBox){
+        String prefix =  comboBox.getEditor().getText();
+        model.getTrie().autocomplete(prefix);
 
+        comboBox.getItems().clear();
+        System.out.println(prefix + "hej1");
+        comboBox.getItems().addAll(model.getTrie().autocomplete(prefix));
+        System.out.println(prefix + "hej2");
 
-
-
-
+    }
 
     @FXML
-    private void addressStart(KeyEvent e){
-        model.navigateFromAddress(start.getText());
+    private void addressStart(Event e){
+        model.navigateFromAddress(start.getEditor().getText());
 
         //TODO implement trie for
         //List l = (List) trie.autocomplete(start.getText());
 
         //trie.autocomplete(start.getText());
-        System.out.println("her skal der være en adresse :)");
+        updateComboBox(start);
+
+        System.out.println("hej Johannes");
+
+
     }
 
     @FXML
-    private void addressEnd(KeyEvent e){
-        model.navigateToAddress(end.getText());
+    private void addressEnd(Event e){
+        model.navigateToAddress(end.getEditor().getText());
 
-        //TODO implement trie
-        System.out.println("her skal der være en adresse :)");
+        //TODO implement trie for
+        //List l = (List) trie.autocomplete(start.getText());
+
+        //trie.autocomplete(start.getText());
+        updateComboBox(end);
+
     }
 
     @FXML
