@@ -34,7 +34,7 @@ public class OSMParser extends Parser implements Serializable{
     }
 
     private void readOSMFile(File file) throws XMLStreamException, FileNotFoundException {
-        reader = XMLInputFactory.newFactory().createXMLStreamReader(new FileReader(file));
+        reader = XMLInputFactory.newFactory().createXMLStreamReader(new FileInputStream(file), "UTF8");
 
         int count = 0;
 
