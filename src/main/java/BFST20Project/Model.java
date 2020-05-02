@@ -118,8 +118,7 @@ public class Model implements Serializable {
                 n++;
             }
             shortestPath = new Polylines(points, WayType.SHORTEST_PATH);
-            String routeText = sp.textRoutePlanner().toString().replaceAll(",", "\n");
-            routeAsText = routeText.substring(1, routeText.length()-1);
+            routeAsText = String.join("\n", sp.textRoutePlanner());
             routeIsChanged = true;
             notifyObservers();
         }
