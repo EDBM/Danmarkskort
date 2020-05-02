@@ -4,6 +4,7 @@ import BFST20Project.Routeplanner.DirectedEdge;
 import BFST20Project.Routeplanner.DirectedGraph;
 import BFST20Project.Routeplanner.ShortestPath;
 import BFST20Project.Routeplanner.Vertex;
+import javafx.scene.control.TextField;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.*;
@@ -100,6 +101,7 @@ public class Model implements Serializable {
         return closest;
     }
 
+
     private void navigate(){
         if(navigateFrom != null && navigateTo != null){
             Deque<DirectedEdge> edges = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId(), true).getPath(); //TODO is always driving
@@ -130,6 +132,22 @@ public class Model implements Serializable {
         if(nearestRoad.getVertex() != null) {
             navigateTo = driveableWayGraph.nearestVertex(nearestRoad.getVertex(), to);
             navigate();
+        }
+    }
+
+    public void navigateFromAddress(String address) {
+        Point navigateFrom = trie.searchTrie(address);
+
+        if(navigateFrom != null){
+            setNavigateFrom(navigateFrom);
+        }
+    }
+
+    public void navigateToAddress(String address){
+        Point navigateTo = trie.searchTrie(address);
+
+        if(navigateTo != null){
+            setNavigateTo(navigateTo);
         }
     }
 }

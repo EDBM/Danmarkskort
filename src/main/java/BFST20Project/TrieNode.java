@@ -7,6 +7,7 @@ public class TrieNode implements Serializable {
     private char c;
     private TrieNode parent;
     private String address;
+    private Point point;
     private boolean isWord;
     private boolean endOfWord;
     public LinkedList<TrieNode> children;
@@ -80,4 +81,11 @@ public class TrieNode implements Serializable {
         this.endOfWord=endOfWord;
     }
 
+    public void setPoint(Point point) {
+        this.point = point;
+    }
+
+    public Point getPoint(){
+        return point;
+    }
 }

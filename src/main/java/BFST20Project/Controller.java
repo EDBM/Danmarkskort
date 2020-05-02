@@ -21,6 +21,7 @@ import javafx.stage.FileChooser;
 
 import java.awt.*;
 import java.sql.SQLOutput;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.io.File;
 import javafx.beans.value.ChangeListener;
@@ -50,7 +51,7 @@ public class Controller {
     private MapCanvas mapCanvas;
 
     @FXML
-    private TextField start, slut;
+    private TextField start, end;
 
     @FXML
     private Label nearestRoad;
@@ -221,8 +222,12 @@ public class Controller {
 
 
 
+
+
     @FXML
     private void addressStart(KeyEvent e){
+        model.navigateFromAddress(start.getText());
+
         //TODO implement trie for
         //List l = (List) trie.autocomplete(start.getText());
 
@@ -231,7 +236,8 @@ public class Controller {
     }
 
     @FXML
-    private void addressSlut(KeyEvent e){
+    private void addressEnd(KeyEvent e){
+        model.navigateToAddress(end.getText());
 
         //TODO implement trie
         System.out.println("her skal der være en adresse :)");

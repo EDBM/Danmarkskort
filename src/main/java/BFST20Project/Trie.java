@@ -1,5 +1,4 @@
 package BFST20Project;
-// Made with help https://github.com/eugenp/tutorials/blob/master/data-structures/src/main/java/com/baeldung/trie/Trie.java
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,11 +9,11 @@ public class Trie implements Serializable {
 
     public Trie(){root = new TrieNode(' ');}
 
-    public void insert(AddressParser a){
+    public void insert(AddressParser a, Point p){
         String address = a.toString();
 
-        if(searchTrie(address)==true)
-            return;
+        /*        if(searchTrie(address)==true)
+            return;*/
 
         TrieNode current = root;
         TrieNode previousNode;
@@ -32,34 +31,56 @@ public class Trie implements Serializable {
             }
         }
         current.setEndOfWord(true);
+        current.setPoint(p);
     }
 
-    private boolean searchTrie(String address) {
+    public Point searchTrie(String address) {
         TrieNode current = root;
 
         for (char c : address.toCharArray()) {
             if (current.getChildren(c) == null) {
-                return false;
+                return null;
             } else {
                 current = current.getChildren(c);
             }
         }
-        if (current.isEndWord() == true) {
-            return true;
+        if (current.isEndWord()) {
+            return current.getPoint();
         }
-        return false;
+        return null;
     }
 
-    public List<String> autocomplete(String prefix){
+    public List<String> autocomplete(String prefix) {
         TrieNode lastNode = root;
-        for (int i = 0; i<prefix.length(); i++){
-            lastNode = lastNode.getChildren(prefix.charAt(i));
-            if(lastNode == null)
-                break;
+        if (prefix.length() > 3) {
+            for (int i = 0; i < prefix.length(); i++) {
+                lastNode = lastNode.getChildren(prefix.charAt(i));
+                if (lastNode == null)
+                    break;
+            }
+            if (lastNode == null) {
+                return new ArrayList<>();
+            }
         }
-        if (lastNode==null){
+        else{
             return new ArrayList<>();
         }
-        return lastNode.getWords();
+            return lastNode.getWords();
+        }
+
+/*
+    public List<String> searchTrie(String prefix, String house){
+        TrieNode lastNode = root;
+        List<String> addresses = new ArrayList<>();
+
+        for (int i = 0; i<prefix.length(); i++) {
+            lastNode = lastNode.getChildren(prefix.charAt(i));
+            if (lastNode == null) {
+                return new ArrayList<>();
+            }
+        }
+        for (String address : lastNode.)
     }
+    */
+
 }
