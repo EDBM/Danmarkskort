@@ -77,7 +77,7 @@ public class Controller {
         switch (e.getCode()) {
             case B:
                 try {
-                    if(mapCanvas.getDefaultcolor() == 1){
+                    if(mapCanvas.getDefaultcolor() == 1 || mapCanvas.getDefaultcolor() == 3 ){
                         mapCanvas.setToColorBlindMode();
                     } else{
                         mapCanvas.setDefaultcolor();
@@ -90,8 +90,8 @@ public class Controller {
                 break;
             case L:
                 try {
-                    if(mapCanvas.getDefaultcolor() == 3){
-                        mapCanvas.setToColorBlindMode();
+                    if(mapCanvas.getDefaultcolor() == 1 || mapCanvas.getDefaultcolor() == 2 ){
+                        mapCanvas.setToBatmanMode();
                     } else{
                         mapCanvas.setDefaultcolor();
                     }
