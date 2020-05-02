@@ -164,8 +164,10 @@
                                         -fx-text-align: center;
                                         -fx-font-weight: bold;">
                                             Rutevejledning</Label>
-                                        <HBox><TextArea fx:id="textarea" prefHeight="200.0" prefWidth="200.0" visible="true" editable="false"/>
-                                        </HBox>
+                                        <HBox><TextArea fx:id="textarea" prefHeight="300.0" prefWidth="200.0" visible="true" editable="false"
+                                                        style="-fx-font-size: 9px;"
+                                        />
+                                       </HBox>
 
                                     </VBox>
 
