@@ -73,12 +73,7 @@ public class ShortestPath {
                 try {
                     priorityQueue.decreaseKey(to, distTo[to] + heuristic(to));
                 } catch (IllegalArgumentException e){
-                    System.out.println("from id: " + from);
-                    System.out.println("to id: " + to);
 
-                    System.out.println("distTo[to]: " + distTo[to]);
-                    System.out.println("heuristic(to): " + heuristic(to));
-                    System.out.println(priorityQueue.keyOf(to));
                 }
             else
                 priorityQueue.insert(to, distTo[to] + heuristic(to));
@@ -141,9 +136,6 @@ public class ShortestPath {
             }
 
             textRoute.add("Du er nu ankommet");
-            for (String s : textRoute) {
-                System.out.println(s);
-            }
         }
         return textRoute;
     }

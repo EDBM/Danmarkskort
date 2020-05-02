@@ -26,6 +26,8 @@ public class Model implements Serializable {
 
     private Trie trie;
 
+    private Boolean isDriving = true;
+
     public Model() throws IOException, XMLStreamException, ClassNotFoundException {
         file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
         //file = new File("F:\\denmark-latest.osm");
@@ -107,8 +109,8 @@ public class Model implements Serializable {
 
     private void navigate(){
         if(navigateFrom != null && navigateTo != null){
-            ShortestPath sp = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId(),true);
-            Deque<DirectedEdge> edges = sp.getPath(); //TODO is always driving
+            ShortestPath sp = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId(), isDriving);
+            Deque<DirectedEdge> edges = sp.getPath();
             Point[] points = new Point[edges.size() + 1];
             points[0] = edges.getFirst().getStart().getPoint();
 
@@ -156,5 +158,10 @@ public class Model implements Serializable {
         if(navigateTo != null){
             setNavigateTo(navigateTo);
         }
+    }
+
+    public void setDriving(Boolean driving) {
+        isDriving = driving;
+        navigate();
     }
 }

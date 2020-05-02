@@ -43,6 +43,7 @@ public class Controller {
     private Trie trie;
     private AddressParser addressParser;
     private ShortestPath shortestPath;
+    private Boolean isDriving = true;
 
     //To get km
     private double zoomFactor = 3.4 * 2857 * 1000;
@@ -122,15 +123,12 @@ public class Controller {
 
     @FXML
     public void chooseCarPicker(){
-        //TODO shortest path for car
-        //addressParser.parse(start.getText());
-        System.out.println("her må jeg køre");
+        model.setDriving(true);
     }
 
     @FXML
     public void chooseWalkPicker(){
-        //TODO shortest path for walking
-        System.out.println("her må jeg gå");
+        model.setDriving(false);
     }
 
 
