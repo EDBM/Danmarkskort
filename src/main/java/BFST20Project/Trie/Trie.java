@@ -37,14 +37,14 @@ public class Trie implements Serializable {
     public Point searchTrie(String address) {
         TrieNode current = root;
 
-        for (char c : address.toCharArray()) {
-            if (current.getChildren(c) == null) {
+        for (char c : address.toCharArray()) {          /* B1 */
+            if (current.getChildren(c) == null) {       /* B2 */
                 return null;
             } else {
                 current = current.getChildren(c);
             }
         }
-        if (current.isEndWord()) {
+        if (current.isEndWord()) {                      /* B3 */
             return current.getPoint();
         }
         return null;
@@ -52,19 +52,16 @@ public class Trie implements Serializable {
 
     public List<String> autocomplete(String prefix) {
         TrieNode lastNode = root;
-        if (prefix.length() > 3) {
-            for (int i = 0; i < prefix.length(); i++) {
+        if (prefix.length() > 3) {                      /* C1 */
+            for (int i = 0; i < prefix.length(); i++) { /* C2 */
                 lastNode = lastNode.getChildren(prefix.charAt(i));
-                if (lastNode == null)
-                    break;
-            }
-            if (lastNode == null) {
-                return new ArrayList<>();
+                if (lastNode == null)                   /* C3 */
+                    return new ArrayList<>();
             }
         }
         else{
             return new ArrayList<>();
         }
-            return lastNode.getWords();
-        }
+        return lastNode.getWords();
+    }
 }
