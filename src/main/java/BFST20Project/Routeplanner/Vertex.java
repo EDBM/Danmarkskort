@@ -8,13 +8,13 @@ import java.util.List;
 
 public class Vertex implements Serializable {
     private final int id;
-
     Point point;
     List<DirectedEdge> incidentEdges;
+
     public Vertex(Point node, int id){
-        this.point =node;
+        this.point = node;
         this.id = id;
-        incidentEdges = new ArrayList<DirectedEdge>();
+        incidentEdges = new ArrayList<>();
     }
 
     public void addEdge(DirectedEdge edge){

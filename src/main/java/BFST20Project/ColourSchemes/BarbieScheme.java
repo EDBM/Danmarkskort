@@ -1,12 +1,13 @@
-package BFST20Project;
+package BFST20Project.ColourSchemes;
 
+import BFST20Project.WayType;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 import java.util.EnumMap;
 import java.util.Map;
 
-public class ColorBlindScheme extends ColorScheme {
+public class BarbieScheme extends ColorScheme {
 
         protected Paint defaultColor(){
             return Color.rgb(0, 0, 0, 0.0);

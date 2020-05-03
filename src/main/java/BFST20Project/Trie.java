@@ -9,7 +9,7 @@ public class Trie implements Serializable {
 
     public Trie(){root = new TrieNode(' ');}
 
-    public void insert(AddressParser a, Point p){
+    public void insert(Address a, Point p){
         String address = a.toString();
 
         /*        if(searchTrie(address)==true)

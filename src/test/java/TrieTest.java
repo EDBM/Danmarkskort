@@ -1,4 +1,4 @@
-import BFST20Project.AddressParser;
+import BFST20Project.Address;
 import BFST20Project.Point;
 import BFST20Project.Trie;
 import org.junit.After;
@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Assertions;
 import java.util.List;
 
 public class TrieTest {
-    AddressParser a;
-    AddressParser b;
-    AddressParser c;
-    AddressParser d;
-    AddressParser e;
-    AddressParser f;
+    Address a;
+    Address b;
+    Address c;
+    Address d;
+    Address e;
+    Address f;
     Trie t = new Trie();
     Point p = new Point(1,2);
 
@@ -23,12 +23,12 @@ public class TrieTest {
 
     @Before
     public void setUp() {
-        AddressParser a = new AddressParser("Torpenvej", "23", "3050", "København");
-        AddressParser b = new AddressParser("Torpengade", "25", "3040", "Købenby");
-        AddressParser c = new AddressParser("Torpenbro", "28", "3590", "Kødby");
-        AddressParser d = new AddressParser("123", "12", "123123", "123123");
-        AddressParser e = new AddressParser("æøåÆØÅ", "æøåæøå", "æøåæøå", "æøåæøå");
-        AddressParser f = new AddressParser("", "", "", "");
+        Address a = new Address("Torpenvej", "23", "3050", "København");
+        Address b = new Address("Torpengade", "25", "3040", "Købenby");
+        Address c = new Address("Torpenbro", "28", "3590", "Kødby");
+        Address d = new Address("123", "12", "123123", "123123");
+        Address e = new Address("æøåÆØÅ", "æøåæøå", "æøåæøå", "æøåæøå");
+        Address f = new Address("", "", "", "");
         t.insert(a,p);
         t.insert(b,p);
         t.insert(c,p);
@@ -80,7 +80,7 @@ public class TrieTest {
     @Test
     public void TrieAutoComplete5(){
         //Test that Trie does not accept empty text
-        AddressParser g = new AddressParser("      ", "  ", "  ", "   ");
+        Address g = new Address("      ", "  ", "  ", "   ");
         t.insert(g,p);
         List l = t.autocomplete("   ");
         System.out.println(g);

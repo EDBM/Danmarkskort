@@ -4,7 +4,6 @@ import BFST20Project.Routeplanner.DirectedEdge;
 import BFST20Project.Routeplanner.DirectedGraph;
 import BFST20Project.Routeplanner.ShortestPath;
 import BFST20Project.Routeplanner.Vertex;
-import javafx.scene.control.TextField;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.*;
@@ -12,11 +11,9 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-
 public class Model implements Serializable {
     public float minLat,minLon, maxLat, maxLon;
-    List<Runnable> observers = new ArrayList<>();
-    File file;
+    private List<Runnable> observers = new ArrayList<>();
     private List<Drawable> islands;
     private EnumMap<ZoomLevel, KDTree> drawables;
     private DirectedGraph driveableWayGraph;
@@ -40,14 +37,11 @@ public class Model implements Serializable {
     }
 
     public void loadModel(File file) throws IOException, XMLStreamException, ClassNotFoundException {
-
-
         String extension = getFileExtension(file.toString());
         Parser parser;
 
         if(extension.equalsIgnoreCase("zip")){
             parser = readZipFile(file);
-
         }
         else if(extension.equalsIgnoreCase("osm")){
             parser = readOSMStream(new FileInputStream(file));
@@ -56,18 +50,8 @@ public class Model implements Serializable {
             parser = readBinStream(new FileInputStream(file));
         }
         else{
-            throw new IOException("File is bad");
+            throw new IOException("Filetype not supported");
         }
-
-        /*if(file == null) {
-            System.out.println("binary parser");
-            parser = new BinaryParser(new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin"));
-        } else {
-            System.out.println("OSM parser");
-            parser = new OSMParser(file);
-        }*/
-
-
 
         drawables = parser.getDrawables();
         drawables = parser.getDrawables();
@@ -77,11 +61,6 @@ public class Model implements Serializable {
         minLon = parser.getMinLon();
         maxLat = parser.getMaxLat();
         maxLon = parser.getMaxLon();
-        //TODO bounds not being Serialized properly
-        minLat = -55.3041f;
-        minLon = 8.218784f;
-        maxLat = -54.9264f;
-        maxLon = 8.491f;
         trie = parser.getTrie();
     }
 
@@ -139,8 +118,6 @@ public class Model implements Serializable {
         }
             toDraw.get(WayType.POINT_OF_INTEREST).addAll(PointOfInterest);
 
-
-
         for(ZoomLevel zoomLevel : ZoomLevel.values()){
             if(desiredZoomLevel.compareTo(zoomLevel) >= 0){
                 toDraw.putAll(drawables.get(zoomLevel).query(min.getX(), min.getY(), max.getX(), max.getY()));
@@ -153,7 +130,6 @@ public class Model implements Serializable {
         return trie;
     }
 
-    //zoomLevel = 4, means we get the nearestRoad in all the zoomlevels
     public Drawable nearestRoad(Point mapPoint, Set<ZoomLevel> zoomLevel) {
         Collection<WayType> allowedWaytypes = Arrays.asList(WayType.MOTORWAY, WayType.HIGHWAY, WayType.SECONDARY, WayType.DIRTROAD, WayType.MINIWAY);
         List<Drawable> closestRoads = new ArrayList<>();
@@ -179,7 +155,6 @@ public class Model implements Serializable {
 
 
     private void navigate(){
-        System.out.println("navigate");
         if(navigateFrom != null && navigateTo != null){
             ShortestPath sp = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId(), isDriving);
             Deque<DirectedEdge> edges = sp.getPath();
@@ -198,13 +173,10 @@ public class Model implements Serializable {
         }
     }
 
-
-
     public void setNavigateFrom(Point from) {
         Drawable nearestRoad = nearestRoad(from, drawables.keySet());
         if(nearestRoad.getVertex() != null) {
             navigateFrom = driveableWayGraph.nearestVertex(nearestRoad.getVertex(), from);
-
 
             PointOfInterest POI = new PointOfInterest(from, true);
             POIFrom = POI;
@@ -246,9 +218,7 @@ public class Model implements Serializable {
         navigate();
     }
 
-
     public void addPointOfInterest(Drawable drawable){
-        System.out.println("add POI");
         PointOfInterest.add(drawable);
     }
 }

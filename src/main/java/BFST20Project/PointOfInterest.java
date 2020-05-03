@@ -75,11 +75,6 @@ public class PointOfInterest implements Drawable {
     }
 
     @Override
-    public Collection<Point> getCoordinates() {
-        return new ArrayList<Point>((Collection<? extends Point>) this.coordinate);
-    }
-
-    @Override
     public String getName() {
         return null;
     }

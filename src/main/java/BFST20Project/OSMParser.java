@@ -1,7 +1,6 @@
 package BFST20Project;
 
 import BFST20Project.Routeplanner.DirectedGraph;
-import BFST20Project.Routeplanner.ShortestPath;
 import BFST20Project.Routeplanner.TemporaryGraph;
 
 import javax.xml.stream.XMLInputFactory;
@@ -131,7 +130,7 @@ public class OSMParser extends Parser implements Serializable{
         OSMNode osmNode = new OSMNode(id, lat, lon);
         idToNode.put(id, osmNode);
         if(!Arrays.asList(address).contains(null)) {
-            AddressParser a = new AddressParser(address[0], address[1], address[2], address[3]);
+            Address a = new Address(address[0], address[1], address[2], address[3]);
             trie.insert(a, Point.fromLonLat(lon, lat));
         }
     }

@@ -1,7 +1,6 @@
 package BFST20Project;
 
 import BFST20Project.Routeplanner.DirectedGraph;
-import BFST20Project.Routeplanner.ShortestPath;
 import BFST20Project.Routeplanner.TemporaryGraph;
 
 import java.io.*;
@@ -11,55 +10,38 @@ import java.util.List;
 import java.util.Map;
 
 public class BinaryParser extends Parser {
-
-
     DirectedGraph drivableWaysGraph;
     private EnumMap<ZoomLevel, KDTree> drawables = new EnumMap<>(ZoomLevel.class);
     private List<Drawable> islands = new ArrayList<>();
     private Trie trie;
-/*
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        BinaryParser parser = new BinaryParser(new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin"));
-    }
-*/
-
 
     public BinaryParser(InputStream inputStream) throws IOException, ClassNotFoundException {
         loadBin(inputStream);
     }
 
     public void loadBin(InputStream inputStream) throws IOException, ClassNotFoundException {
-        //File file = new File(getClass().getClassLoader().getResource("test.bin").getFile());
-        //FileInputStream input = new FileInputStream(file);
         ObjectInputStream objectInputStream = new ObjectInputStream (inputStream);
 
-        ArrayList polylines = new ArrayList<Polylines>();
-        ArrayList multipolygons = new ArrayList<MultiPolygon>();
-
-
+        List<Polylines> polylines = new ArrayList<>();
+        List<MultiPolygon> multipolygons = new ArrayList<>();
         Object object = objectInputStream.readObject();
-        while (true) {
 
+        while (true) {
             if (object instanceof TemporaryGraph) {
                 TemporaryGraph graph = (TemporaryGraph) object;
                 graph.init();
                 graph.createTemporaryGraph();
                 this.drivableWaysGraph = graph.compressedGraph();
             }
-
             if (object instanceof OSMWay) {
                 OSMWay way = (OSMWay) object;
                 Polylines poly = new Polylines(way);
                 polylines.add(poly);
             }
-
             if (object instanceof MultiPolygon) {
                 MultiPolygon multiPolygon = (MultiPolygon) object;
                 multipolygons.add(multiPolygon);
             }
-
-
-
             if (object instanceof Trie) {
                 this.trie = (Trie) object;
             }
@@ -68,19 +50,13 @@ public class BinaryParser extends Parser {
                 object = objectInputStream.readObject();
             } catch (EOFException e){
                 System.out.println("End of Stream");
-                //e.printStackTrace();
                 break;
             }
         }
-
-        System.out.println("done");
         createDrawables(polylines, multipolygons);
-
-
     }
 
-
-    private void createDrawables(ArrayList<Polylines> polylines, ArrayList<MultiPolygon> multiPolygons){
+    private void createDrawables(List<Polylines> polylines, List<MultiPolygon> multiPolygons){
         Map<ZoomLevel, List<Drawable>> tempDrawableStorage = new EnumMap<>(ZoomLevel.class);
 
         for(ZoomLevel zoomLevel : ZoomLevel.values()){
@@ -110,8 +86,6 @@ public class BinaryParser extends Parser {
         }
     }
 
-
-
     @Override
     EnumMap<ZoomLevel, KDTree> getDrawables() {
         return drawables;
@@ -119,22 +93,22 @@ public class BinaryParser extends Parser {
 
     @Override
     float getMinLat() {
-        return 0;
+        return -55.3041f;
     }
 
     @Override
     float getMinLon() {
-        return 0;
+        return 8.218784f;
     }
 
     @Override
     float getMaxLat() {
-        return 0;
+        return -54.9264f;
     }
 
     @Override
     float getMaxLon() {
-        return 0;
+        return 8.491f;
     }
 
     @Override
@@ -151,5 +125,4 @@ public class BinaryParser extends Parser {
     Trie getTrie() {
         return trie;
     }
-
 }

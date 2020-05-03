@@ -1,5 +1,6 @@
-package BFST20Project;
+package BFST20Project.ColourSchemes;
 
+import BFST20Project.WayType;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -44,7 +45,6 @@ public class BatManScheme extends ColorScheme {
         resultMap.put(WayType.SECONDARY, Color.WHITE);
         resultMap.put(WayType.SHORTEST_PATH, Color.RED);
         resultMap.put(WayType.FARMLAND, Color.GREY);
-
 
         return resultMap;
     }

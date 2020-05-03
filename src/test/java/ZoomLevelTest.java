@@ -1,11 +1,7 @@
-import BFST20Project.AddressParser;
-import BFST20Project.Trie;
 import BFST20Project.WayType;
 import BFST20Project.ZoomLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 public class ZoomLevelTest {
 @Test

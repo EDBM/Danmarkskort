@@ -18,7 +18,6 @@ public class Launcher extends Application {
     public void start(Stage primaryStage) throws Exception {
         Model model = new Model(new File(getClass().getClassLoader().getResource("bornholm.zip").getFile()));
         View view = new View(model, primaryStage);
-
     }
 
     public static void main(String[] args){

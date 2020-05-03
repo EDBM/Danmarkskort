@@ -188,7 +188,7 @@
                                       BorderPane.alignment="BOTTOM_CENTER">
 
 
-                                    <Button fx:id="changeColor"
+                                    <Button fx:id="changeToBarbieMode"
                                                 StackPane.alignment="CENTER"
                                                 prefHeight="40"
                                                 prefWidth="200"
@@ -197,11 +197,11 @@
                                                 style="-fx-border-color:#D7B3D8;
 
                                                       "
-                                                onMouseClicked="#changeColor">
+                                                onMouseClicked="#changeToBarbieMode">
 
                                     </Button>
 
-                                    <Button fx:id="changeColor2"
+                                    <Button fx:id="changeToBatmanMode"
                                             StackPane.alignment="CENTER"
                                             prefHeight="40"
                                             prefWidth="200"
@@ -210,7 +210,7 @@
                                             style="-fx-border-color: black;
 
                                                       "
-                                            onMouseClicked="#changeColor2">
+                                            onMouseClicked="#changeToBatmanMode">
 
                                     </Button>
                                 </HBox>

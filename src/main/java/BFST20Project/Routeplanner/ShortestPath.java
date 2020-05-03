@@ -5,15 +5,11 @@ import java.util.*;
 public class ShortestPath {
     double[] distTo;
     DirectedEdge[] edgeTo;
-
     DirectedGraph graph;
-
+    IndexMinPQ<Double> priorityQueue;
+    Deque<DirectedEdge> path = new LinkedList<>();
     Vertex endVertex;
     boolean isDriving;
-
-    IndexMinPQ<Double> priorityQueue;
-
-    Deque<DirectedEdge> path = new LinkedList<>();
     double totalWeight;
 
     public ShortestPath(DirectedGraph graph, int start, int end, boolean isDriving){
@@ -21,10 +17,7 @@ public class ShortestPath {
         this.endVertex = graph.getVertex(end);
         this.isDriving = isDriving;
         // this takes time proportional to graph size, no matter start and end.
-        distTo = new double[graph.size()];
-        Arrays.fill(distTo, Double.POSITIVE_INFINITY);
-        edgeTo = new DirectedEdge[graph.size()];
-        priorityQueue = new IndexMinPQ<>(graph.size());
+        init();
         distTo[start] = 0.0;
         priorityQueue.insert(start, 0.0);
 
@@ -39,22 +32,19 @@ public class ShortestPath {
         textRoutePlanner();
     }
 
-    private void generatePath(int end) {
-        totalWeight = 0.0;
-        DirectedEdge edge = edgeTo[end];
-        while(edge != null){
-            totalWeight += edge.getWeight(isDriving);
-            path.push(edge);
-            edge = edgeTo[edge.getStart().getId()];
-        }
+    private void init() {
+        distTo = new double[graph.size()];
+        Arrays.fill(distTo, Double.POSITIVE_INFINITY);
+        edgeTo = new DirectedEdge[graph.size()];
+        priorityQueue = new IndexMinPQ<>(graph.size());
     }
+
 
     private void relaxVertex(int toRelax) {
         for (DirectedEdge edge : graph.getIncidentEdges(toRelax)) {
             if(!isDriving && edge.isWalkable) {
                 relaxEdge(edge);
             }
-
             if(isDriving && edge.isDriveable){
                 relaxEdge(edge);
             }
@@ -67,21 +57,31 @@ public class ShortestPath {
         if (distTo[to] > distTo[from] + edge.getWeight(isDriving)) {
             distTo[to] = distTo[from] + edge.getWeight(isDriving);
             edgeTo[to] = edge;
-            if (priorityQueue.contains(to))
-                try {
-                    priorityQueue.decreaseKey(to, distTo[to] + heuristic(to));
-                } catch (IllegalArgumentException e){
-
-                }
-            else
+            if (priorityQueue.contains(to)) {
+                priorityQueue.decreaseKey(to, distTo[to] + heuristic(to));
+            }else {
                 priorityQueue.insert(to, distTo[to] + heuristic(to));
+            }
         }
     }
 
     private double heuristic(int to) {
         Vertex toVertex = graph.getVertex(to);
-        if (isDriving) return endVertex.getPoint().distanceTo(toVertex.getPoint()) / DirectedGraph.MAX_DRIVE_SPEED;
-        else return endVertex.getPoint().distanceTo(toVertex.getPoint());
+        if (isDriving) {
+            return endVertex.getPoint().distanceTo(toVertex.getPoint()) / DirectedGraph.MAX_DRIVE_SPEED;
+        } else {
+            return endVertex.getPoint().distanceTo(toVertex.getPoint());
+        }
+    }
+
+    private void generatePath(int end) {
+        totalWeight = 0.0;
+        DirectedEdge edge = edgeTo[end];
+        while(edge != null){
+            totalWeight += edge.getWeight(isDriving);
+            path.push(edge);
+            edge = edgeTo[edge.getStart().getId()];
+        }
     }
 
     public Deque<DirectedEdge> getPath() {
@@ -92,8 +92,8 @@ public class ShortestPath {
         return totalWeight;
     }
 
-   public ArrayList<String> textRoutePlanner() {
-        ArrayList<String> textRoute = new ArrayList<>();
+   public List<String> textRoutePlanner() {
+        List<String> textRoute = new ArrayList<>();
 
         if(path.isEmpty()){
             textRoute.add("No route available");
@@ -104,11 +104,10 @@ public class ShortestPath {
         int length = 0;
         double angle;
         String roadName;
-        DirectedEdge previousEdge = path.poll();
+        DirectedEdge previousEdge = path.peek();
         roadName = previousEdge.getName();
-        System.out.println("ny");
 
-        if(previousEdge.getName()!=null) {
+        if(previousEdge.getName() != null) {
             for (DirectedEdge edge : path) {
                 if (roadName.equals(edge.getName())) {
                     length += edge.getLength();
@@ -123,16 +122,13 @@ public class ShortestPath {
                     } else {
                         direction = " fortsæt ligeud";
                     }
-                    System.out.println(angle);
                     textRoute.add("Følg " + roadName + " " + length + "m, Derefter" + direction + " af " + edge.getName());
-                    length= (int) Math.floor(edge.getLength());
+                    length = (int) Math.floor(edge.getLength());
                     roadName = edge.getName();
-
                 } else {
                     roadName = edge.getName();
                 }
             }
-
             textRoute.add("Du er nu ankommet");
         }
         return textRoute;

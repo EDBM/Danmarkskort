@@ -15,13 +15,11 @@ public class TemporaryGraph implements Serializable {
     transient List<Vertex> vertices;
     transient List<DirectedEdge> edges;
     List<OSMWay> traversableWays;
-    String name;
 
     //Helping to prevent stackoverflow with serializing
     public TemporaryGraph(List<OSMWay> traversableWays){
         init();
         this.traversableWays = traversableWays;
-        System.out.println("size: " + traversableWays.size());
     }
 
     public void init(){
@@ -31,7 +29,6 @@ public class TemporaryGraph implements Serializable {
     }
 
     public void createTemporaryGraph() {
-        System.out.println("size: " + traversableWays.size());
         for (OSMWay way: traversableWays ) {
             for (OSMNode node : way.getAll()){
                 createVertex(node);

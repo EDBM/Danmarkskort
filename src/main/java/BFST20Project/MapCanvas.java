@@ -1,28 +1,26 @@
 package BFST20Project;
 
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
+import BFST20Project.ColourSchemes.BarbieScheme;
+import BFST20Project.ColourSchemes.BatManScheme;
+import BFST20Project.ColourSchemes.ColorScheme;
+import BFST20Project.ColourSchemes.DefaultColorScheme;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.NonInvertibleTransformException;
-import javafx.scene.image.Image;
 
 import java.util.*;
 
-
 public class MapCanvas extends Canvas{
-    Model model;
+    private Model model;
 
-    final Image image = new Image("file:resources/images/pointer.png");
-    GraphicsContext gc = getGraphicsContext2D();
-    ColorScheme colorScheme = new DefaultColorScheme();
-    ColorScheme colorBlindScheme = new ColorBlindScheme();
-    ColorScheme colorBatmanScheme = new BatManScheme();
-    Affine trans = new Affine();
-    int defaultcolor = 1;
-
+    private GraphicsContext gc = getGraphicsContext2D();
+    private ColorScheme colorScheme = new DefaultColorScheme();
+    private ColorScheme colorBarbieScheme = new BarbieScheme();
+    private ColorScheme colorBatmanScheme = new BatManScheme();
+    private Affine trans = new Affine();
+    private int defaultColor = 1;
 
     public void init(Model model){
         this.model = model;
@@ -30,40 +28,25 @@ public class MapCanvas extends Canvas{
         repaint();
     }
 
-
     public void resetTrans(){
         this.trans = new Affine();
     }
 
-/*    public void resetView() {
-        pan(-model.minLon, -model.minLat);
-        zoom(getWidth() / (model.maxLat - model.minLat), 0, 0);
-        repaint();
-    }*/
-
     public void repaint(){
         gc.setTransform(new Affine());
 
-        if(defaultcolor == 2){
-            gc.fillRect(0,0,getWidth(),getHeight());
-            gc.setFill(Color.RED);
-            gc.setStroke(Color.DARKRED);
+        if(defaultColor == 2){
+            gc.setFill(Color.web("#F6CEF5"));
 
         }
-        if(defaultcolor == 3){
+        else if(defaultColor == 3){
             gc.setFill(Color.web("#6C6868"));
-            gc.fillRect(0,0,getWidth(),getHeight());
-            gc.setFill(Color.web("#393838"));
-            gc.setStroke(Color.BLACK);
 
         }
         else{
             gc.setFill(Color.LIGHTBLUE);
-            gc.fillRect(0,0,getWidth(),getHeight());
-            gc.setFill(Color.LIGHTGREEN);
-            gc.setStroke(Color.BLACK);
-
         }
+        gc.fillRect(0,0,getWidth(),getHeight());
         gc.setTransform(trans);
 
         Point topLeft, bottomRight;
@@ -78,16 +61,15 @@ public class MapCanvas extends Canvas{
         }
 
         double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
-        // gc.setLineWidth(pixelWidth);
 
         Map<WayType, List<Drawable>> drawables = model.getDrawables(curZoomLevel(), topLeft, bottomRight);
         for (WayType type : drawables.keySet()){
             var color = colorScheme;
 
-            if(defaultcolor == 2){
-                color = colorBlindScheme;
+            if(defaultColor == 2){
+                color = colorBarbieScheme;
             }
-            if(defaultcolor == 3){
+            if(defaultColor == 3){
                 color = colorBatmanScheme;
             }
 
@@ -100,30 +82,24 @@ public class MapCanvas extends Canvas{
 
             for(Drawable drawable : drawables.get(type)){
                 drawable.stroke(gc, shouldFill);
-                //if(shouldFill) {
-                  //  drawable.fill(gc);
-                //}
             }
-
         }
-
     }
 
     public void setToBatmanMode(){
-        defaultcolor = 3;
+        defaultColor = 3;
     }
 
-    public void setToColorBlindMode(){
-        defaultcolor = 2;
+    public void setToBarbieMode(){
+        defaultColor = 2;
     }
 
-    public void setDefaultcolor(){
-        defaultcolor = 1;
+    public void setDefaultColor(){
+        defaultColor = 1;
     }
 
-
-    public int getDefaultcolor(){
-        return defaultcolor;
+    public int getDefaultColor(){
+        return defaultColor;
     }
 
     public ZoomLevel curZoomLevel(){
@@ -142,16 +118,6 @@ public class MapCanvas extends Canvas{
     public void zoom(double factor, double x, double y) {
         trans.prependScale(factor, factor, x, y);
         repaint();
-    }
-
-    //Highlights nearest road in the current zoom level
-    public void highlightNearestRoad(double x, double y) {
-            Point mapPoint = screenCoordinatesToPoint(x, y);
-            Drawable nearestRoad = model.nearestRoad(mapPoint, new HashSet<>(Arrays.asList(curZoomLevel())));
-            double pixelWidth = 1/Math.sqrt(Math.abs(trans.determinant()));
-            gc.setLineWidth(3 * pixelWidth);
-            gc.setStroke(Color.PURPLE);
-            nearestRoad.stroke(gc, false);
     }
 
     public Point screenCoordinatesToPoint(double x, double y){

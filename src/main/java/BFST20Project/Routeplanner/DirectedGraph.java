@@ -2,8 +2,6 @@ package BFST20Project.Routeplanner;
 
 import java.io.Serializable;
 import BFST20Project.Point;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -18,16 +16,8 @@ public class DirectedGraph implements Serializable {
         this.edges = edges;
     }
 
-    public List<Vertex> getVertices() {
-        return vertices;
-    }
-
     public Vertex getVertex(int id){
         return vertices.get(id);
-    }
-
-    public List<DirectedEdge> getEdges() {
-        return edges;
     }
 
     public int size() {

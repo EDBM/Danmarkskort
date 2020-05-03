@@ -2,7 +2,6 @@ package BFST20Project;
 
 import BFST20Project.Routeplanner.Vertex;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.FillRule;
 
 import java.io.Serializable;
@@ -11,12 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 
-//TODO Do ring grouping to determine which rings are nested inside other  (maybe not needed?)
-
-
 public class MultiPolygon extends OSMRelation implements Drawable, Serializable {
     private List<List<Point>> rings = new ArrayList<>();
-    private int numberOfNodes = 0;
     private float minX, minY, maxX, maxY;
     private WayType type;
 
@@ -25,7 +20,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
     }
 
     @Override
-    public void stroke(GraphicsContext gc, boolean shouldFill) { fill(gc); } //NOT USED
+    public void stroke(GraphicsContext gc, boolean shouldFill) { fill(gc); }
 
 
     public void fill(GraphicsContext gc) {
@@ -42,7 +37,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
         gc.fill();
     }
 
-    //Code build from this Algorithm: https://wiki.openstreetmap.org/wiki/Relation:multipolygon/Algorithm#Multipolygon_Creation
+    //Code inspired by Algorithm: https://wiki.openstreetmap.org/wiki/Relation:multipolygon/Algorithm#Multipolygon_Creation
     public boolean RingAssignment() {
 
         List<OSMWay> unassigned = new ArrayList<>();
@@ -53,7 +48,7 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
         ringAssignment:
         while (true) {
 
-            //RA-2 Take one unassigned way and mark it assigned to the current ring
+            //Ring Assignment-2 Take one unassigned way and mark it assigned to the current ring
             if (!unassigned.isEmpty()) {
                 OSMWay osmWay = unassigned.remove(0);
                 assigned.add(osmWay);
@@ -61,10 +56,8 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
                     System.out.println("Ring Assignment failed, way = null " + this.id);
                     return false;
                 }
-                numberOfNodes += osmWay.size();
 
-
-                //RA-3
+                //RingAssignment-3
                 RA3:
                 while (true) {
 
@@ -87,16 +80,13 @@ public class MultiPolygon extends OSMRelation implements Drawable, Serializable 
                             if (ringEndNode.getId() == way.first().getId()) {
                                 assigned.add(way);
                                 unassigned.remove(way);
-                                numberOfNodes += way.size();
                                 continue RA3;
 
                             } else if(ringEndNode.getId() == way.last().getId()){
                                 assigned.add(way);
                                 unassigned.remove(way);
                                 Collections.reverse(way.getAll());
-                                numberOfNodes += way.size();
                                 continue RA3;
-
                             }
                         }
                         System.out.println("Ring Assignment failed, no ways match " + this.id);
