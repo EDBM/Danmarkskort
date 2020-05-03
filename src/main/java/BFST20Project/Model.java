@@ -41,7 +41,6 @@ public class Model implements Serializable {
             parser = new BinaryParser(new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin"));
         } else {
             System.out.println("OSM parser");
-            file = new File(getClass().getClassLoader().getResource("bornholm.osm").getFile());
             parser = new OSMParser(file);
         }
 
@@ -106,8 +105,6 @@ public class Model implements Serializable {
                     }
                 }
             }
-
-
         Drawable closest = closestRoads.get(0);
 
         for(int i = 1; i < closestRoads.size(); i++){
@@ -122,6 +119,7 @@ public class Model implements Serializable {
 
 
     private void navigate(){
+        System.out.println("navigate");
         if(navigateFrom != null && navigateTo != null){
             ShortestPath sp = new ShortestPath(driveableWayGraph, navigateFrom.getId(), navigateTo.getId(), isDriving);
             Deque<DirectedEdge> edges = sp.getPath();
