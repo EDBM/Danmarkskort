@@ -25,16 +25,16 @@ public class OSMParser extends Parser implements Serializable{
     private EnumMap<ZoomLevel, KDTree> drawables = new EnumMap<>(ZoomLevel.class);
     private List<Drawable> islands = new ArrayList<>();
 
-    public OSMParser(File file) throws IOException, XMLStreamException {
+    public OSMParser(InputStream inputStream) throws IOException, XMLStreamException {
         System.out.println("load parser");
-        readOSMFile(file);
+        readOSMFile(inputStream);
         createDrivableWayGraph();
         createDrawables();
         //createBinaryFile();
     }
 
-    private void readOSMFile(File file) throws XMLStreamException, FileNotFoundException {
-        reader = XMLInputFactory.newFactory().createXMLStreamReader(new FileInputStream(file), "UTF8");
+    private void readOSMFile(InputStream inputStream) throws XMLStreamException, FileNotFoundException {
+        reader = XMLInputFactory.newFactory().createXMLStreamReader(inputStream, "UTF8");
 
         int count = 0;
 
