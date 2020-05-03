@@ -201,17 +201,23 @@ public class Controller {
             }
             else if(e.isShiftDown())
                 model.setNavigateTo(mapCanvas.screenCoordinatesToPoint(e.getX(), e.getY()));
+        } else {
+            PointOfInterest POI = new PointOfInterest(mapCanvas.screenCoordinatesToPoint(e.getX(), e.getY()), true);
+            model.addPointOfInterest(POI);
+            mapCanvas.repaint();
         }
+
         x = e.getX();
         y = e.getY();
 
-        if(e.getButton() == MouseButton.PRIMARY){
-            System.out.println(x);
+        /*if(e.getButton() == MouseButton.PRIMARY){
+            if(e.isControlDown()) {
+                mapCanvas.highlightNearestRoad(e.getX(), e.getY());
+            }*/
 
 
-        }else {
-            mapCanvas.highlightNearestRoad(e.getX(), e.getY());
-        }
+
+
 
     }
 
