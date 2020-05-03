@@ -1,6 +1,6 @@
 import BFST20Project.Address;
 import BFST20Project.Point;
-import BFST20Project.Trie;
+import BFST20Project.Trie.Trie;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,5 @@
 package BFST20Project;
 
-import java.util.Map;
-
 public enum WayType{
   UNKNOWN,
   ISLAND,

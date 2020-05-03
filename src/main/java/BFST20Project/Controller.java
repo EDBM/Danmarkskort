@@ -216,20 +216,20 @@ public class Controller {
 
     @FXML
     private void changeToBarbieMode(){
-        if(mapCanvas.getDefaultColor() == 1|| mapCanvas.getDefaultColor() == 3){
-            mapCanvas.setToBarbieMode();
-        } else{
+        if(mapCanvas.getDefaultColor() == 2){
             mapCanvas.setDefaultColor();
+        } else{
+            mapCanvas.setToBarbieMode();
         }
         mapCanvas.repaint();
     }
 
     @FXML
     private void changeToBatmanMode(){
-        if(mapCanvas.getDefaultColor() == 1 || mapCanvas.getDefaultColor() == 2){
-            mapCanvas.setToBatmanMode();
-        } else{
+        if(mapCanvas.getDefaultColor() == 3){
             mapCanvas.setDefaultColor();
+        } else{
+            mapCanvas.setToBatmanMode();
         }
         mapCanvas.repaint();
     }

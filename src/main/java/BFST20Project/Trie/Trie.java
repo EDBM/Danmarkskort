@@ -1,9 +1,12 @@
-package BFST20Project;
+package BFST20Project.Trie;
+
+import BFST20Project.Address;
+import BFST20Project.Point;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
+//Credit to https://www.lavivienpost.com/autocomplete-with-trie-code/?utm_source=youtube&utm_medium=description
 public class Trie implements Serializable {
     private TrieNode root;
 
@@ -11,9 +14,6 @@ public class Trie implements Serializable {
 
     public void insert(Address a, Point p){
         String address = a.toString();
-
-        /*        if(searchTrie(address)==true)
-            return;*/
 
         TrieNode current = root;
         TrieNode previousNode;
@@ -25,7 +25,7 @@ public class Trie implements Serializable {
                 current = child;
                 child.setParent(previousNode);
             } else{
-                current.children.add(new TrieNode(c));
+                current.getChildren().add(new TrieNode(c));
                 current = current.getChildren(c);
                 current.setParent(previousNode);
             }

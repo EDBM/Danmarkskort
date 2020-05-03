@@ -163,5 +163,4 @@ public class WayTypeSetter {
 
         return WayType.UNKNOWN;
     }
-
 }

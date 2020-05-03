@@ -4,6 +4,7 @@ import BFST20Project.Routeplanner.DirectedEdge;
 import BFST20Project.Routeplanner.DirectedGraph;
 import BFST20Project.Routeplanner.ShortestPath;
 import BFST20Project.Routeplanner.Vertex;
+import BFST20Project.Trie.Trie;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.*;

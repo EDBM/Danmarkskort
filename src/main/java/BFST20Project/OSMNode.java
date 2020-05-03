@@ -23,8 +23,4 @@ public class OSMNode implements Serializable {
     public Point getPoint(){ return new Point(lat, lon); }
 
     public long getId(){return id;}
-
-    /*public String toString() {
-        return "id = " + id + " lattitude = " + lat + " longtitude = " + lon;
-    }*/
 }

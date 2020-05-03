@@ -1,30 +1,20 @@
 package BFST20Project;
 
-import BFST20Project.Drawable;
-import BFST20Project.Point;
 import BFST20Project.Routeplanner.Vertex;
-import BFST20Project.WayType;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class PointOfInterest implements Drawable {
 
-    Point coordinate;
-    Boolean type;
+    private Point coordinate;
+    private boolean type;
 
 
     public PointOfInterest(Point point, Boolean type){
         this.coordinate = point;
         this.type = type;
     }
-
 
     @Override
     public void stroke(GraphicsContext gc, boolean shouldFill) {

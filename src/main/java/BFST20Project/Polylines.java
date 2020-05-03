@@ -2,10 +2,7 @@ package BFST20Project;
 
 import BFST20Project.Routeplanner.Vertex;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +19,6 @@ public class Polylines implements Drawable, Serializable {
         vertex = way.getVertex();
         coordinates = new Point[way.size()];
         name = way.getName();
-        setWayType(way.getWayType());
         for(int i = 0; i < way.size(); i++){
             Point coordinate = Point.fromLonLat(way.get(i).getLon(), way.get(i).getLat());
             coordinates[i] = coordinate;
@@ -72,18 +68,12 @@ public class Polylines implements Drawable, Serializable {
         }
     }
 
-    public void fill(GraphicsContext gc){ //TODO dont trace twice if the polyline needs to be filled
-        gc.beginPath();
-        trace(gc);
-        gc.fill();
-    }
-
     public WayType getWayType() {
         return wayType;
     }
 
     @Override
-    public void setWayType(WayType type) {
+    public void setWayType(WayType wayType) {
         this.wayType = wayType;
     }
 
@@ -121,11 +111,6 @@ public class Polylines implements Drawable, Serializable {
                 minDist = dist;
         }
         return minDist;
-    }
-
-
-    public List<Point> getCoordinates() {
-        return Arrays.asList(coordinates);
     }
 
     @Override

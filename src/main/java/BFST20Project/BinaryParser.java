@@ -2,6 +2,7 @@ package BFST20Project;
 
 import BFST20Project.Routeplanner.DirectedGraph;
 import BFST20Project.Routeplanner.TemporaryGraph;
+import BFST20Project.Trie.Trie;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.Map;
 public class BinaryParser extends Parser {
     DirectedGraph drivableWaysGraph;
     private EnumMap<ZoomLevel, KDTree> drawables = new EnumMap<>(ZoomLevel.class);
-    private List<Drawable> islands = new ArrayList<>();
     private Trie trie;
 
     public BinaryParser(InputStream inputStream) throws IOException, ClassNotFoundException {
@@ -76,16 +76,6 @@ public class BinaryParser extends Parser {
         }
     }
 
-    private void rememberDrawable(Drawable drawable, Map<ZoomLevel, List<Drawable>> tempDrawableStorage) {
-        if(drawable.getWayType() == WayType.ISLAND){
-            islands.add(drawable);
-        }
-        else if(drawable.getWayType() != WayType.BEACH) {
-            ZoomLevel zoomLevel = ZoomLevel.levelForWayType(drawable.getWayType());
-            tempDrawableStorage.get(zoomLevel).add(drawable);
-        }
-    }
-
     @Override
     EnumMap<ZoomLevel, KDTree> getDrawables() {
         return drawables;
@@ -109,11 +99,6 @@ public class BinaryParser extends Parser {
     @Override
     float getMaxLon() {
         return 8.491f;
-    }
-
-    @Override
-    List<Drawable> getIslands() {
-        return islands;
     }
 
     @Override

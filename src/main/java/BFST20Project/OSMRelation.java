@@ -1,7 +1,5 @@
 package BFST20Project;
 
-import javafx.scene.canvas.GraphicsContext;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +13,7 @@ public class OSMRelation implements Serializable {
         this.id = id;
     }
 
-    public void addWay(OSMWay way){
-        ways.add(way);
-    }
-
-    public void addAllWays(ArrayList<OSMWay> osmWays) { ways.addAll(osmWays); }
+    public void addAllWays(List<OSMWay> osmWays) { ways.addAll(osmWays); }
 
     public WayType getWayType() {
         return type;
@@ -29,8 +23,4 @@ public class OSMRelation implements Serializable {
         this.type = type;
     }
 
-    public List<Point> getCoordinates() {
-
-        return new ArrayList<>();
-    }
 }

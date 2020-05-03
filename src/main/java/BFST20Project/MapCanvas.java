@@ -36,7 +36,7 @@ public class MapCanvas extends Canvas{
         gc.setTransform(new Affine());
 
         if(defaultColor == 2){
-            gc.setFill(Color.web("#F6CEF5"));
+            gc.setFill(Color.web("#F8E0F7"));
 
         }
         else if(defaultColor == 3){

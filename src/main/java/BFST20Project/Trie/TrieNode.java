@@ -1,16 +1,18 @@
-package BFST20Project;
+package BFST20Project.Trie;
+
+import BFST20Project.Point;
 
 import java.io.Serializable;
 import java.util.*;
 
+//Credit to https://www.lavivienpost.com/autocomplete-with-trie-code/?utm_source=youtube&utm_medium=description
 public class TrieNode implements Serializable {
     private char c;
     private TrieNode parent;
-    private String address;
     private Point point;
-    private boolean isWord;
     private boolean endOfWord;
-    public LinkedList<TrieNode> children;
+
+    private List<TrieNode> children;
 
     TrieNode(char c){
         this.c=c;
@@ -18,26 +20,9 @@ public class TrieNode implements Serializable {
         endOfWord = false;
     }
 
-    public TrieNode getParent() {
-        return parent;
-    }
     public void setParent(TrieNode parent) {
         this.parent = parent;
     }
-    public String getAddress() {
-        return address;
-    }
-
-    public boolean isWord() {
-        return isWord;
-    }
-
-    public boolean isEndOfWord() {
-        return endOfWord;
-    }
-
-
-
 
     public TrieNode getChildren(char c) {
         if (children != null) {
@@ -50,7 +35,7 @@ public class TrieNode implements Serializable {
         return null;
     }
 
-    protected List<String> getWords(){
+    public List<String> getWords(){
         List<String> words = new ArrayList<>();
         if (isEndWord()){
             words.add(toString());
@@ -88,4 +73,6 @@ public class TrieNode implements Serializable {
     public Point getPoint(){
         return point;
     }
+
+    public List<TrieNode> getChildren() { return children; }
 }
