@@ -1,15 +1,7 @@
 
-
-
 Button:hover{
     -fx-background-color: grey;
     -fx-background-repeat: no-repeat;
-}
-
-#walk:hover{
-    -fx-background-image: url('/images/walkHover.png');
-    -fx-background-repeat: no-repeat;
-    -fx-border-color: rgba(1,1,1,0.0);
 }
 
 Label{
