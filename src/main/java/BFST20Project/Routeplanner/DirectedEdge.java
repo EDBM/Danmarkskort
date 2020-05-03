@@ -28,7 +28,6 @@ public class DirectedEdge implements Serializable {
 
     private double calculateLength() {
         length = Point.distanceBetweenPoint(start.getPoint(),end.getPoint());
-        //length = start.getPoint().distanceTo(end.getPoint());
         return length;
     }
 
@@ -37,6 +36,7 @@ public class DirectedEdge implements Serializable {
     }
 
     public Vertex getEnd() { return end; }
+    
 
     public double getWeight(boolean isDriving) {
         if(isDriving) return length/speed;

@@ -35,14 +35,13 @@ public class Model implements Serializable {
     public void loadModel(File file) throws IOException, XMLStreamException, ClassNotFoundException {
 
         Parser parser;
-
-        if(file == null) {
+        /*if(file == null) {
             System.out.println("binary parser");
             parser = new BinaryParser(new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin"));
-        } else {
+        } else {*/
             System.out.println("OSM parser");
             parser = new OSMParser(file);
-        }
+
 
 
 

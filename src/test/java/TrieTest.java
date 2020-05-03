@@ -1,4 +1,5 @@
 import BFST20Project.AddressParser;
+import BFST20Project.Point;
 import BFST20Project.Trie;
 import org.junit.After;
 import org.junit.Before;
@@ -16,23 +17,24 @@ public class TrieTest {
     AddressParser e;
     AddressParser f;
     Trie t = new Trie();
+    Point p = new Point(1,2);
 
     public TrieTest(){}
 
     @Before
-            public void setUp() {
+    public void setUp() {
         AddressParser a = new AddressParser("Torpenvej", "23", "3050", "København");
         AddressParser b = new AddressParser("Torpengade", "25", "3040", "Købenby");
         AddressParser c = new AddressParser("Torpenbro", "28", "3590", "Kødby");
         AddressParser d = new AddressParser("123", "12", "123123", "123123");
         AddressParser e = new AddressParser("æøåÆØÅ", "æøåæøå", "æøåæøå", "æøåæøå");
         AddressParser f = new AddressParser("", "", "", "");
-        t.insert(a);
-        t.insert(b);
-        t.insert(c);
-        t.insert(d);
-        t.insert(e);
-        t.insert(f);
+        t.insert(a,p);
+        t.insert(b,p);
+        t.insert(c,p);
+        t.insert(d,p);
+        t.insert(e,p);
+        t.insert(f,p);
     }
 
     @Test
@@ -58,8 +60,8 @@ public class TrieTest {
         //tests if we only complete on street names and not cities, Test -> supposed to fail
         // destructive testing, expected to fail.
         Trie t = new Trie();
-        t.insert(a);
-        t.insert(b);
+        t.insert(a,p);
+        t.insert(b,p);
         List l = t.autocomplete("Torpen");
         Assertions.assertEquals(String.valueOf(l.get(0)), "Torpenvej 23 3050 København");
         Assertions.assertEquals(String.valueOf(l.get(1)), "Købengade 25 3040 Torpenby");
@@ -79,10 +81,20 @@ public class TrieTest {
     public void TrieAutoComplete5(){
         //Test that Trie does not accept empty text
         AddressParser g = new AddressParser("      ", "  ", "  ", "   ");
-        t.insert(g);
+        t.insert(g,p);
         List l = t.autocomplete("   ");
         System.out.println(g);
         Assertions.assertEquals(l.size(),0);
+    }
+
+    @Test
+    public void TrieAutoCompletetest6(){
+        //Test lower case
+        //Will fail. Would be nice to implement
+        setUp();
+        List l = t.autocomplete("torpen");
+        Assertions.assertEquals(String.valueOf(l.get(0)), "Torpenvej 23 3050 København");
+
     }
 
     @After

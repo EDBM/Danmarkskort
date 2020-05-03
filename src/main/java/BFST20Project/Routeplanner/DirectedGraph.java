@@ -54,7 +54,6 @@ public class DirectedGraph implements Serializable {
 
         while(!potentiallyCloser.isEmpty()) {
             Vertex toConsider = potentiallyCloser.poll();
-            //System.out.println(point.distanceSquared(toConsider.getPoint()));
             if(minDist > point.distanceTo(toConsider.getPoint())){
                 closeVertex = toConsider;
                 minDist = point.distanceTo(toConsider.getPoint());
