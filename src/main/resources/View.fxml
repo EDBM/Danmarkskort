@@ -111,14 +111,17 @@
                                                   minHeight="20">
 
                                             </HBox>
-                                            <ImageView fx:id="walk"
+                                            <HBox>
+                                            <ImageView
                                                        pickOnBounds="true"
                                                        preserveRatio="true"
                                                        onMouseClicked='#chooseWalkPicker'>
                                                 <image>
-                                                    <Image url ="/images/walk.png"></Image>
-                                                </image>
+                                                    <Image url="/images/walk.png" ></Image>
+                                            </image>
+
                                             </ImageView>
+                                            </HBox>
                                         </FlowPane>
 
 
