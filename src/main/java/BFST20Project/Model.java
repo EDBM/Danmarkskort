@@ -36,7 +36,7 @@ public class Model implements Serializable {
 
     public void loadModel(File file) throws IOException, XMLStreamException, ClassNotFoundException {
 
-        file = new File(getClass().getClassLoader().getResource("bornholm.zip").getFile());
+
         String extension = getFileExtension(file.toString());
         Parser parser;
 
