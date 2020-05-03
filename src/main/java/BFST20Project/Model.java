@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import javax.xml.stream.XMLStreamException;
 import java.io.*;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 
 public class Model implements Serializable {
@@ -34,15 +36,31 @@ public class Model implements Serializable {
 
     public void loadModel(File file) throws IOException, XMLStreamException, ClassNotFoundException {
 
+        file = new File(getClass().getClassLoader().getResource("bornholm.zip").getFile());
+        String extension = getFileExtension(file.toString());
         Parser parser;
 
-        if(file == null) {
+        if(extension.equalsIgnoreCase("zip")){
+            parser = readZipFile(file);
+
+        }
+        else if(extension.equalsIgnoreCase("osm")){
+            parser = readOSMStream(new FileInputStream(file));
+        }
+        else if(extension.equalsIgnoreCase("bin")){
+            parser = readBinStream(new FileInputStream(file));
+        }
+        else{
+            throw new IOException("File is bad");
+        }
+
+        /*if(file == null) {
             System.out.println("binary parser");
             parser = new BinaryParser(new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin"));
         } else {
             System.out.println("OSM parser");
             parser = new OSMParser(file);
-        }
+        }*/
 
 
 
@@ -62,6 +80,36 @@ public class Model implements Serializable {
         trie = parser.getTrie();
     }
 
+    private Parser readZipFile(File file) throws IOException, XMLStreamException, ClassNotFoundException {
+        ZipFile zipFile = new ZipFile(file);
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        while (entries.hasMoreElements()){
+            ZipEntry zipEntry = entries.nextElement();
+            String extension = getFileExtension(zipEntry.toString());
+            if(extension.equalsIgnoreCase("osm")){
+                return readOSMStream(zipFile.getInputStream(zipEntry));
+            }
+            else if(extension.equalsIgnoreCase("bin")){
+                return readBinStream(zipFile.getInputStream(zipEntry));
+            }
+        }
+        throw new IOException("Zip-file did not contain osm or bin files");
+    }
+
+    private Parser readBinStream(InputStream inputStream) throws IOException, ClassNotFoundException {
+        return new BinaryParser(inputStream);
+    }
+
+    private Parser readOSMStream(InputStream inputStream) throws IOException, XMLStreamException {
+        return new OSMParser(inputStream);
+    }
+
+    private String getFileExtension(String file) {
+        if(file.contains(".")){
+            return  file.substring(file.lastIndexOf(".") + 1);
+        }
+        return "";
+    }
 
 
     public void addObserver(Runnable observer) {

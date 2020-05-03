@@ -17,24 +17,21 @@ public class BinaryParser extends Parser {
     private EnumMap<ZoomLevel, KDTree> drawables = new EnumMap<>(ZoomLevel.class);
     private List<Drawable> islands = new ArrayList<>();
     private Trie trie;
-
+/*
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         BinaryParser parser = new BinaryParser(new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin"));
     }
+*/
 
 
-
-    public BinaryParser(File file) throws IOException, ClassNotFoundException {
-        loadDefaultBin();
+    public BinaryParser(InputStream inputStream) throws IOException, ClassNotFoundException {
+        loadBin(inputStream);
     }
 
-
-
-
-    public void loadDefaultBin() throws IOException, ClassNotFoundException {
-        File file = new File(getClass().getClassLoader().getResource("test.bin").getFile());
-        FileInputStream input = new FileInputStream(file);
-        ObjectInputStream objectInputStream = new ObjectInputStream (input);
+    public void loadBin(InputStream inputStream) throws IOException, ClassNotFoundException {
+        //File file = new File(getClass().getClassLoader().getResource("test.bin").getFile());
+        //FileInputStream input = new FileInputStream(file);
+        ObjectInputStream objectInputStream = new ObjectInputStream (inputStream);
 
         ArrayList polylines = new ArrayList<Polylines>();
         ArrayList multipolygons = new ArrayList<MultiPolygon>();
