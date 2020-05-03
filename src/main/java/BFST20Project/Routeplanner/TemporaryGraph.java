@@ -11,18 +11,27 @@ import java.util.List;
 import java.util.Map;
 
 public class TemporaryGraph implements Serializable {
-    transient public Map<Long, Integer> OSMIdToVertexId = new HashMap<>();
-    transient List<Vertex> vertices = new ArrayList<>();
-    transient List<DirectedEdge> edges = new ArrayList<>();
+    transient public Map<Long, Integer> OSMIdToVertexId;
+    transient List<Vertex> vertices;
+    transient List<DirectedEdge> edges;
     List<OSMWay> traversableWays;
     String name;
 
     //Helping to prevent stackoverflow with serializing
     public TemporaryGraph(List<OSMWay> traversableWays){
+        init();
         this.traversableWays = traversableWays;
+        System.out.println("size: " + traversableWays.size());
+    }
+
+    public void init(){
+        OSMIdToVertexId = new HashMap<>();
+        vertices = new ArrayList<>();
+        edges = new ArrayList<>();
     }
 
     public void createTemporaryGraph() {
+        System.out.println("size: " + traversableWays.size());
         for (OSMWay way: traversableWays ) {
             for (OSMNode node : way.getAll()){
                 createVertex(node);

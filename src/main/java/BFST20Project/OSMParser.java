@@ -28,6 +28,7 @@ public class OSMParser extends Parser implements Serializable{
     public OSMParser(File file) throws IOException, XMLStreamException {
         System.out.println("load parser");
         readOSMFile(file);
+        //createBinaryFile();
         createDrivableWayGraph();
         createDrawables();
         //createBinaryFile();
@@ -312,12 +313,13 @@ public class OSMParser extends Parser implements Serializable{
         FileOutputStream fileOut = new FileOutputStream(file);
         ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 
+        System.out.println("graph");
+        TemporaryGraph temporaryGraph = new TemporaryGraph(traversableWays);
+        objectOut.writeObject(temporaryGraph);
+
         System.out.println("ways");
-        int count = 0;
         for(OSMWay way : idToWay.values()){
             objectOut.writeObject(way);
-            count++;
-            System.out.println(count);
         }
 
         System.out.println("relations");
@@ -328,8 +330,6 @@ public class OSMParser extends Parser implements Serializable{
         System.out.println("bounds");
         //objectOut.writeObject(bounds);
 
-        System.out.println("graph");
-        objectOut.writeObject(new TemporaryGraph(traversableWays));
 
         System.out.println("islands");
         objectOut.writeObject(islands);
