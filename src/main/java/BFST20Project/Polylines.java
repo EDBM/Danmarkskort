@@ -2,6 +2,7 @@ package BFST20Project;
 
 import BFST20Project.Routeplanner.Vertex;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 import java.io.Serializable;
 import java.util.ArrayList;

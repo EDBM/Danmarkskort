@@ -26,6 +26,11 @@ public class Model implements Serializable {
     public Boolean routeIsChanged;
     public String routeAsText;
 
+    public ArrayList<Drawable> PointOfInterest = new ArrayList<>();
+
+    public PointOfInterest POIFrom;
+    public PointOfInterest POITo;
+
     private Trie trie;
 
     private Boolean isDriving = true;
@@ -126,9 +131,16 @@ public class Model implements Serializable {
     public EnumMap<WayType, List<Drawable>> getDrawables(ZoomLevel desiredZoomLevel, Point min, Point max) {
         EnumMap<WayType, List<Drawable>> toDraw = new EnumMap<>(WayType.class);
         toDraw.put(WayType.ISLAND, islands);
+        toDraw.put(WayType.POINT_OF_INTEREST, new ArrayList<>());
         if(shortestPath != null) {
-            toDraw.put(WayType.SHORTEST_PATH, (Arrays.asList(new Polylines[]{shortestPath})));
+            toDraw.put(WayType.SHORTEST_PATH, (Arrays.asList(shortestPath)));
+            toDraw.get(WayType.POINT_OF_INTEREST).add(POIFrom);
+            toDraw.get(WayType.POINT_OF_INTEREST).add(POITo);
         }
+            toDraw.get(WayType.POINT_OF_INTEREST).addAll(PointOfInterest);
+
+
+
         for(ZoomLevel zoomLevel : ZoomLevel.values()){
             if(desiredZoomLevel.compareTo(zoomLevel) >= 0){
                 toDraw.putAll(drawables.get(zoomLevel).query(min.getX(), min.getY(), max.getX(), max.getY()));
@@ -192,6 +204,11 @@ public class Model implements Serializable {
         Drawable nearestRoad = nearestRoad(from, drawables.keySet());
         if(nearestRoad.getVertex() != null) {
             navigateFrom = driveableWayGraph.nearestVertex(nearestRoad.getVertex(), from);
+
+
+            PointOfInterest POI = new PointOfInterest(from, true);
+            POIFrom = POI;
+
             navigate();
         }
     }
@@ -200,6 +217,10 @@ public class Model implements Serializable {
         Drawable nearestRoad = nearestRoad(to, drawables.keySet());
         if(nearestRoad.getVertex() != null) {
             navigateTo = driveableWayGraph.nearestVertex(nearestRoad.getVertex(), to);
+
+            PointOfInterest POI = new PointOfInterest(to, false);
+            POITo = POI;
+
             navigate();
         }
     }
@@ -223,5 +244,11 @@ public class Model implements Serializable {
     public void setDriving(Boolean driving) {
         isDriving = driving;
         navigate();
+    }
+
+
+    public void addPointOfInterest(Drawable drawable){
+        System.out.println("add POI");
+        PointOfInterest.add(drawable);
     }
 }
