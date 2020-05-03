@@ -94,7 +94,7 @@ public class ShortestPath {
         return totalWeight;
     }
 
-    public ArrayList<String> textRoutePlanner() {
+   public ArrayList<String> textRoutePlanner() {
         ArrayList<String> textRoute = new ArrayList<>();
 
         if(path.isEmpty()){
@@ -108,6 +108,7 @@ public class ShortestPath {
         String roadName;
         DirectedEdge previousEdge = path.poll();
         roadName = previousEdge.getName();
+        System.out.println("ny");
 
         if(previousEdge.getName()!=null) {
             for (DirectedEdge edge : path) {
@@ -115,9 +116,8 @@ public class ShortestPath {
                     length += edge.getLength();
                     previousEdge = edge;
                 } else if (!roadName.equals("")) {
-                    //angle = calculateTurnAngle(previousEdge, edge);
-                    angle = ((previousEdge.getEnd().getLon()-previousEdge.getStart().getLon())*(edge.getEnd().getLat()-previousEdge.getStart().getLat()))-
-                            ((previousEdge.getEnd().getLat()-previousEdge.getStart().getLat())*(edge.getEnd().getLon()-previousEdge.getStart().getLon()));
+                    angle = calculateTurnAngle(previousEdge,edge);
+
                     if (angle > 0) {
                         direction = " drej til højre";
                     } else if (angle < 0) {
@@ -125,7 +125,7 @@ public class ShortestPath {
                     } else {
                         direction = " fortsæt ligeud";
                     }
-
+                    System.out.println(angle);
                     textRoute.add("Følg " + roadName + " " + length + "m, Derefter" + direction + " af " + edge.getName());
                     length= (int) Math.floor(edge.getLength());
                     roadName = edge.getName();
@@ -145,40 +145,10 @@ public class ShortestPath {
         double ay1 = a.getStart().getLat();
         double ax2 = a.getEnd().getLon();
         double ay2 = a.getEnd().getLat();
-        double bx1 = b.getStart().getLon();
-        double by1 = b.getStart().getLat();
         double bx2 = b.getEnd().getLon();
         double by2 = b.getEnd().getLat();
 
-
-        double aLength = Math.sqrt(Math.pow(Math.abs(ax1-bx1),2)+Math.pow(ay1-by1,2)); //length from point1 to point2
-        double bLength = Math.sqrt(Math.pow(Math.abs(ax2-bx2),2)+Math.pow(ay2-by2,2)); // length from point2 to point3
-        double cLength = Math.sqrt(Math.pow(Math.abs(ax1-bx2),2)+Math.pow(ay1-by2,2)); //length from point1 to point3
-
-        //double aLength = a.getLength();
-        //double bLength = b.getLength();
-        //double cLength = Point.distanceBetweenPoint(a.getStart().getPoint(),(b.getEnd().getPoint()));
-
-        double ab = (aLength*aLength+bLength*bLength);
-        double cc = cLength*cLength;
-        /*
-        double twoab = 2*aLength*bLength;
-        double abcc = ab-cc;
-        double turnAngle = Math.acos(abcc/(twoab))*180/Math.PI;
-*/
-        double vectorABx = ax1 - bx1;
-        double vectorABy = ay1 - by1;
-        double vectorACx = ax1 - bx2;
-        double vectorACy = ay1 - by2;
-        double vectorBAx = bx1-ax1;
-
-        double vectorBAy = by1 - ay1;
-        double vectorBCx = bx2-bx1;
-        double vectorBCy = by2-by1;
-        double turnAngle = Math.acos((vectorABx*vectorACx+vectorABy*vectorACy)/(aLength*cLength));
-        //double turnAngle = Math.acos((Math.pow(aLength,2)+Math.pow(cLength,2)-Math.pow(bLength,2))/(2*aLength*cLength));
-        //turnAngle = turnAngle;
-
+        double turnAngle = ((ax2-ax1)*(by2-ay1))-(ay2-ay1)*(bx2-ax2);
 
         return turnAngle;
     }
