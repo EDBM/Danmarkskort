@@ -36,26 +36,39 @@ public class Model implements Serializable {
 
     private Boolean isDriving = true;
 
-    public Model(File file) throws IOException, XMLStreamException, ClassNotFoundException {
-        loadModel(file);
+    public Model(String filepath, boolean isResource) throws IOException, XMLStreamException, ClassNotFoundException {
+        loadModel(filepath, isResource);
     }
 
-    public void loadModel(File file) throws IOException, XMLStreamException, ClassNotFoundException {
-        String extension = getFileExtension(file.toString());
+    public void loadModel(String filepath, boolean isResource) throws IOException, XMLStreamException, ClassNotFoundException {
+        String extension = getFileExtension(filepath);
         Parser parser;
+        InputStream fileInputStream;
 
         if(extension.equalsIgnoreCase("zip")){
-            parser = readZipFile(file);
-        }
-        else if(extension.equalsIgnoreCase("osm")){
-            parser = readOSMStream(new FileInputStream(file));
-        }
-        else if(extension.equalsIgnoreCase("bin")){
-            parser = readBinStream(new FileInputStream(file));
+            if(isResource){
+                throw new IOException("Zip files cannot be read from resources");
+            }
+            parser = readZipFile(filepath);
         }
         else{
-            throw new IOException("Filetype not supported");
+            if(isResource){
+                fileInputStream = getClass().getResourceAsStream(filepath);
+            } else{
+                fileInputStream = new FileInputStream(filepath);
+            }
+
+            if(extension.equalsIgnoreCase("osm")){
+                parser = readOSMStream(fileInputStream);
+            }
+            else if(extension.equalsIgnoreCase("bin")){
+                parser = readBinStream(fileInputStream);
+            }
+            else{
+                throw new IOException("Filetype not supported");
+            }
         }
+
 
         drawables = parser.getDrawables();
         drawables = parser.getDrawables();
@@ -68,7 +81,7 @@ public class Model implements Serializable {
         trie = parser.getTrie();
     }
 
-    private Parser readZipFile(File file) throws IOException, XMLStreamException, ClassNotFoundException {
+    private Parser readZipFile(String file) throws IOException, XMLStreamException, ClassNotFoundException {
         ZipFile zipFile = new ZipFile(file);
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         while (entries.hasMoreElements()){

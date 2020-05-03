@@ -26,7 +26,6 @@ public class OSMParser extends Parser implements Serializable{
 
 
     public OSMParser(InputStream inputStream) throws XMLStreamException {
-        System.out.println("load parser");
         readOSMFile(inputStream);
         //createBinaryFile();
         createDrivableWayGraph();
@@ -259,8 +258,7 @@ public class OSMParser extends Parser implements Serializable{
 
 
     public void createBinaryFile() throws IOException {
-        System.out.println("binary parsing");
-        File file = new File("C:\\Users\\Lucas\\IdeaProjects\\BFST20Gruppe8\\src\\main\\resources\\test.bin");
+        File file = new File("C:\\Users\\johan\\repositories\\BFST20Project\\src\\main\\resources\\test.bin");
 
         FileOutputStream fileOut = new FileOutputStream(file);
         ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);

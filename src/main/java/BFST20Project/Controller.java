@@ -203,7 +203,7 @@ public class Controller {
     private void fileChooser() throws Exception {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
-        model.loadModel(selectedFile);
+        model.loadModel(selectedFile.getPath(), false);
 
         mapCanvas.resetTrans();
         zoomFactor = 3.4 * 2857 * 1000;

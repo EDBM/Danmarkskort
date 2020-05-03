@@ -16,7 +16,7 @@ import javafx.scene.canvas.Canvas;
 
 public class Launcher extends Application {
     public void start(Stage primaryStage) throws Exception {
-        Model model = new Model(new File(getClass().getClassLoader().getResource("bornholm.zip").getFile()));
+        Model model = new Model("/bornholm.bin", true);
         View view = new View(model, primaryStage);
     }
 
