@@ -40,6 +40,13 @@ public class BinaryParser extends Parser {
         Object object = objectInputStream.readObject();
         while (true) {
 
+            if (object instanceof TemporaryGraph) {
+                TemporaryGraph graph = (TemporaryGraph) object;
+                graph.init();
+                graph.createTemporaryGraph();
+                this.drivableWaysGraph = graph.compressedGraph();
+            }
+
             if (object instanceof OSMWay) {
                 OSMWay way = (OSMWay) object;
                 Polylines poly = new Polylines(way);
@@ -51,11 +58,7 @@ public class BinaryParser extends Parser {
                 multipolygons.add(multiPolygon);
             }
 
-            if (object instanceof TemporaryGraph) {
-                TemporaryGraph graph = (TemporaryGraph) object;
-                graph.createTemporaryGraph();
-                this.drivableWaysGraph = graph.compressedGraph();
-            }
+
 
             if (object instanceof Trie) {
                 this.trie = (Trie) object;
@@ -65,7 +68,7 @@ public class BinaryParser extends Parser {
                 object = objectInputStream.readObject();
             } catch (EOFException e){
                 System.out.println("End of Stream");
-                e.printStackTrace();
+                //e.printStackTrace();
                 break;
             }
         }

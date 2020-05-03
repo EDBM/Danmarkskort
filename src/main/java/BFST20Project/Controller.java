@@ -152,8 +152,10 @@ public class Controller {
         while(number >= 1000 && scale < prefix.length -1){
             number/=1000;
             scale++;
+            return String.format("%.2f %s", number, prefix[scale]);
         }
         return String.format("%.0f %s", number, prefix[scale]);
+
     }
 
     //Shorthand assigntment x /= y -> x = x / y
