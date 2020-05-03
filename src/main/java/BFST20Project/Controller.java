@@ -204,7 +204,6 @@ public class Controller {
         } else {
             PointOfInterest POI = new PointOfInterest(mapCanvas.screenCoordinatesToPoint(e.getX(), e.getY()), true);
             model.addPointOfInterest(POI);
-            mapCanvas.repaint();
         }
 
         x = e.getX();
@@ -217,7 +216,7 @@ public class Controller {
 
 
 
-
+        mapCanvas.repaint();
 
     }
 
