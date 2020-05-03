@@ -1,5 +1,6 @@
-package BFST20Project;
+package BFST20Project.Parser;
 
+import BFST20Project.*;
 import BFST20Project.Routeplanner.DirectedGraph;
 import BFST20Project.Routeplanner.TemporaryGraph;
 import BFST20Project.Trie.Trie;
@@ -77,37 +78,37 @@ public class BinaryParser extends Parser {
     }
 
     @Override
-    EnumMap<ZoomLevel, KDTree> getDrawables() {
+    public EnumMap<ZoomLevel, KDTree> getDrawables() {
         return drawables;
     }
 
     @Override
-    float getMinLat() {
+    public float getMinLat() {
         return -55.3041f;
     }
 
     @Override
-    float getMinLon() {
+    public float getMinLon() {
         return 8.218784f;
     }
 
     @Override
-    float getMaxLat() {
+    public float getMaxLat() {
         return -54.9264f;
     }
 
     @Override
-    float getMaxLon() {
+    public float getMaxLon() {
         return 8.491f;
     }
 
     @Override
-    DirectedGraph getDrivableWayGraph() {
+    public DirectedGraph getDrivableWayGraph() {
         return drivableWaysGraph;
     }
 
     @Override
-    Trie getTrie() {
+    public Trie getTrie() {
         return trie;
     }
 }

@@ -1,6 +1,7 @@
-package BFST20Project;
+package BFST20Project.Parser;
 
 import BFST20Project.Routeplanner.Vertex;
+import BFST20Project.WayType;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package BFST20Project.Routeplanner;
 
-import BFST20Project.OSMNode;
-import BFST20Project.OSMWay;
+import BFST20Project.Parser.OSMNode;
+import BFST20Project.Parser.OSMWay;
 import BFST20Project.Point;
 
 import java.io.Serializable;

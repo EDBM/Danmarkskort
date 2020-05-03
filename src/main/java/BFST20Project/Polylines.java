@@ -1,10 +1,9 @@
 package BFST20Project;
 
+import BFST20Project.Parser.OSMWay;
 import BFST20Project.Routeplanner.Vertex;
 import javafx.scene.canvas.GraphicsContext;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class Polylines implements Drawable, Serializable {

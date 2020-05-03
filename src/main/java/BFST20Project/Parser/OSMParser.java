@@ -1,5 +1,6 @@
-package BFST20Project;
+package BFST20Project.Parser;
 
+import BFST20Project.*;
 import BFST20Project.Routeplanner.DirectedGraph;
 import BFST20Project.Routeplanner.TemporaryGraph;
 import BFST20Project.Trie.Trie;

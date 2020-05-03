@@ -1,7 +1,11 @@
-package BFST20Project;
+package BFST20Project.Parser;
 
+import BFST20Project.Drawable;
+import BFST20Project.KDTree;
 import BFST20Project.Routeplanner.DirectedGraph;
 import BFST20Project.Trie.Trie;
+import BFST20Project.WayType;
+import BFST20Project.ZoomLevel;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -11,17 +15,17 @@ import java.util.Map;
 public abstract class Parser {
 
 
-    abstract EnumMap<ZoomLevel, KDTree> getDrawables();
+    public abstract EnumMap<ZoomLevel, KDTree> getDrawables();
 
-    abstract float getMinLat();
-    abstract float getMinLon();
-    abstract float getMaxLat();
-    abstract float getMaxLon();
+    public abstract float getMinLat();
+    public abstract float getMinLon();
+    public abstract float getMaxLat();
+    public abstract float getMaxLon();
 
 
-    abstract DirectedGraph getDrivableWayGraph();
+    public abstract DirectedGraph getDrivableWayGraph();
 
-    abstract Trie getTrie();
+    public abstract Trie getTrie();
 
     protected List<Drawable> islands = new ArrayList<>();
 

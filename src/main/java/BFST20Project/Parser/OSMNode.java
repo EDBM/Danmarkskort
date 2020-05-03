@@ -1,4 +1,6 @@
-package BFST20Project;
+package BFST20Project.Parser;
+
+import BFST20Project.Point;
 
 import java.io.Serializable;
 

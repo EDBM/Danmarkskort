@@ -1,5 +1,8 @@
 package BFST20Project;
 
+import BFST20Project.Parser.OSMNode;
+import BFST20Project.Parser.OSMRelation;
+import BFST20Project.Parser.OSMWay;
 import BFST20Project.Routeplanner.Vertex;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.FillRule;

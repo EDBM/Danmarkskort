@@ -1,5 +1,8 @@
 package BFST20Project;
 
+import BFST20Project.Parser.BinaryParser;
+import BFST20Project.Parser.OSMParser;
+import BFST20Project.Parser.Parser;
 import BFST20Project.Routeplanner.DirectedEdge;
 import BFST20Project.Routeplanner.DirectedGraph;
 import BFST20Project.Routeplanner.ShortestPath;
